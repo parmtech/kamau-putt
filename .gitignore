@@ -1,0 +1,28 @@
+# Credentials and runtime configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*credentials*
+*secrets*
+**/service-account*.json
+**/google-services.json
+**/local.properties
+# Data and build outputs
+node_modules/
+vendor/
+__pycache__/
+*.pyc
+build/
+dist/
+.gradle/
+.idea/
+*.apk
+*.aab
+.DS_Store
+logs/
+data/
+backups/
