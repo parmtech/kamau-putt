@@ -5,7 +5,7 @@
 **User instruction:** Maintain complete development evidence in GitHub so *any later session* can continue without restarting.
 
 ## 2026-10-24 incremental finance foundation (feature branch; not merged)
-- Branch: `feat/kp-financial-reservations-foundation`. Draft PR proposed for review. Latest GitHub CI run should be checked before merge.
+- Branch: `feat/kp-financial-reservations-foundation`. Draft PR proposed for review. GitHub workflow run #7 reported FAILURE; job logs/steps were unavailable through connector. Investigate GitHub Actions UI and re-run before merge.
 - Added `database/001_financial_control.mysql.sql`, `src/Core/FinancialMath.php`, `src/Core/PdoSpendReservations.php`, `tests/financial_math.php`, optional `tests/mysql_integration.php`, workflow `.github/workflows/php-foundation.yml`.
 - Local PHP 8.4.24 syntax checks passed on FinancialMath and PdoSpendReservations. **10/10** new pure financial arithmetic tests passed locally. **Original 11/11** policy tests were verified in the prior session only. GitHub CI, actual MySQL transactions, concurrency and crash tests NOT YET VERIFIED.
 - No external charge, bank, supplier, ads or customer operations implemented. All database defaults fail closed. Opt-in staging integration test is not a live money test.
