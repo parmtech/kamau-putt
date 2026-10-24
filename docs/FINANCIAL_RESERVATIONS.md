@@ -7,6 +7,7 @@ The existing `SpendGuard` provides advisory policy checks, not durable money con
 - InnoDB schema with singleton owner-stop/mode control (default stopped/survival), settled-cash/liability reserves, scope budgets, reservation records and append-only reservation events.
 - `FinancialMath`: auditable integer-cent limits and AUD 500 cumulative external seed check. This is **not** a production funding intake API.
 - `PdoSpendReservations`: exclusive control-row lock, scope row lock, atomic reserve, commit, release, mark-uncertain; transaction rollback on error.
+- Per-action cap is also stored on the approved budget envelope (default 0 / deny); callers cannot raise it simply by supplying a larger parameter. Unauthorised scopes are rejected before reservation lookup.
 - Repeated idempotency key **does not grant a second external paid call**. A changed request with the same key fails as a conflict.
 
 ## State transitions
