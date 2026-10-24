@@ -41,7 +41,7 @@ foreach (preg_split('/;\s*(?=\n|$)/', $sql) as $statement) {
         $db->exec(trim($statement));
     }
 }
-$db->exec("INSERT INTO kp_budget_envelopes(scope,approved_limit_cents) VALUES ('test',1000)");
+$db->exec("INSERT INTO kp_budget_envelopes(scope,approved_limit_cents,per_action_cap_cents) VALUES ('test',1000,1000)");
 $db->exec("UPDATE kp_financial_position SET settled_cash_cents=1000 WHERE id=1");
 $ledger = new PdoSpendReservations($db);
 $tests = [];
