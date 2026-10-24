@@ -4,6 +4,13 @@
 **Repo:** `manbir6-ux/kamau-putt` (PRIVATE). Default branch `main`.  
 **User instruction:** Maintain complete development evidence in GitHub so *any later session* can continue without restarting.
 
+## 2026-10-24 incremental finance foundation (feature branch; not merged)
+- Branch: `feat/kp-financial-reservations-foundation`. Draft PR proposed for review. Latest GitHub CI run should be checked before merge.
+- Added `database/001_financial_control.mysql.sql`, `src/Core/FinancialMath.php`, `src/Core/PdoSpendReservations.php`, `tests/financial_math.php`, optional `tests/mysql_integration.php`, workflow `.github/workflows/php-foundation.yml`.
+- Local PHP 8.4.24 syntax checks passed on FinancialMath and PdoSpendReservations. **10/10** new pure financial arithmetic tests passed locally. **Original 11/11** policy tests were verified in the prior session only. GitHub CI, actual MySQL transactions, concurrency and crash tests NOT YET VERIFIED.
+- No external charge, bank, supplier, ads or customer operations implemented. All database defaults fail closed. Opt-in staging integration test is not a live money test.
+- Provider-level Namecheap cron/daemon/PHP constraints researched: `docs/HOSTING_PREFLIGHT.md`; actual account unverified.
+
 ## Current verified state
 1. Planning docs exist: `README.md`, `docs/MASTER_PLAN.md`, `docs/FEATURES.md`, `docs/DECISIONS.md`, `docs/ROADMAP.md`.
 2. Ordered task board: `docs/PROJECT_TRACKER.md`; completion conventions are mandatory.
@@ -19,8 +26,8 @@
 - No customer-facing identity assumption: public brands may have distinct names.
 
 ## Exact next actions
-1. **KP-003:** Verify actual Namecheap hosting PHP/MySQL/cron/worker/deploy constraints before choosing background scheduler or framework. Ask for access only if it is actually required, and do not upload secrets.
-2. **KP-005/KP-012:** Propose and implement a schema/migration + **atomic reserve/commit/release** budget protocol with transaction isolation, idempotency keys, customer liabilities, no credit against unsettled funds. Test concurrency/duplicate/timeout cases using an available DB/test harness.
+1. **KP-003:** Verify actual cPanel runtime/extensions, database engine, SSL, cron, SSH, memory and backups against provider policy; do not upload secrets.
+2. **KP-012/KP-020:** Review branch prototype; run disposable DB integration, 2-process concurrent reservation and owner-stop race checks; verify no double charge and rollback on crashes. Build reconcilable double-entry accounting before staging approval.
 3. **KP-013/KP-023/024:** Implement durable auth/owner-stop controls with independent staging verification before enabling any live spending.
 
 ## Known limitations / open blockers
