@@ -33,7 +33,8 @@ Persistent encrypted AI identity/memory + event journal + immutable accounting a
 - [x] Private GitHub repository created and connected
 - [x] Product scope and requirements captured
 - [ ] Architecture review and threat model
-- [x] Minimal Core preflight code skeleton (11 local unit cases; **not** live money-safe)\n- [ ] Financial reservation feature branch: prototype + 10 local arithmetic tests; no MySQL/staging verification; see [financial reservations](docs/FINANCIAL_RESERVATIONS.md)
+- [x] Minimal Core preflight code skeleton (11 local unit cases; **not** live money-safe)
+- [ ] Financial reservation feature branch: prototype + 10 local arithmetic tests; no MySQL/staging verification; see [financial reservations](docs/FINANCIAL_RESERVATIONS.md)
 - [ ] Durable Core implementation and staging verification
 - [ ] Sandbox integrations
 - [ ] Test APK / real incoming call proof-of-concept
