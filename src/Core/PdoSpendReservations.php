@@ -41,6 +41,9 @@ final class PdoSpendReservations
             !preg_match('/^[a-z_]{1,100}$/D', $actionType)) {
             return ['allowed' => false, 'reason' => 'invalid_request'];
         }
+        if (!$scopeAuthorized) {
+            return ['allowed' => false, 'reason' => 'scope_not_authorized'];
+        }
         if ($amountCents <= 0 || $perActionCapCents < 0) {
             return ['allowed' => false, 'reason' => 'invalid_amount_or_cap'];
         }
@@ -55,7 +58,7 @@ final class PdoSpendReservations
                 // Replays are NOT fresh authorization to make another provider call.
                 return ['allowed' => false, 'reason' => 'existing_reservation_requires_reconciliation', 'id' => (string) $prior['id'], 'status' => (string) $prior['status']];
             }
-            $budget = $this->one('SELECT approved_limit_cents, spent_cents, reserved_cents FROM kp_budget_envelopes WHERE scope = ? FOR UPDATE', [$scope]);
+            $budget = $this->one('SELECT approved_limit_cents, per_action_cap_cents, spent_cents, reserved_cents FROM kp_budget_envelopes WHERE scope = ? FOR UPDATE', [$scope]);
             if ($budget === null) {
                 return ['allowed' => false, 'reason' => 'unknown_budget_scope'];
             }
@@ -73,7 +76,7 @@ final class PdoSpendReservations
             );
             $decision = SpendGuard::evaluate(
                 $amountCents,
-                $perActionCapCents,
+                min($perActionCapCents, (int) $budget['per_action_cap_cents']),
                 $remaining,
                 $free,
                 (bool) $control['owner_emergency_stopped'],
