@@ -6,7 +6,7 @@ Checked Namecheap's published shared-hosting documentation on 24 October 2026. P
 |---|---|---|
 | PHP | PHP 8.0–8.5 options are advertised | PHP 8.4 preferred, confirm actual selector & CLI |
 | SQL | MariaDB 11.4 listed, MySQL compatibility | Check InnoDB, TLS/backups, PDO MySQL driver |
-| Cron | Less than 5-minute intervals are disallowed | One batched <=5-minute cron scheduler, short resumable tasks |
+| Cron | Less than 5-minute intervals are disallowed | One batched cron scheduler at intervals of 5 minutes or longer, short resumable tasks |
 | Background daemons | Stand-alone daemons disallowed on shared | Never rely on permanent worker, websocket daemon or busy loop |
 | Resource quotas | Stellar Plus shared resources are capped | Bound memory, CPU, job runtime and concurrent requests |
 | SSH/Git | SSH may require enablement; Git listed | Check Jailshell, Composer availability, safe deploy |
