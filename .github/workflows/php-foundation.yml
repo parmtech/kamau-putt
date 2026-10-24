@@ -1,0 +1,29 @@
+name: PHP financial foundation checks
+on:
+  push:
+    branches: [main, "feat/**"]
+  pull_request:
+    branches: [main]
+jobs:
+  php-core:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: PHP runtime
+        run: php -v
+      - name: Syntax validation
+        run: |
+          php -l src/Core/SpendDecision.php
+          php -l src/Core/SpendGuard.php
+          php -l src/Core/FinancialMath.php
+          php -l src/Core/PdoSpendReservations.php
+          php -l tests/run.php
+          php -l tests/financial_math.php
+          php -l tests/mysql_integration.php
+      - name: Run offline pure policy tests
+        run: |
+          php tests/run.php
+          php tests/financial_math.php
+# MySQL integration is intentionally excluded until a disposable test DB exists.
