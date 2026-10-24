@@ -3,7 +3,7 @@
 ## 2026-10-24 — Finance prototype continuation (feature branch, NOT staging verified)
 - On local PHP 8.4.24, `php -l src/Core/FinancialMath.php` and `php -l src/Core/PdoSpendReservations.php` both returned no syntax errors.
 - Local `php tests/financial_math.php`: **10/10 passed** (settled-cash and reserves arithmetic, budget, AUD 500 startup seed constraint).
-- Added an opt-in MySQL test harness and a GitHub CI workflow to run original policy and new arithmetic tests. **GitHub Actions run #7 for the feature branch reported FAILURE**; job steps/log could not be retrieved through the connector. Actual failure cause unverified. MySQL DB integration results not observed as passed.
+- Added an opt-in MySQL test harness and a GitHub CI workflow to run original policy and new arithmetic tests. **GitHub Actions run #7 and subsequent run #17 for the feature branch reported FAILURE**; job steps/log could not be retrieved through the connector. Actual failure cause unverified. MySQL DB integration results not observed as passed.
 - Local environment has PDO but no `pdo_mysql`/`pdo_sqlite`; cannot claim a MySQL database or concurrency test.
 - Existing DB migration and reservation code are PROTOTYPES: no audited ledger, no authenticated owner stop/resume, no provider payment, no confirmed staging deployment, no real cash handling.
 - See `docs/FINANCIAL_RESERVATIONS.md` for exact state machine and safety limitations.
