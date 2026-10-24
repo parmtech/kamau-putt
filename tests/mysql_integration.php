@@ -57,7 +57,7 @@ $tests['replay_not_authorized'] = !$replay['allowed'] && $replay['reason'] === '
 $conflict = $ledger->reserve('test-case-0001', 'test', 'supplier_order', 300, 500, true);
 $tests['same_key_different_amount'] = !$conflict['allowed'] && $conflict['reason'] === 'idempotency_conflict';
 $over = $ledger->reserve('test-case-0002', 'test', 'supplier_order', 700, 800, true);
-$tests['cash_limit_includes_pending'] = !$over['allowed'] && $over['reason'] === 'insufficient_free_settled_cash';
+$tests['budget_limit_includes_pending'] = !$over['allowed'] && $over['reason'] === 'approved_budget_exceeded';
 $tests['commit'] = $ledger->commit('test-case-0001', 'verified-test-provider-ref') === 'committed';
 $tests['commit_replay'] = $ledger->commit('test-case-0001', 'verified-test-provider-ref') === 'idempotent_committed';
 $another = $ledger->reserve('test-case-0003', 'test', 'supplier_order', 200, 300, true);
