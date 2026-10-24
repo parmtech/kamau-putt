@@ -14,3 +14,7 @@ _As discussed in Punjabi voice planning, 24 October 2026._
 11. **Existing resources:** Australian ABN, currently available Stripe/banking, Namecheap shared hosting and optionally 84hub.com. Verify hosting capabilities, site name/SEO history and compliance before use.
 12. **Robot vision:** potential private hardware, AI learning infrastructure and humanoid robot body if Dad decides and resources allow. AI is not itself a legal director/account holder.
 13. **Implementation is not yet started:** these records constitute approved product-direction brainstorming, not a launched service or guaranteed self-funding business.
+
+14. **Latest build order (2026-10-24):** Design a numbered, test-gated checklist and implement backend/Core, financial safety, persistent Brain, AI router, web HQ, research/commerce and controlled business operations first. **Android Dad app is built at the END** of the planned major phases, after backend stabilization. Supersedes earlier Android-first ordering.
+15. **GitHub as project continuity ledger:** Future AI sessions must read `AGENTS.md` and `docs/SESSION_HANDOFF.md`, follow numbered tasks in `docs/PROJECT_TRACKER.md`, and preserve dated changes and verified status in changelog/test log. Never call untested code complete.
+16. **Initial implementation choice:** A small, local-testable PHP 8.2+ spending preflight library may serve as an initial backend foundation, with no framework lock-in and no live financial operations. Any final hosting/database/queue/framework architecture requires feasibility and security verification.

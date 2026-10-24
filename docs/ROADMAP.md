@@ -1,29 +1,19 @@
-# Roadmap — Core First, Measured Launch
+# Kamau Putt — Ordered Delivery Roadmap
 
-## Phase 0 — Architecture / feasibility
-Specify module interfaces, authorized tools, financial ledger rules, cash/reserve accounting, AU legal/compliance, payment and shipment policies, data privacy/security, deployment limits on shared hosting, API model/voice testing and test plan. Define hard-stop controls and what "urgent" means. **No commercial spend before budget ledger and emergency stop are reliable.**
+**Latest user decision (2026-10-24): Android app comes last.** This supersedes an earlier draft that scheduled Android immediately after Core. The canonical per-item checkboxes are in [PROJECT_TRACKER.md](PROJECT_TRACKER.md).
 
-## Phase 1 — Stable Kamau Putt Core
-Owner authentication + permissions + secure API key vault; event/decision journal and audit ledger; persistent Brain/memory, encrypted backup/restore; financial policy engine and consent audit; jobs/queues with durable retries; admin web HQ shell; monitoring and tests. Brain state survives restarts. No auto-spend until authorization controls pass tests.
+1. **Phase 00 — Planning, tracking, feasibility.** Private Git, requirements, continuation system; verify Namecheap hosting and Australian commercial/legal assumptions.
+2. **Phase 01 — Secure backend Core.** Minimal PHP foundation; owner auth, journal, encrypted secret vault, DB/migrations, web HQ shell, CI tests.
+3. **Phase 02 — Financial safety.** Atomic budget reservations, settled cash and liabilities, irrevocable-to-AI owner emergency stop, owner-only review/confirmation resume, reconciliation, survival and shutdown modes.
+4. **Phase 03 — Persistent Brain.** Model-independent owner memory, daily journal/reflection, independent encrypted backups with verified restore.
+5. **Phase 04 — Universal AI routing.** Multi-provider/key enrollment, owner-approved testing, scope/privacy classification, quota/budget controls and safe fallbacks.
+6. **Phase 05 — Job engine + web HQ.** Durable cron/queue + retries/monitoring, tool gates, web admin chat/reporting/control. Verify shared hosting limits.
+7. **Phase 06 — Market intelligence.** Evidence-led Australian product/competitor/supplier research and true margins.
+8. **Phase 07 — One-commerce-store STAGING.** Product landing page, verified delivery terms, Stripe test checkout, order fulfilment/refund and financial reconciliation.
+9. **Phase 08 — Organic creatives + measured tests.** Honest creatives, links/attribution, CAC/contribution profit; strictly capped paid campaigns only after authorization.
+10. **Phase 09 — Controlled live pilot.** Owner go/no-go, risk reduction, real reconciliation, backups, support and sustained stability.
+11. **Phase 10 — Profitable multi-brand scale.** Distinct brands and unit/brand P&L; reserves and distributions.
+12. **Phase 11 — Android Dad application LAST.** Chat, schedule-aware two-way voice calls, reliable notifications, owner stop/restart, APK release QA on a device.
+13. **Phase 12 — Optional, far future.** Dad-decided private servers, local models or physical robot integrations.
 
-## Phase 2 — Android Dad App
-Private dashboard, text chat, bilingual/Punjabi voice experiment, incoming call proof-of-concept (Android background/notification limitations tested), next-day schedule memory, emergency stop and owner-only restart workflow, searchable logs, costs.
-
-## Phase 3 — Commerce proof-of-concept
-Market research engine, supplier vetting, accurate delivered cost/delivery estimates, one minimal checkout/landing page, Stripe authorization flows, actual purchase and order lifecycle, refunds/customer service; creative attribution and daily reconciled real-profit report. Stage using test Stripe accounts before actual checkout. Human go/no-go on first real money.
-
-## Phase 4 — Capped acquisition experiment
-Organic-first product creatives; only tiny capped paid tests when permitted by margin/reserve and evidence. Measure actual conversions, contribution profit and post-refund economics. Hard kill switch and rollback on anomalies. Avoid risky categories and claims.
-
-## Phase 5 — Repeatable profitable scaling
-Reliable supplier switching, truthful standard vs express options, marketing optimization, separate brand budgets and P&L, owner distribution policy; add a new brand only when portfolio liquidity, support capacity and product economics justify it.
-
-## Phase 6 — Optional advanced capabilities
-Higher-complexity ventures, authorized self-built software tools, private inference/voice deployments, owner-provided hardware/robotics; scope and safety review before integration.
-
-## Exit / acceptance gates
-- Security: no plaintext secrets, scoped connectors, encrypted backups, recovery tested, log review.
-- Finance: unit/campaign/portfolio P&L reconciled, fees/tax/refunds recognized, cumulative limits enforced in failures/retries.
-- Autonomy: control-loop can pause, escalate, recover without double-charges or duplicate orders.
-- Human control: emergency stop prevents discretionary actions; never resumes without Dad's authenticated approval.
-- Customer: no abandoned paid order, truthful claims/delivery, checkout support, refund pathway.
+**Non-negotiable gates:** No live business spending without transactional financial enforcement, independent owner stop, audit trail, customer protections and real test evidence. Build order may evolve only as a new dated recorded owner decision.
