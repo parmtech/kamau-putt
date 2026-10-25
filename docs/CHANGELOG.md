@@ -20,3 +20,9 @@ All dates Australia/Sydney. Append a new dated entry for each substantive sessio
 ## 2026-10-24 — Earlier conversational design work
 - Captured identity, autonomy, financial safety, Australian dropshipping plan, provider-agnostic API vault, memory, collaboration, call scheduling, owner emergency stop and future physical-hardware aspirations in Master Plan/Features/Decisions.
 - These were **requirements only**, not implemented commercial features.
+
+## 2026-10-25 — Disposable database validation implementation
+- Added isolated MySQL 8.4 service CI workflow with explicit PDO driver install and empty disposable database; no production credentials or external payment APIs.
+- Expanded integration harness with uncertain outcome retention, denied-release rollback, reconciled commit, conflicting provider reference, terminal transition and no-double-debit assertions (22 sequential database cases total).
+- Status: Implemented/Untested until the new CI run is observed passing. Local PHP/MySQL runtime unavailable in this session; no test pass claimed. Prior failed CI logs returned unavailable; root cause unknown.
+- Next: inspect new workflow result, fix concrete failures, then implement independent-process reservation and stop races. Authenticated stop/resume, full accounting and live deployment remain pending.

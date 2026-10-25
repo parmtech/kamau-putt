@@ -67,6 +67,38 @@ $position = $db->query('SELECT settled_cash_cents, discretionary_reserved_cents 
 $tests['accounting_position'] = (int) $position['settled_cash_cents'] === 600 && (int) $position['discretionary_reserved_cents'] === 0;
 $tests['event_count'] = (int) $db->query('SELECT COUNT(*) FROM kp_financial_events')->fetchColumn() === 4;
 
+// Ambiguous provider outcomes must retain both cash and budget reservations.
+$uncertain = $ledger->reserve('test-case-0004', 'test', 'supplier_order', 300, 500, true);
+$tests['uncertain_reserve'] = $uncertain['allowed'];
+$tests['mark_uncertain'] = $ledger->markUncertain('test-case-0004') === 'uncertain';
+$tests['uncertain_replay'] = $ledger->markUncertain('test-case-0004') === 'idempotent_uncertain';
+$before = $db->query('SELECT settled_cash_cents, discretionary_reserved_cents FROM kp_financial_position WHERE id=1')->fetch();
+$tests['uncertain_holds_funds'] = (int) $before['settled_cash_cents'] === 600 && (int) $before['discretionary_reserved_cents'] === 300;
+try {
+    $ledger->release('test-case-0004');
+    $tests['uncertain_release_denied'] = false;
+} catch (RuntimeException $error) {
+    $tests['uncertain_release_denied'] = $error->getMessage() === 'Uncertain spend requires independently audited reconciliation';
+}
+$after = $db->query('SELECT settled_cash_cents, discretionary_reserved_cents FROM kp_financial_position WHERE id=1')->fetch();
+$tests['failed_transition_rolls_back'] = $before === $after;
+$tests['reconciled_uncertain_commit'] = $ledger->commit('test-case-0004', 'verified-uncertain-ref') === 'committed';
+try {
+    $ledger->commit('test-case-0004', 'conflicting-provider-ref');
+    $tests['conflicting_commit_denied'] = false;
+} catch (RuntimeException $error) {
+    $tests['conflicting_commit_denied'] = $error->getMessage() === 'Conflicting provider reference';
+}
+try {
+    $ledger->release('test-case-0004');
+    $tests['terminal_release_denied'] = false;
+} catch (RuntimeException $error) {
+    $tests['terminal_release_denied'] = $error->getMessage() === 'Terminal reservation cannot change';
+}
+$final = $db->query('SELECT settled_cash_cents, discretionary_reserved_cents FROM kp_financial_position WHERE id=1')->fetch();
+$tests['no_double_debit'] = (int) $final['settled_cash_cents'] === 300 && (int) $final['discretionary_reserved_cents'] === 0;
+$tests['only_successful_transitions_journaled'] = (int) $db->query('SELECT COUNT(*) FROM kp_financial_events')->fetchColumn() === 7;
+
 foreach ($tests as $name => $pass) {
     echo ($pass ? 'PASS ' : 'FAIL ') . $name . PHP_EOL;
 }

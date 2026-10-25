@@ -18,3 +18,9 @@
 
 ## Completion policy
 Each significant checkbox needs one of: linked automated CI result, reproducible local test evidence, verifiable staging report, or real production observation. Mark the level explicitly. Never infer production readiness solely from a passing unit test.
+
+## 2026-10-25 — Disposable database validation implementation
+- Added isolated MySQL 8.4 service CI workflow with explicit PDO driver install and empty disposable database; no production credentials or external payment APIs.
+- Expanded integration harness with uncertain outcome retention, denied-release rollback, reconciled commit, conflicting provider reference, terminal transition and no-double-debit assertions (22 sequential database cases total).
+- Status: Implemented/Untested until the new CI run is observed passing. Local PHP/MySQL runtime unavailable in this session; no test pass claimed. Prior failed CI logs returned unavailable; root cause unknown.
+- Next: inspect new workflow result, fix concrete failures, then implement independent-process reservation and stop races. Authenticated stop/resume, full accounting and live deployment remain pending.

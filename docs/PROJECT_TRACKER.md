@@ -95,3 +95,9 @@
 
 ## Session working method
 Read `AGENTS.md` + `docs/SESSION_HANDOFF.md` at the start. Work on the first practical, unblocked task. After **each** working session, update this checklist, add a dated `CHANGELOG.md` entry, record tests in `VERIFICATION.md`, and leave one concrete next step in `SESSION_HANDOFF.md`. A checked box must have traceable evidence, not confidence alone.
+
+## 2026-10-25 — Disposable database validation implementation
+- Added isolated MySQL 8.4 service CI workflow with explicit PDO driver install and empty disposable database; no production credentials or external payment APIs.
+- Expanded integration harness with uncertain outcome retention, denied-release rollback, reconciled commit, conflicting provider reference, terminal transition and no-double-debit assertions (22 sequential database cases total).
+- Status: Implemented/Untested until the new CI run is observed passing. Local PHP/MySQL runtime unavailable in this session; no test pass claimed. Prior failed CI logs returned unavailable; root cause unknown.
+- Next: inspect new workflow result, fix concrete failures, then implement independent-process reservation and stop races. Authenticated stop/resume, full accounting and live deployment remain pending.
