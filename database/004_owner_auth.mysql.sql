@@ -27,4 +27,3 @@ CREATE TABLE IF NOT EXISTS kp_owner_auth_attempts (
   window_started_epoch BIGINT UNSIGNED NOT NULL,
   blocked_until_epoch BIGINT UNSIGNED NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-

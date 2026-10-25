@@ -27,9 +27,9 @@
 
 ## Exact next actions
 - Dispatch-gate verification is complete at prototype CI level: MySQL 8.4 run 40245586343 passed all suites; concurrency reported 40 cases, including STOP waiting for an in-flight callback and rejecting later callbacks. PHP CI run 40245586377 passed.
-1. **Owner auth core verification is complete at CI level:** MySQL 8.4 run 40246011247 passed all four suites, including 14 owner-auth cases; PHP CI run 40246011106 passed.
-2. Build the web login/cookie/CSRF layer and account/MFA recovery flow, then bind authenticated owner identity to STOP and reviewed one-use resume. Preserve default STOPPED state; no web endpoint exists yet.
-3. Then build journaled audit/credentials and hosting preflight. Do not enable external payments or spending before independent staging review.
+1. Run and resolve MySQL 8.4 CI for the new web auth controller cases; 14 core auth assertions passed on run 40246011247, and new controller coverage is pending.
+2. Then bind authenticated owner identity to STOP and reviewed one-use resume, and design password/MFA recovery. Preserve default STOPPED state.
+3. Build journaled audit/credentials and hosting preflight. Do not deploy the web routes before actual host, TLS, DB grant and backup checks.
 
 ## Known limitations / open blockers
 - No verified live hosting environment, database, cron behavior, Stripe integration, Android background-calling stack or vetted live suppliers.
@@ -51,12 +51,11 @@
 ## 2026-10-26 authoritative continuation
 - Latest work adds `database/002_double_entry_ledger.mysql.sql`, `src/Core/PdoDoubleEntryLedger.php`, and atomic reservation-to-ledger posting; fresh local MariaDB suites passed: 25 reservation, 29 accounting, 33 concurrency assertions. MySQL 8.4 CI run 40245143663 passed `mysql_integration`, `mysql_accounting`, and `mysql_concurrency`; PHP CI run 40245143656 also passed.
 - `dispatch_epoch` and `authorization_epoch`, plus `PdoDispatchGate`, are now on the branch and validated on MySQL 8.4. The callback runs in the locked transaction and is simulated only; no provider adapter or owner-auth binding exists.
-- Owner auth core adds migration 004, `PdoOwnerAuth`, CLI bootstrap and `tests/mysql_owner_auth.php`; MySQL auth suite is 14/14 on run 40246011247. It remains a backend library, not an HTTP authentication flow; account and MFA recovery remain unresolved.
+- Owner auth adds migration 004, `PdoOwnerAuth`, CLI bootstrap, same-origin HTTPS controller/front controller, and `tests/mysql_owner_auth.php`. The prior 14 core assertions passed on 40246011247; the latest controller assertions need fresh CI. No owner-auth binding to STOP/resume, recovery or deployment exists.
 - Local PHP 8.5.12 syntax lint, 11/11 policy checks, and 10/10 financial arithmetic checks passed again. A further DB rerun attempt hit local MariaDB authentication configuration (not a test assertion); prior fresh-database run remains evidence. Restore the local disposable DB login if re-running.
 - Canonical public repo: `parmtech/kamau-putt`; feature branch `feat/kp-financial-reservations-foundation`. Latest verified head `6de7355` has green PHP and four-suite MySQL CI. Git push auth is unavailable; synchronize future commits through the connected GitHub API.
 - Runtime lives outside repo in task workspace .tools/: PHP 8.5.12, MariaDB 11.4.13. source/ is a connector-materialized snapshot, not a Git checkout. Never commit .tools/ or database contents.
 - Local test server stopped after suite. For process tests use pdo_mysql configured in PHP ini (child workers use same configuration), proc_open, explicit test opt-in and a NEW EMPTY disposable database per suite/run. Never point it at a real account database.
 - After ledger CI passes, implement durable stop/dispatch epoch semantics, then authenticated owner login/MFA/session/step-up and reviewed one-use resume; use existing KP items, not a replacement project. Actual hosting preflight remains an owner/account dependency.
 - Existing A to Z blueprint is Draft PR #2; merge/reconcile its overlapping docs before final design acceptance. Owner intent is automatic routine operations inside scoped budgets after live gates, not suggestion-only operation. No live spending yet.
-
 

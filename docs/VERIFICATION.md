@@ -32,9 +32,10 @@ Each significant checkbox needs one of: linked automated CI result, reproducible
 - MySQL 8.4 run 40245586343 passed `mysql_integration`, `mysql_accounting`, and `mysql_concurrency`; the latter reported 40 cases passed. PHP CI run 40245586377 also passed. An earlier run found a missing selected epoch field; that query was fixed before this passing run.
 - The callback is simulated only; no external provider operation is used. Since the callback runs under the finance-control transaction lock, bound network work and do not wire a real provider before replacing this prototype with an outbox/reconciliation design.
 
-## 2026-10-26 — Owner authentication core prototype
+## 2026-10-26 — Owner authentication core and HTTPS controller (updated CI pending)
 - `php -l` across PHP in `src/`, `tests/` and `bin/`: pass. Policy 11/11 and financial math 10/10 pass on PHP 8.5.12.
-- MySQL 8.4 run 40246011247 passed all four DB suites; `mysql_owner_auth.php` reported 14/14. PHP CI run 40246011106 passed. Auth coverage includes CLI owner bootstrap, password/TOTP checks, TOTP replay, sessions, CSRF, idle/absolute expiry, revocation and failed-login throttling.
+- MySQL 8.4 run 40246011247 passed all four DB suites; `mysql_owner_auth.php` reported 14/14 for the core. PHP CI run 40246011106 passed. Auth coverage includes CLI owner bootstrap, password/TOTP checks, TOTP replay, sessions, CSRF, idle/absolute expiry, revocation and failed-login throttling.
+- Added a same-origin controller with HTTPS enforcement, strict Origin validation, secure cookies and logout revocation. Five controller assertions raise the auth suite to 19; new MySQL CI is pending.
 - The suite uses synthetic credentials and a test database. No owner credentials or TOTP secrets are committed.
 
 ## 2026-10-25 — Disposable database validation implementation
@@ -59,5 +60,4 @@ Each significant checkbox needs one of: linked automated CI result, reproducible
 - New tests/mysql_concurrency.php: 33/33 PASS locally. Uses independent proc_open PHP processes and DB connections, barriers with parent-held control lock, three rounds each of budget/shared cash/duplicate reservation/duplicate commit competition, committed stop vs waiting requests, stop persistence across connections, and forcibly terminated uncommitted worker rollback/lock release.
 - Tests validate reservation serialization and DB rollback only. The raw SQL stop fixture is not authenticated owner stop/resume. No external provider, true double-entry accounting, dispatch race protection, migration rollback/backup restore, hosting account or production deployment is verified.
 - CI now runs sequential and process suites in separate disposable MySQL 8.4 matrix jobs. New matrix result must be observed independently; local MariaDB pass is not substituted for MySQL CI.
-
 

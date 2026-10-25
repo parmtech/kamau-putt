@@ -16,9 +16,9 @@ All dates Australia/Sydney. Append a new dated entry for each substantive sessio
 
 ## 2026-10-26 — Owner authentication core prototype
 - Added CLI-only bootstrap for one owner, password verification, encrypted TOTP MFA, anti-replay, HMAC-throttled failures, opaque server-side sessions and CSRF token validation with idle/absolute expiry.
-- Added a disposable MySQL auth test suite and CI matrix entry. Local PHP lint and pure checks pass.
-- No web endpoints, cookie handling, account recovery, MFA recovery, roles or authenticated STOP/resume flow are implemented.
-- MySQL 8.4 run 40246011247 passed all four database suites; owner auth reported 14/14 and PHP CI run 40246011106 passed.
+- Added same-origin HTTPS JSON login/session/logout routes, strict Origin validation, Secure/HttpOnly `__Host-` cookies and Apache front-controller rewrite. The controller suite expands the disposable MySQL auth assertions to 19; PHP lint is local, DB CI pending.
+- Password/MFA recovery, roles, authenticated STOP/resume binding, UI, deployment and independent security review remain incomplete.
+- Prior MySQL 8.4 run 40246011247 passed the 14 auth-core cases; PHP CI run 40246011106 passed. Fresh CI must verify the controller additions.
 - No authentication, resume, live provider adapter, durable external outbox or deployment is included.
 
 ## 2026-10-24 — Session: financial reservation prototype and hosting preflight
@@ -50,5 +50,4 @@ All dates Australia/Sydney. Append a new dated entry for each substantive sessio
 - Added independent-process finance tests and a separate disposable database CI matrix suite.
 - Local MariaDB sequential 22/22 and concurrency 33/33 pass; prior PHP/DB GitHub reruns green after owner made repo public. Details and scope in VERIFICATION.md.
 - Updated tracker/handoff/README/AGENTS and finance documentation to distinguish tested reservation behavior from pending accounting/auth/provider/deploy gates. No production powers enabled.
-
 

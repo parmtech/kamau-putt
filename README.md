@@ -1,6 +1,6 @@
 # Kamau Putt (ਕਮਾਊ ਪੁੱਤ)
 
-> **Public backend-first development repository — October 26, 2026.** Planning, a locally tested policy skeleton and an experimental financial reservation feature branch. **No production app, store, API integration, autonomous agent or live business has been deployed.**
+> **Public backend-first development repository — October 26, 2026.** The feature branch contains experimental financial reservations, a double-entry prototype, STOP/dispatch gate and owner-auth routes. These are development foundations, not a production system. **No production app, store, API integration, autonomous agent or live business has been deployed.**
 
 ## Vision
 Kamau Putt is the private name of a long-term AI business operator that addresses its owner as **Dad**. The AI researches, launches and operates profitable digital businesses, starting with a small Australian dropshipping experiment, then expands only when actual funds and evidence justify it. Public brands may have completely different names.
@@ -12,6 +12,7 @@ Kamau Putt is the private name of a long-term AI business operator that addresse
 - [Complete master plan](docs/MASTER_PLAN.md)
 - [Phased roadmap](docs/ROADMAP.md)
 - [Confirmed decisions and safeguards](docs/DECISIONS.md)
+- [Owner authentication routes and provisioning](docs/OWNER_AUTH.md)
 - [LIVE ordered checklist and verified progress](docs/PROJECT_TRACKER.md)
 - [Continue across sessions: next actions](docs/SESSION_HANDOFF.md)
 - [Developer/AI continuation rules](AGENTS.md)
@@ -34,13 +35,13 @@ Persistent encrypted AI identity/memory + event journal + immutable accounting a
 - [x] Product scope and requirements captured
 - [ ] Architecture review and threat model
 - [x] Minimal Core preflight code skeleton (11 local unit cases; **not** live money-safe)
-- [ ] Financial reservation + double-entry ledger feature branch: local MariaDB and MySQL 8.4 CI validation; no production/staging approval; see [financial reservations](docs/FINANCIAL_RESERVATIONS.md)
+- [ ] **KP-012** Financial reservations + double-entry ledger + prototype dispatch gate: MySQL 8.4 CI passed earlier feature-branch suites; current exact head must pass again after owner-auth controller changes. No production/staging approval; see [financial reservations](docs/FINANCIAL_RESERVATIONS.md)
+- [ ] **KP-013** Owner-auth core and same-origin HTTPS login/session/logout routes implemented; fresh controller CI, recovery, STOP/resume binding and independent review remain pending; see [owner authentication](docs/OWNER_AUTH.md)
 - [ ] Durable Core implementation and staging verification
 - [ ] Sandbox integrations
 - [ ] Test APK / real incoming call proof-of-concept
 - [ ] Supplier, pricing and AU legal/compliance verification
 - [ ] Live product validation and launch
 
-**Status clarification:** This repository contains plans and a small locally tested policy library; it is not evidence that any business will be profitable or that an autonomous production agent exists. **Android app is LAST in the development sequence** per the owner's latest decision. Start future sessions with [AGENTS.md](AGENTS.md) and [SESSION_HANDOFF.md](docs/SESSION_HANDOFF.md).
-
+**Status clarification:** The branch contains tested prototypes in addition to plans; it is not evidence that any business will be profitable or that an autonomous production agent exists. **Android app is LAST in the development sequence** per the owner's latest decision. Start future sessions with [AGENTS.md](AGENTS.md) and [SESSION_HANDOFF.md](docs/SESSION_HANDOFF.md).
 

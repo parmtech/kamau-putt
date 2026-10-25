@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../src/Core/PdoOwnerAuth.php';
+require_once __DIR__ . '/../src/Http/OwnerAuthController.php';
 
 if (PHP_SAPI !== 'cli' || getenv('KP_TEST_ALLOW_DB_WRITE') !== 'I_UNDERSTAND_STAGING_ONLY') {
     fwrite(STDERR, "SKIP: explicit disposable database confirmation required\n");
@@ -79,5 +80,16 @@ $now += 43_201;
 $check('absolute_session_expiry', $auth->validateSession($absoluteLogin['session_token'], $absoluteLogin['csrf_token']) === null);
 try { $auth->bootstrapOwner('second@example.test', $password, $secretText); $check('second_owner_bootstrap_blocked', false); }
 catch (RuntimeException) { $check('second_owner_bootstrap_blocked', true); }
+$controller = new KamauPutt\Http\OwnerAuthController($auth, 'https://owner.example.test');
+$controllerLogin = $controller->handle('POST', '/api/auth/login', 'https://owner.example.test', [], null, json_encode(['email' => $email, 'password' => $password, 'totp' => $code($secret, $now), 'ignored' => 'safe']), true, '192.0.2.42');
+$check('http_login_sets_secure_session_and_csrf_cookies', $controllerLogin['status'] === 200 && $controllerLogin['cookies']['__Host-kp_session']['secure'] && $controllerLogin['cookies']['__Host-kp_session']['http_only'] && $controllerLogin['cookies']['__Host-kp_csrf']['secure'] && !$controllerLogin['cookies']['__Host-kp_csrf']['http_only']);
+$controllerCookies = ['__Host-kp_session' => $controllerLogin['cookies']['__Host-kp_session']['value'], '__Host-kp_csrf' => $controllerLogin['cookies']['__Host-kp_csrf']['value']];
+$sessionResponse = $controller->handle('GET', '/api/auth/session', null, $controllerCookies, $controllerCookies['__Host-kp_csrf'], '', true, '192.0.2.42');
+$check('http_session_requires_cookie_and_csrf_header', $sessionResponse['status'] === 200 && $sessionResponse['body']['email'] === $email);
+$wrongOriginLogout = $controller->handle('POST', '/api/auth/logout', 'https://attacker.example', $controllerCookies, $controllerCookies['__Host-kp_csrf'], '', true, '192.0.2.42');
+$check('http_mutation_rejects_wrong_origin', $wrongOriginLogout['status'] === 403);
+$logoutResponse = $controller->handle('POST', '/api/auth/logout', 'https://owner.example.test', $controllerCookies, $controllerCookies['__Host-kp_csrf'], '', true, '192.0.2.42');
+$check('http_logout_revokes_and_clears_cookies', $logoutResponse['status'] === 204 && $logoutResponse['cookies']['__Host-kp_session']['max_age'] === 0 && $auth->validateSession($controllerCookies['__Host-kp_session'], $controllerCookies['__Host-kp_csrf']) === null);
+$insecureResponse = $controller->handle('GET', '/api/auth/session', null, [], null, '', false, '192.0.2.42');
+$check('http_controller_refuses_plain_http', $insecureResponse['status'] === 400);
 echo $passed . " owner auth cases passed\n";
-

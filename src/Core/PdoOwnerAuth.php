@@ -247,4 +247,3 @@ final class PdoOwnerAuth
         return $hash ??= password_hash('dummy-only-password-value', PASSWORD_DEFAULT);
     }
 }
-

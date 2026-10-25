@@ -57,4 +57,3 @@ jobs:
           KP_TEST_MYSQL_PASSWORD: disposable-test-only
         run: php tests/${{ matrix.suite }}.php
 
-

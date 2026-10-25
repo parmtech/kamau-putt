@@ -23,7 +23,7 @@
 - [x] **KP-010** Minimal, framework-independent PHP Core skeleton and local test runner. Evidence: `src/Core`, `tests/run.php`, `composer.json`; local syntax check and 11 unit cases on PHP 8.4.24.
 - [x] **KP-011** Pure spending **preflight** policy: action cap, approved budget, free settled cash, scope, owner stop and survival mode. Evidence: 11/11 local unit tests. **NOT** a transactional lock, ledger or production safeguard.
 - [ ] **KP-012** InnoDB schema + PDO reservation/ledger prototype: 25 sequential, 29 ledger and 33 process cases passed locally on MariaDB 11.4.13; MySQL 8.4 run `40245586343` passed all three suites, including 40 concurrency cases. Migration/backup/restore and actual hosting still pending. See [financial reservations](FINANCIAL_RESERVATIONS.md).
-- [ ] **KP-013** Authenticated owner identity, 2FA and session security; roles/permissions. CLI-only owner bootstrap, password + encrypted TOTP, replay protection, hashed opaque sessions, CSRF validation, expiry and throttling pass 14 MySQL 8.4 auth cases (run `40246011247`). No HTTP login/cookie layer, recovery flow, roles or independent security review yet.
+- [ ] **KP-013** Authenticated owner identity, 2FA and session security; roles/permissions. CLI-only owner bootstrap plus same-origin HTTPS login/session/logout controller, Secure/HttpOnly session cookie, CSRF, expiry and throttling are implemented. MySQL auth/controller assertions and deployment checks are pending; password/MFA recovery, roles, STOP binding and independent security review remain incomplete.
 - [ ] **KP-014** Append-only event and decision audit journal; trusted timestamps and retention.
 - [ ] **KP-015** Secure encrypted credentials vault and audit; revocation/rotation.
 - [ ] **KP-016** Secure web HQ admin shell, no unauthenticated sensitive endpoints.
@@ -105,5 +105,4 @@ Read `AGENTS.md` + `docs/SESSION_HANDOFF.md` at the start. Work on the first pra
 ## 2026-10-26 current evidence
 - 11 policy + 10 arithmetic + 22 sequential DB + 33 process checks pass locally; prior sequential DB and pure PHP GitHub checks green at 9ef0c3b. See VERIFICATION.md for exact runtime and scope.
 - KP-012/KP-020 stay incomplete: reservation tests do not complete an accounting system, deployment or authentication.
-
 

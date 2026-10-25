@@ -44,4 +44,3 @@ try {
     fwrite(STDERR, 'Owner provisioning failed: ' . $error->getMessage() . "\n");
     exit(1);
 }
-
