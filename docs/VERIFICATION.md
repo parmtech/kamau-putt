@@ -23,7 +23,7 @@ Each significant checkbox needs one of: linked automated CI result, reproducible
 - Runtime: portable PHP 8.5.12 and MariaDB 11.4.13 on Windows; local test databases were disposable and external to the repository.
 - `php -l` over every PHP file in `src/` and `tests/`: all pass. `php tests/run.php`: 11/11. `php tests/financial_math.php`: 10/10.
 - `tests/mysql_integration.php`: 25/25; `tests/mysql_accounting.php`: 29/29; `tests/mysql_concurrency.php`: 33/33 passed on fresh local databases. Coverage includes balanced posting, stable idempotency, append-only triggers, hash verification, integer overflow rejection, atomic rollback, concurrent reservations and worker crash rollback.
-- The workflow matrix now has three MySQL 8.4 suites. CI for the previous commit passed the reservation and concurrency jobs; CI for this ledger commit is pending and must be observed before claiming MySQL 8.4 verification.
+- The workflow matrix now has three MySQL 8.4 suites. First ledger run passed PHP syntax and pure tests but all DB suites stopped on MySQL error 1419 while creating immutable triggers (test user lacks SUPER with binary logging enabled). Workflow now enables `log_bin_trust_function_creators` on its disposable server using its test-only root account; rerun is pending.
 - Limit: synthetic opening balances and internal postings only. No bank/provider reconciliation, customer liabilities, tax/refund journals, external dispatch, authenticated STOP/resume, backup restore, staging or live operations verified.
 
 ## 2026-10-25 — Disposable database validation implementation

@@ -7,6 +7,7 @@ All dates Australia/Sydney. Append a new dated entry for each substantive sessio
 - Reservation commit now posts expense and settled-cash entries in the same DB transaction; rollback covers both records.
 - Added 29 accounting checks and expanded reservation integration to 25 checks; CI now runs reservation, accounting and concurrency suites in separate MySQL 8.4 jobs.
 - Local MariaDB 11.4.13 passed all three suites (25 + 29 + 33). Latest GitHub MySQL CI is pending. This does not verify real cash, refunds, liabilities, owner authentication, provider dispatch, hosting or production readiness.
+- First MySQL 8.4 CI run exposed its binary-logging trigger-creator restriction before accounting assertions; updated the disposable CI service to trust its test trigger creators. Fresh CI run required.
 
 ## 2026-10-24 — Session: financial reservation prototype and hosting preflight
 - Kept work in existing private repository on `feat/kp-financial-reservations-foundation`; no replacement project.

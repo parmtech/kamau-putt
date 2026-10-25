@@ -26,7 +26,7 @@
 - No customer-facing identity assumption: public brands may have distinct names.
 
 ## Exact next actions
-1. Observe MySQL 8.4 CI for the latest ledger commit; fix any concrete failure.
+1. Verify the MySQL 8.4 trigger-creation configuration fix. The first ledger CI attempt failed before test assertions because binary logging requires `log_bin_trust_function_creators` for trigger creation; tests and pure PHP checks passed. The CI fix uses only the disposable test server and awaits a fresh run.
 2. Add and test transactional stop/dispatch epoch semantics so an already approved action cannot dispatch after STOP; add race, timeout and restart cases.
 3. Implement authenticated owner identity, MFA/session controls and reviewed one-use resume; preserve default STOPPED state.
 4. Then build journaled audit/credentials and hosting preflight. Do not enable external payments or spending before independent staging review.
