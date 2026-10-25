@@ -94,6 +94,9 @@ final class OwnerAuthController
             if (!$stepUp['authenticated']) { return $this->reply($stepUp['reason'] === 'rate_limited' ? 429 : 401, ['error' => $stepUp['reason']]); }
             try {
                 $challenge = $this->control->prepareResume($stepUp['session_token'], $stepUp['csrf_token']);
+            } catch (\PDOException $error) {
+                $this->auth->revokeSession($stepUp['session_token']);
+                throw $error;
             } catch (\RuntimeException) {
                 $this->auth->revokeSession($stepUp['session_token']);
                 return $this->reply(409, ['error' => 'resume_not_available']);
@@ -119,6 +122,8 @@ final class OwnerAuthController
             }
             try {
                 $control = $this->control->confirmResume($cookies[self::SESSION_COOKIE], $csrfHeader, $payload['challenge'], $payload['confirmation']);
+            } catch (\PDOException $error) {
+                throw $error;
             } catch (\RuntimeException) {
                 return $this->reply(409, ['error' => 'resume_not_confirmed']);
             }

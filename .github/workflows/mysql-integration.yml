@@ -44,7 +44,7 @@ jobs:
           KP_TEST_MYSQL_DSN: mysql:host=127.0.0.1;port=${{ job.services.mysql.ports['3306'] }};dbname=kamau_test;charset=utf8mb4
         run: php -r '$db = new PDO(getenv("KP_TEST_MYSQL_DSN"), "root", "disposable-root-only"); $db->exec("SET GLOBAL log_bin_trust_function_creators = 1");'
       - name: Syntax checks
-        run: find src tests -name '*.php' -print0 | xargs -0 -n1 php -l
+        run: find src tests bin public -name '*.php' -print0 | xargs -0 -n1 php -l
       - name: Pure policy and arithmetic
         run: |
           php tests/run.php
