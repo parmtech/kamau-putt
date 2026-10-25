@@ -2,6 +2,8 @@
 
 **Status: prototype locally tested on MariaDB 11.4.13 and MySQL 8.4 CI. No live spending permitted.**
 
+The next dispatch-gate prototype is implemented locally; its DB race checks are pending CI verification.
+
 ## Purpose
 The existing `SpendGuard` provides advisory policy checks, not durable money control. This change adds:
 - InnoDB schema with singleton owner-stop/mode control (default stopped/survival), settled-cash/liability reserves, scope budgets, reservation records and append-only reservation events.
@@ -10,6 +12,7 @@ The existing `SpendGuard` provides advisory policy checks, not durable money con
 - Per-action cap is also stored on the approved budget envelope (default 0 / deny); callers cannot raise it simply by supplying a larger parameter. Unauthorised scopes are rejected before reservation lookup.
 - Repeated idempotency key **does not grant a second external paid call**. A changed request with the same key fails as a conflict.
 - A successful reservation commit now posts a balanced double-entry journal in the same DB transaction: debit `operating_expense`, credit `cash_settled`. The journal has stable source/idempotency keys, a SHA-256 chain, and append-only triggers. This records the prototype's spend event; it is not bank reconciliation or proof of an external charge.
+- Reservations capture the current dispatch epoch. The dispatch gate locks the shared finance-control row, checks STOP/mode/epoch and reservation state, then runs its bounded provider callback while holding that lock. STOP waits for an already-started callback, increments the epoch, and makes older reservations stale. A stable provider idempotency key is supplied to the callback.
 
 ## State transitions
 `reserved -> committed`: only after a VERIFIED provider charge; records reservation counters and a balanced ledger posting, but does NOT create the charge.
@@ -24,6 +27,7 @@ The existing `SpendGuard` provides advisory policy checks, not durable money con
 - Caller boolean `scopeAuthorized` is NOT authentication. A real caller must derive its permission server-side from validated owner/service identity; never expose raw methods to an LLM or public HTTP.
 - Reservation and ledger schemas constrain monetary values to the PHP signed 64-bit range. Local overflow and transaction rollback checks pass; migration upgrades, timeout behavior, multi-store accounting and backup/restore remain unverified.
 - Control-state activation and funding are deliberately not implemented. The database defaults STOPPED and with zero settled money.
+- The STOP primitive has no owner authentication yet. The dispatch callback runs inside a database transaction and can hold the global finance lock during network latency; it is a prototype gate only, not suitable for live provider wiring before a durable outbox/reconciliation design and bounded adapter exist.
 - Reconciliation process must protect a provider charge that occurred after a timeout; never retry it blindly.
 - One owner-stop write transaction must lock the same `kp_finance_control` row to serialize against reservations.
 - `kp_financial_events` tracks reservation lifecycle. `kp_ledger_transactions` and `kp_ledger_entries` hold balanced postings with a hash chain; independent tamper evidence, bank reconciliation, refunds, liabilities and tax journals remain outstanding.
@@ -37,11 +41,13 @@ php -l src/Core/PdoSpendReservations.php
 php tests/run.php
 php tests/financial_math.php
 ```
-Integration tests require a dedicated disposable database. The local suites have passed on MariaDB 11.4.13; the latest ledger change still needs its MySQL 8.4 CI result. These tests cover sequential reservations, accounting invariants, concurrency, idempotency and DB rollback. Provider dispatch/reconciliation, owner STOP race, charge/refund, backup/restore and authenticated access still require separate work. No credentials may be committed to Git.
+Integration tests require a dedicated disposable database. The reservation/ledger suites passed on MariaDB 11.4.13 and MySQL 8.4 CI. The new dispatch epoch race assertions are pending CI. These tests cover sequential reservations, accounting invariants, concurrency, idempotency and DB rollback. Provider reconciliation, charge/refund, backup/restore and authenticated access still require separate work. No credentials may be committed to Git.
 
 ## Go-live blocker
 No payment, ads, supplier purchases, owner funds intake, owner STOP resume, AI autonomous finance or production deployment until audited authorization, atomic ledger, independent QA, staged reconciliations and legal/supplier checks pass.
 
 ## 2026-10-26 validation update
 `tests/mysql_integration.php` passes 25 sequential DB assertions, `tests/mysql_accounting.php` passes 29 ledger assertions, and `tests/mysql_concurrency.php` passes 33 independent-process assertions on local MariaDB 11.4.13. The concurrency suite covers budget/global cash contention, duplicate reservation/commit, committed stop waiting requests, connection persistence and killed-worker DB rollback. All three MySQL 8.4 CI matrix jobs passed on ledger head `ad139a4` (run 40245143663). CI uses its disposable root account only to enable trigger creation under binary logging; test suites run as the restricted test user. No external dispatch, authenticated stop/resume, reconciled real cash or production-readiness claim follows from these tests. Test stop is direct fixture SQL, not a privileged public API.
+
+The dispatch gate adds STOP serialization, epoch fencing and stale-reservation denial; new independent-process cases verify STOP waits for an already-started callback and no callback begins after STOP returns. These new DB assertions are syntax-checked locally; database CI is pending.
 

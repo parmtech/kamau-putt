@@ -33,7 +33,7 @@
 - [ ] **KP-020** Reservation + append-only double-entry ledger prototype locally tested with 25 sequential + 29 accounting + 33 independent-process assertions. Full real cash reconciliation, provider dispatch/reconciliation and authenticated stop/resume remain pending.
 - [ ] **KP-021** Budget policy: single AUD 200–300 planned capital injection, **AUD 500 cumulative external seed ceiling**; earned funds may be reinvested only under approved envelopes and reserves.
 - [ ] **KP-022** Track settled cash vs Stripe pending, customer liabilities, taxes, fulfilment, chargebacks, existing commitments and net contribution.
-- [ ] **KP-023** Owner Emergency Stop persists across restarts; cancels/pauses discretionary jobs and verifies third-party state.
+- [ ] **KP-023** Owner Emergency Stop persists across restarts; cancels/pauses discretionary jobs and verifies third-party state. Prototype dispatch gate + STOP epoch fencing added; DB race CI pending; authenticated STOP and job cancellation remain incomplete.
 - [ ] **KP-024** **Only Dad** can resume after brief risk/cost summary + authenticated confirmation; negative/replay/race tests.
 - [ ] **KP-025** Growth / Survival / Safe Shutdown, preserving prior paid-order/refund/legal duties.
 - [ ] **KP-026** Reconcile external payment/supplier ledger; test refunds, duplicate webhooks, provider timeouts, crash recovery.

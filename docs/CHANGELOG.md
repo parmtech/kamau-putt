@@ -8,6 +8,11 @@ All dates Australia/Sydney. Append a new dated entry for each substantive sessio
 - Added 29 accounting checks and expanded reservation integration to 25 checks; CI now runs reservation, accounting and concurrency suites in separate MySQL 8.4 jobs.
 - Local MariaDB 11.4.13 passed all three suites (25 + 29 + 33). First MySQL 8.4 CI run exposed its binary-logging trigger-creator restriction before accounting assertions; updated the disposable CI service to trust its test trigger creators. Follow-up MySQL 8.4 run 40245143663 and PHP run 40245143656 passed. This does not verify real cash, refunds, liabilities, owner authentication, provider dispatch, hosting or production readiness.
 
+## 2026-10-26 — STOP/dispatch epoch gate prototype
+- Added dispatch epochs to the finance control row and reservation authorization snapshot. The gate serializes a bounded callback with STOP; STOP increments the epoch and stale approvals cannot dispatch.
+- Added independent-process coverage for STOP waiting on an in-flight callback and blocking future calls. PHP syntax and pure checks pass; MySQL 8.4 race results are pending.
+- No authentication, resume, live provider adapter, durable external outbox or deployment is included.
+
 ## 2026-10-24 — Session: financial reservation prototype and hosting preflight
 - Kept work in existing private repository on `feat/kp-financial-reservations-foundation`; no replacement project.
 - Reviewed current Namecheap shared-host policy; created `docs/HOSTING_PREFLIGHT.md`, noting 5-minute minimum cron interval and prohibition on long-lived daemons; account checks still pending.

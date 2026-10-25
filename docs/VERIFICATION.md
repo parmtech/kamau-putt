@@ -26,6 +26,11 @@ Each significant checkbox needs one of: linked automated CI result, reproducible
 - The workflow matrix has three MySQL 8.4 suites. First ledger run passed PHP syntax and pure tests but all DB suites stopped on MySQL error 1419 while creating immutable triggers (test user lacks SUPER with binary logging enabled). Workflow now enables `log_bin_trust_function_creators` on its disposable server using its test-only root account. Follow-up run 40245143663 passed all three DB suites; PHP CI run 40245143656 also passed.
 - Limit: synthetic opening balances and internal postings only. No bank/provider reconciliation, customer liabilities, tax/refund journals, external dispatch, authenticated STOP/resume, backup restore, staging or live operations verified.
 
+## 2026-10-26 — STOP/dispatch gate prototype (DB checks pending)
+- `php -l` across all PHP in `src/` and `tests/`: pass. Policy 11/11 and financial math 10/10 pass on PHP 8.5.12.
+- New independent-process cases exercise STOP waiting for a provider callback already in its serialized gate, epoch advancement, denial after STOP returns, stable provider idempotency context and survival-mode denial.
+- These new MySQL cases have not yet run locally or in CI. The callback is simulated only; no external provider operation is used.
+
 ## 2026-10-25 — Disposable database validation implementation
 - Added isolated MySQL 8.4 service CI workflow with explicit PDO driver install and empty disposable database; no production credentials or external payment APIs.
 - Expanded integration harness with uncertain outcome retention, denied-release rollback, reconciled commit, conflicting provider reference, terminal transition and no-double-debit assertions (22 sequential database cases total).

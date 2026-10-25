@@ -87,7 +87,7 @@ final class PdoSpendReservations
                 return ['allowed' => false, 'reason' => $decision->reason];
             }
             $id = $this->uuidV4();
-            $this->exec('INSERT INTO kp_spend_reservations (id, idempotency_key, request_hash, scope, action_type, amount_cents, status) VALUES (?, ?, ?, ?, ?, ?, \'reserved\')', [$id, $key, $fingerprint, $scope, $actionType, $amountCents]);
+            $this->exec('INSERT INTO kp_spend_reservations (id, idempotency_key, request_hash, scope, action_type, amount_cents, authorization_epoch, status) VALUES (?, ?, ?, ?, ?, ?, ?, \'reserved\')', [$id, $key, $fingerprint, $scope, $actionType, $amountCents, (int) $control['dispatch_epoch']]);
             $this->exec('UPDATE kp_budget_envelopes SET reserved_cents = reserved_cents + ? WHERE scope = ?', [$amountCents, $scope]);
             $this->exec('UPDATE kp_financial_position SET discretionary_reserved_cents = discretionary_reserved_cents + ? WHERE id = 1', [$amountCents]);
             $this->event($id, 'reserved', $amountCents);

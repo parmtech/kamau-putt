@@ -13,8 +13,10 @@ require_once __DIR__ . '/../src/Core/SpendGuard.php';
 require_once __DIR__ . '/../src/Core/FinancialMath.php';
 require_once __DIR__ . '/../src/Core/PdoSpendReservations.php';
 require_once __DIR__ . '/../src/Core/PdoDoubleEntryLedger.php';
+require_once __DIR__ . '/../src/Core/PdoDispatchGate.php';
 
 use KamauPutt\Core\PdoSpendReservations;
+use KamauPutt\Core\PdoDispatchGate;
 
 function connectTestDatabase(): PDO
 {
@@ -52,13 +54,13 @@ function readWorkerLine(array $worker): string
     throw new RuntimeException('Worker response timed out');
 }
 
-function startWorker(string $operation, string $key, string $scope = 'test', int $amount = 700): array
+function startWorker(string $operation, string $key, string $scope = 'test', int $amount = 700, string $marker = ''): array
 {
     $command = [PHP_BINARY];
     if (php_ini_loaded_file() !== false) {
         $command = array_merge($command, ['-c', php_ini_loaded_file()]);
     }
-    $command = array_merge($command, [__FILE__, '--worker', $operation, $key, $scope, (string) $amount]);
+    $command = array_merge($command, [__FILE__, '--worker', $operation, $key, $scope, (string) $amount, $marker]);
     $process = proc_open($command, [['pipe', 'r'], ['pipe', 'w'], ['pipe', 'w']], $pipes);
     if (!is_resource($process)) {
         throw new RuntimeException('Cannot start independent test process');
@@ -196,6 +198,17 @@ if (($argv[1] ?? '') === '--worker') {
         $result = $ledger->reserve($argv[3], $argv[4], 'supplier_order', (int) $argv[5], 1000, true);
     } elseif ($operation === 'commit') {
         $result = ['status' => $ledger->commit($argv[3], 'test-provider-reference')];
+    } elseif ($operation === 'dispatch') {
+        $result = (new PdoDispatchGate($db))->dispatch($argv[3], static fn(array $action): string => 'simulated-provider-call');
+    } elseif ($operation === 'dispatch_hold') {
+        $marker = $argv[6] ?? '';
+        $result = (new PdoDispatchGate($db))->dispatch($argv[3], static function (array $action) use ($marker): string {
+            if ($marker !== '') { file_put_contents($marker, 'entered', LOCK_EX); }
+            usleep(700_000);
+            return 'simulated-provider-call';
+        });
+    } elseif ($operation === 'stop') {
+        $result = ['epoch' => (new PdoDispatchGate($db))->emergencyStop()];
     } elseif ($operation === 'crash') {
         $db->beginTransaction();
         $db->query('SELECT id FROM kp_finance_control WHERE id=1 FOR UPDATE')->fetch();
@@ -256,12 +269,46 @@ for ($round = 1; $round <= 3; $round++) {
 fixture($db);
 $results = parallelOperations($db, [['reserve','stop-race-0001'], ['reserve','stop-race-0002']], static function(PDO $db): void {
     // Models a durable stop transaction; this is NOT an owner authentication test.
-    $db->exec('UPDATE kp_finance_control SET owner_emergency_stopped=1 WHERE id=1');
+    $db->exec('UPDATE kp_finance_control SET owner_emergency_stopped=1, dispatch_epoch=dispatch_epoch+1 WHERE id=1');
 });
 checkCase('committed_stop_blocks_waiting_requests', count(array_filter($results, fn($r) => !$r['allowed'] && $r['reason'] === 'owner_emergency_stop')) === 2);
 checkCase('stopped_requests_create_no_records', (int) $db->query('SELECT COUNT(*) FROM kp_spend_reservations')->fetchColumn() === 0);
 $reconnected = new PdoSpendReservations(connectTestDatabase());
 checkCase('stop_survives_new_connection', !$reconnected->reserve('stop-reconnect-0001','test','supplier_order',100,100,true)['allowed']);
+
+fixture($db);
+$approved = $ledger->reserve('dispatch-stop-race-0001', 'test', 'supplier_order', 200, 1000, true);
+checkCase('dispatch_fixture_reservation_approved', $approved['allowed']);
+$previousEpoch = (int) $db->query('SELECT dispatch_epoch FROM kp_finance_control WHERE id=1')->fetchColumn();
+$marker = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'kp-dispatch-' . bin2hex(random_bytes(8)) . '.tmp';
+@unlink($marker);
+$dispatchWorker = startWorker('dispatch_hold', 'dispatch-stop-race-0001', 'test', 700, $marker);
+releaseWorker($dispatchWorker);
+$deadline = microtime(true) + 10;
+while (!is_file($marker) && microtime(true) < $deadline) { usleep(1000); }
+if (!is_file($marker)) { closeWorker($dispatchWorker, true); throw new RuntimeException('Dispatch callback did not start'); }
+$stopStarted = microtime(true);
+$stoppedEpoch = (new PdoDispatchGate($db))->emergencyStop();
+$stopWait = microtime(true) - $stopStarted;
+$dispatchResult = json_decode(readWorkerLine($dispatchWorker), true, 512, JSON_THROW_ON_ERROR);
+closeWorker($dispatchWorker);
+@unlink($marker);
+checkCase('stop_waits_for_already_started_provider_call', $dispatchResult['allowed'] && $stopWait >= 0.4);
+checkCase('stop_advances_fencing_epoch', $stoppedEpoch === $previousEpoch + 1);
+$postStopCalls = 0;
+$deniedAfterStop = (new PdoDispatchGate($db))->dispatch('dispatch-stop-race-0001', static function () use (&$postStopCalls): string { $postStopCalls++; return 'unexpected'; });
+checkCase('no_provider_call_starts_after_stop_returns', !$deniedAfterStop['allowed'] && $postStopCalls === 0);
+
+$epoch = (int) $db->query('SELECT dispatch_epoch FROM kp_finance_control WHERE id=1')->fetchColumn();
+$db->exec("UPDATE kp_finance_control SET operating_mode='growth',owner_emergency_stopped=0 WHERE id=1"); // fixture-only resume
+$newApproval = $ledger->reserve('dispatch-fresh-epoch-0001', 'test', 'supplier_order', 100, 1000, true);
+$callContext = null;
+$freshDispatch = (new PdoDispatchGate($db))->dispatch('dispatch-fresh-epoch-0001', static function (array $action) use (&$callContext): string { $callContext = $action; return 'simulated-provider-call'; });
+checkCase('fresh_epoch_dispatch_allowed', $newApproval['allowed'] && $freshDispatch['allowed']);
+checkCase('provider_receives_stable_idempotency_and_epoch', is_array($callContext) && $callContext['authorization_epoch'] === $epoch && preg_match('/^kp-[a-f0-9]{64}$/', $callContext['provider_idempotency_key']) === 1);
+$db->exec('UPDATE kp_finance_control SET operating_mode=\'survival\' WHERE id=1');
+$modeDenied = (new PdoDispatchGate($db))->dispatch('dispatch-fresh-epoch-0001', static fn(array $action): string => 'unexpected');
+checkCase('survival_mode_blocks_dispatch', !$modeDenied['allowed'] && $modeDenied['reason'] === 'operating_mode_disallows_dispatch');
 
 fixture($db);
 $worker = startWorker('crash', 'crash-test-0001');
