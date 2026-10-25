@@ -23,7 +23,7 @@
 - [x] **KP-010** Minimal, framework-independent PHP Core skeleton and local test runner. Evidence: `src/Core`, `tests/run.php`, `composer.json`; local syntax check and 11 unit cases on PHP 8.4.24.
 - [x] **KP-011** Pure spending **preflight** policy: action cap, approved budget, free settled cash, scope, owner stop and survival mode. Evidence: 11/11 local unit tests. **NOT** a transactional lock, ledger or production safeguard.
 - [ ] **KP-012** InnoDB schema + PDO reservation/ledger prototype: 25 sequential, 29 ledger and 33 process cases passed locally on MariaDB 11.4.13; MySQL 8.4 run `40245586343` passed all three suites, including 40 concurrency cases. Migration/backup/restore and actual hosting still pending. See [financial reservations](FINANCIAL_RESERVATIONS.md).
-- [ ] **KP-013** Authenticated owner identity, 2FA and session security; roles/permissions. Backend core now implements CLI-only single-owner bootstrap, password + encrypted TOTP, replay protection, hashed opaque sessions, CSRF validation, expiry and throttling; MySQL CI pending. No HTTP login/cookie layer, recovery flow, roles or independent security review yet.
+- [ ] **KP-013** Authenticated owner identity, 2FA and session security; roles/permissions. CLI-only owner bootstrap, password + encrypted TOTP, replay protection, hashed opaque sessions, CSRF validation, expiry and throttling pass 14 MySQL 8.4 auth cases (run `40246011247`). No HTTP login/cookie layer, recovery flow, roles or independent security review yet.
 - [ ] **KP-014** Append-only event and decision audit journal; trusted timestamps and retention.
 - [ ] **KP-015** Secure encrypted credentials vault and audit; revocation/rotation.
 - [ ] **KP-016** Secure web HQ admin shell, no unauthenticated sensitive endpoints.

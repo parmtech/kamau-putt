@@ -16,8 +16,9 @@ All dates Australia/Sydney. Append a new dated entry for each substantive sessio
 
 ## 2026-10-26 — Owner authentication core prototype
 - Added CLI-only bootstrap for one owner, password verification, encrypted TOTP MFA, anti-replay, HMAC-throttled failures, opaque server-side sessions and CSRF token validation with idle/absolute expiry.
-- Added a disposable MySQL auth test suite and CI matrix entry. Local PHP lint/pure checks pass; MySQL auth CI is pending.
+- Added a disposable MySQL auth test suite and CI matrix entry. Local PHP lint and pure checks pass.
 - No web endpoints, cookie handling, account recovery, MFA recovery, roles or authenticated STOP/resume flow are implemented.
+- MySQL 8.4 run 40246011247 passed all four database suites; owner auth reported 14/14 and PHP CI run 40246011106 passed.
 - No authentication, resume, live provider adapter, durable external outbox or deployment is included.
 
 ## 2026-10-24 — Session: financial reservation prototype and hosting preflight

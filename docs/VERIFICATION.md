@@ -32,9 +32,9 @@ Each significant checkbox needs one of: linked automated CI result, reproducible
 - MySQL 8.4 run 40245586343 passed `mysql_integration`, `mysql_accounting`, and `mysql_concurrency`; the latter reported 40 cases passed. PHP CI run 40245586377 also passed. An earlier run found a missing selected epoch field; that query was fixed before this passing run.
 - The callback is simulated only; no external provider operation is used. Since the callback runs under the finance-control transaction lock, bound network work and do not wire a real provider before replacing this prototype with an outbox/reconciliation design.
 
-## 2026-10-26 — Owner authentication core prototype (DB checks pending)
+## 2026-10-26 — Owner authentication core prototype
 - `php -l` across PHP in `src/`, `tests/` and `bin/`: pass. Policy 11/11 and financial math 10/10 pass on PHP 8.5.12.
-- Added a MySQL-only 14-case disposable auth suite for CLI owner bootstrap, password/TOTP checks, TOTP replay, sessions, CSRF, idle/absolute expiry, revocation and failed-login throttle. MySQL 8.4 run is pending; no auth test result claimed yet.
+- MySQL 8.4 run 40246011247 passed all four DB suites; `mysql_owner_auth.php` reported 14/14. PHP CI run 40246011106 passed. Auth coverage includes CLI owner bootstrap, password/TOTP checks, TOTP replay, sessions, CSRF, idle/absolute expiry, revocation and failed-login throttling.
 - The suite uses synthetic credentials and a test database. No owner credentials or TOTP secrets are committed.
 
 ## 2026-10-25 — Disposable database validation implementation
