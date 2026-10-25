@@ -35,8 +35,9 @@ Persistent encrypted AI identity/memory + event journal + immutable accounting a
 - [x] Product scope and requirements captured
 - [ ] Architecture review and threat model
 - [x] Minimal Core preflight code skeleton (11 local unit cases; **not** live money-safe)
-- [ ] **KP-012** Financial reservations + double-entry ledger + prototype dispatch gate: all five MySQL 8.4 suites passed on run `40246815770`; no production/staging approval; see [financial reservations](docs/FINANCIAL_RESERVATIONS.md)
-- [ ] **KP-013** Owner-auth core and HTTPS control routes implemented; MySQL 8.4 passed 19 auth/controller and 12 owner-control assertions on run `40246815770`. Recovery, UI and independent review remain; see [owner authentication](docs/OWNER_AUTH.md)
+- [ ] **KP-012** Financial reservations + double-entry ledger + prototype dispatch gate: all five MySQL 8.4 suites passed on run `40247011094`; no production/staging approval; see [financial reservations](docs/FINANCIAL_RESERVATIONS.md)
+- [ ] **KP-013** Owner-auth core and HTTPS control routes implemented; MySQL 8.4 passed 19 auth/controller and 15 owner-control/audit assertions on run `40247011094`. Recovery, UI and independent review remain; see [owner authentication](docs/OWNER_AUTH.md)
+- [ ] **KP-014** STOP/resume hash-chained audit journal and DB mutation guards passed on MySQL 8.4 run `40247011094`; general event journal and independent time source remain.
 - [ ] Durable Core implementation and staging verification
 - [ ] Sandbox integrations
 - [ ] Test APK / real incoming call proof-of-concept

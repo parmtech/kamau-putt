@@ -27,8 +27,8 @@
 
 ## Exact next actions
 - Dispatch-gate verification is complete at prototype CI level: MySQL 8.4 run 40245586343 passed all suites; concurrency reported 40 cases, including STOP waiting for an in-flight callback and rejecting later callbacks. PHP CI run 40245586377 passed.
-1. Authenticated STOP/resume is verified at prototype CI level: MySQL 8.4 run `40246815770` passed five suites, including 12 owner-control and 19 owner-auth assertions; PHP run `40246815796` passed.
-2. Verify the new migration 006 audit journal and owner-control suite on MySQL CI; then continue credentials vault and durable job/outbox design.
+1. Authenticated STOP/resume and its audit are verified at prototype CI level: MySQL 8.4 run `40247011094` passed five suites, including 15 owner-control/audit and 19 owner-auth assertions; PHP run `40247011117` passed.
+2. Owner-control audit migration 006 and expanded suite are verified: run `40247011094` passed five MySQL suites, owner-control 15/15; PHP run `40247011117` passed. Next: encrypted credential vault and durable job/outbox design.
 3. Do not deploy the web routes before actual host, TLS, DB grant and backup checks. Keep Android last.
 
 ## Known limitations / open blockers
@@ -51,7 +51,7 @@
 ## 2026-10-26 authoritative continuation
 - Latest work adds `database/002_double_entry_ledger.mysql.sql`, `src/Core/PdoDoubleEntryLedger.php`, and atomic reservation-to-ledger posting; fresh local MariaDB suites passed: 25 reservation, 29 accounting, 33 concurrency assertions. MySQL 8.4 CI run 40245143663 passed `mysql_integration`, `mysql_accounting`, and `mysql_concurrency`; PHP CI run 40245143656 also passed.
 - `dispatch_epoch` and `authorization_epoch`, plus `PdoDispatchGate`, are now on the branch and validated on MySQL 8.4. The callback runs in the locked transaction and is simulated only; no provider adapter or owner-auth binding exists.
-- Owner auth/control adds migrations 004/005, `PdoOwnerAuth`, `PdoOwnerControl`, CLI bootstrap, same-origin HTTPS controller/front controller, and auth/control MySQL suites. MySQL 8.4 run `40246815770` passed 19 owner-auth and 12 owner-control assertions; PHP run `40246815796` passed.
+- Owner auth/control adds migrations 004–006, `PdoOwnerAuth`, `PdoOwnerControl`, CLI bootstrap, same-origin HTTPS controller/front controller and audit chain. MySQL 8.4 run `40247011094` passed owner-auth/controller 19/19 and owner-control/audit 15/15; PHP run `40247011117` passed.
 - Local PHP 8.5.12 syntax lint, 11/11 policy checks, and 10/10 financial arithmetic checks passed again. A further DB rerun attempt hit local MariaDB authentication configuration (not a test assertion); prior fresh-database run remains evidence. Restore the local disposable DB login if re-running.
 - Canonical public repo: `parmtech/kamau-putt`; feature branch `feat/kp-financial-reservations-foundation`. Latest verified head `6de7355` has green PHP and four-suite MySQL CI. Git push auth is unavailable; synchronize future commits through the connected GitHub API.
 - Runtime lives outside repo in task workspace .tools/: PHP 8.5.12, MariaDB 11.4.13. source/ is a connector-materialized snapshot, not a Git checkout. Never commit .tools/ or database contents.

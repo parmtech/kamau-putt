@@ -43,9 +43,10 @@ Each significant checkbox needs one of: linked automated CI result, reproducible
 - Owner-control cases cover default STOP, authenticated STOP and epoch advance, idempotency, reviewed reservation/cash summary, invalid confirmation, resume, replay, changed financial state and Safe Shutdown refusal. No queue, cancellation or provider is connected.
 - First run `40246723730` exposed a test-fixture assumption that STOP advances the epoch when the schema is already stopped. The fixture now begins that transition from an active state; the corrected run above passed.
 
-## 2026-10-26 — Owner-control audit journal (verification pending)
-- Added hash-chained, append-only audit events for STOP, already-stopped requests, resume challenge issuance and confirmed resume. SQL triggers reject row updates/deletes; state mutation and audit insert share a transaction.
-- The owner-control MySQL suite now applies migration 006 and checks hash-chain verification plus update/delete rejection. Fresh MySQL CI is pending.
+## 2026-10-26 — Owner-control audit journal
+- MySQL 8.4 run `40247011094` passed all five DB suites; owner-control 15/15. PHP run `40247011117` passed.
+- Migration 006 adds hash-chained, append-only audit events for STOP, already-stopped requests, resume challenge issuance and confirmed resume. SQL triggers reject row updates/deletes; state mutation and audit insert share a transaction.
+- Tests cover the valid chain and reject update/delete attempts. The journal covers owner-control events only and has no independent trusted timestamp source.
 
 ## 2026-10-25 — Disposable database validation implementation
 - Added isolated MySQL 8.4 service CI workflow with explicit PDO driver install and empty disposable database; no production credentials or external payment APIs.

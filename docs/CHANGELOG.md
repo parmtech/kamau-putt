@@ -25,9 +25,9 @@ All dates Australia/Sydney. Append a new dated entry for each substantive sessio
 - Added financial-state summary, owner-authenticated STOP, fresh password/TOTP resume challenge and exact-phrase one-use confirmation bound to session, dispatch epoch and unchanged summary. Safe Shutdown and changed state fail closed; resume preserves Survival mode.
 - Added migration `005_owner_control.mysql.sql` and a disposable owner-control MySQL suite in the CI matrix. MySQL 8.4 run `40246815770` passed all five DB suites; owner-control assertions 12/12 and owner-auth/controller 19/19. PHP run `40246815796` passed. No queue, cancellation adapter, UI, deployment or security review exists.
 
-## 2026-10-26 — Owner-control audit journal (verification pending)
+## 2026-10-26 — Owner-control audit journal
 - Added migration `006_owner_control_audit.mysql.sql`, append-only STOP/challenge/resume events with a SHA-256 chain, and database triggers rejecting UPDATE/DELETE. STOP and resume state transitions plus audit entries share a transaction.
-- Expanded the disposable owner-control suite to verify the chain and mutation guards. Local PHP lint/pure checks are next; MySQL CI is pending. This journal covers owner-control events only, not the full business decision/event journal.
+- MySQL 8.4 run `40247011094` passed all five suites; owner-control reports 15/15. PHP run `40247011117` passed. The suite verifies chain integrity and SQL update/delete rejection. This journal covers owner-control events only, not the full business decision/event journal.
 
 ## 2026-10-24 — Session: financial reservation prototype and hosting preflight
 - Kept work in existing private repository on `feat/kp-financial-reservations-foundation`; no replacement project.
