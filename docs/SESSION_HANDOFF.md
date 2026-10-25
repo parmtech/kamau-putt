@@ -26,7 +26,7 @@
 - No customer-facing identity assumption: public brands may have distinct names.
 
 ## Exact next actions
-1. Verify the new `PdoDispatchGate` and dispatch epoch fencing in MySQL 8.4 CI. Local PHP lint and pure suites pass; DB assertions are pending. The callback deliberately holds the finance-control lock, so bound it and do not wire a live provider yet.
+1. Re-run MySQL 8.4 CI after fixing `PdoSpendReservations::controlLock()` to include `dispatch_epoch`. The first gate run found this omitted field, causing a PHP undefined-array warning and the concurrency worker to fail before its callback. The other two DB suites and PHP CI passed. Verify all three DB suites on the corrected head.
 2. After green CI, implement authenticated owner identity/MFA/session controls and a reviewed one-use resume flow; preserve default STOPPED state.
 3. Then build journaled audit/credentials and hosting preflight. Do not enable external payments or spending before independent staging review.
 

@@ -29,7 +29,7 @@ Each significant checkbox needs one of: linked automated CI result, reproducible
 ## 2026-10-26 — STOP/dispatch gate prototype (DB checks pending)
 - `php -l` across all PHP in `src/` and `tests/`: pass. Policy 11/11 and financial math 10/10 pass on PHP 8.5.12.
 - New independent-process cases exercise STOP waiting for a provider callback already in its serialized gate, epoch advancement, denial after STOP returns, stable provider idempotency context and survival-mode denial.
-- These new MySQL cases have not yet run locally or in CI. The callback is simulated only; no external provider operation is used.
+- MySQL 8.4 run 40245464615 passed `mysql_integration` and `mysql_accounting`; `mysql_concurrency` failed on an undefined `dispatch_epoch` field in the reservation control-row select. Corrected the query; rerun is required. The callback is simulated only; no external provider operation is used.
 
 ## 2026-10-25 — Disposable database validation implementation
 - Added isolated MySQL 8.4 service CI workflow with explicit PDO driver install and empty disposable database; no production credentials or external payment APIs.

@@ -168,7 +168,7 @@ final class PdoSpendReservations
 
     private function controlLock(): array
     {
-        $row = $this->one('SELECT operating_mode, owner_emergency_stopped FROM kp_finance_control WHERE id = 1 FOR UPDATE');
+        $row = $this->one('SELECT operating_mode, owner_emergency_stopped, dispatch_epoch FROM kp_finance_control WHERE id = 1 FOR UPDATE');
         if ($row === null) {
             throw new \RuntimeException('Finance control not initialized: fail closed');
         }
