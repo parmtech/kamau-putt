@@ -32,11 +32,14 @@ Each significant checkbox needs one of: linked automated CI result, reproducible
 - MySQL 8.4 run 40245586343 passed `mysql_integration`, `mysql_accounting`, and `mysql_concurrency`; the latter reported 40 cases passed. PHP CI run 40245586377 also passed. An earlier run found a missing selected epoch field; that query was fixed before this passing run.
 - The callback is simulated only; no external provider operation is used. Since the callback runs under the finance-control transaction lock, bound network work and do not wire a real provider before replacing this prototype with an outbox/reconciliation design.
 
-## 2026-10-26 — Owner authentication core and HTTPS controller (updated CI pending)
+## 2026-10-26 — Owner authentication core and HTTPS controller
 - `php -l` across PHP in `src/`, `tests/` and `bin/`: pass. Policy 11/11 and financial math 10/10 pass on PHP 8.5.12.
-- MySQL 8.4 run 40246011247 passed all four DB suites; `mysql_owner_auth.php` reported 14/14 for the core. PHP CI run 40246011106 passed. Auth coverage includes CLI owner bootstrap, password/TOTP checks, TOTP replay, sessions, CSRF, idle/absolute expiry, revocation and failed-login throttling.
-- Added a same-origin controller with HTTPS enforcement, strict Origin validation, secure cookies and logout revocation. Five controller assertions raise the auth suite to 19; new MySQL CI is pending.
+- MySQL 8.4 run `40246429206` passed all four then-current DB suites; `mysql_owner_auth.php` reported 19/19 including the HTTP controller. PHP run `40246429054` passed. Coverage includes bootstrap, password/TOTP, replay, sessions, CSRF, expiry, throttling, origin checks, secure cookies and logout revocation.
 - The suite uses synthetic credentials and a test database. No owner credentials or TOTP secrets are committed.
+
+## 2026-10-26 — Authenticated STOP/resume (MySQL CI pending)
+- Added `PdoOwnerControl`, migration 005 and owner API routes for status/STOP/resume challenge/confirmation. Resume requires a new MFA-authenticated session, an exact phrase, a five-minute single-use challenge, and unchanged financial snapshot/epoch. Safe Shutdown stays stopped; normal resume retains Survival mode.
+- PHP 8.5.12 syntax checks across `src/`, `tests/`, `bin/`, and `public/` pass. Policy 11/11 and arithmetic 10/10 pass. New disposable owner-control MySQL suite is awaiting CI; no live queue or provider is connected.
 
 ## 2026-10-25 — Disposable database validation implementation
 - Added isolated MySQL 8.4 service CI workflow with explicit PDO driver install and empty disposable database; no production credentials or external payment APIs.

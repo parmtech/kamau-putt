@@ -16,10 +16,14 @@ All dates Australia/Sydney. Append a new dated entry for each substantive sessio
 
 ## 2026-10-26 — Owner authentication core prototype
 - Added CLI-only bootstrap for one owner, password verification, encrypted TOTP MFA, anti-replay, HMAC-throttled failures, opaque server-side sessions and CSRF token validation with idle/absolute expiry.
-- Added same-origin HTTPS JSON login/session/logout routes, strict Origin validation, Secure/HttpOnly `__Host-` cookies and Apache front-controller rewrite. The controller suite expands the disposable MySQL auth assertions to 19; PHP lint is local, DB CI pending.
-- Password/MFA recovery, roles, authenticated STOP/resume binding, UI, deployment and independent security review remain incomplete.
+- Added same-origin HTTPS JSON login/session/logout routes, strict Origin validation, Secure/HttpOnly `__Host-` cookies and Apache front-controller rewrite. MySQL 8.4 run `40246429206` passed all four database suites; owner-auth/controller assertions are 19/19. PHP run `40246429054` passed.
+- At this milestone, password/MFA recovery, roles, authenticated STOP/resume binding, UI, deployment and independent security review remained incomplete; later STOP/resume progress is recorded below.
 - Prior MySQL 8.4 run 40246011247 passed the 14 auth-core cases; PHP CI run 40246011106 passed. Fresh CI must verify the controller additions.
 - No authentication, resume, live provider adapter, durable external outbox or deployment is included.
+
+## 2026-10-26 — Authenticated STOP and reviewed resume prototype
+- Added financial-state summary, owner-authenticated STOP, fresh password/TOTP resume challenge and exact-phrase one-use confirmation bound to session, dispatch epoch and unchanged summary. Safe Shutdown and changed state fail closed; resume preserves Survival mode.
+- Added migration `005_owner_control.mysql.sql` and a disposable owner-control MySQL suite in the CI matrix. PHP lint and pure suites pass locally; fresh MySQL CI is pending. No queue, cancellation adapter, UI, deployment or security review exists.
 
 ## 2026-10-24 — Session: financial reservation prototype and hosting preflight
 - Kept work in existing private repository on `feat/kp-financial-reservations-foundation`; no replacement project.

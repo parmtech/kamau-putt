@@ -3,9 +3,12 @@
 declare(strict_types=1);
 
 use KamauPutt\Core\PdoOwnerAuth;
+use KamauPutt\Core\PdoOwnerControl;
 use KamauPutt\Http\OwnerAuthController;
 
 require_once __DIR__ . '/../src/Core/PdoOwnerAuth.php';
+require_once __DIR__ . '/../src/Core/PdoDispatchGate.php';
+require_once __DIR__ . '/../src/Core/PdoOwnerControl.php';
 require_once __DIR__ . '/../src/Http/OwnerAuthController.php';
 
 header('Cache-Control: no-store, max-age=0');
@@ -18,6 +21,10 @@ $allowedRoutes = [
     'POST /api/auth/login',
     'GET /api/auth/session',
     'POST /api/auth/logout',
+    'GET /api/control/status',
+    'POST /api/control/stop',
+    'POST /api/control/resume/challenge',
+    'POST /api/control/resume/confirm',
 ];
 if (!in_array($method . ' ' . $requestPath, $allowedRoutes, true)) {
     http_response_code(404);
@@ -34,6 +41,7 @@ if (!$secureTransport) {
     echo '{"error":"https_required"}';
     exit;
 }
+header('Strict-Transport-Security: max-age=31536000');
 
 $required = ['KP_MYSQL_DSN', 'KP_MYSQL_USER', 'KP_MYSQL_PASSWORD', 'KP_ALLOWED_ORIGIN', 'KP_MFA_ENCRYPTION_KEY', 'KP_AUTH_RATE_LIMIT_KEY'];
 $config = [];
@@ -81,7 +89,8 @@ try {
         PDO::ATTR_EMULATE_PREPARES => false,
     ]);
     $auth = new PdoOwnerAuth($db, $mfaKey, $rateKey);
-    $controller = new OwnerAuthController($auth, $config['KP_ALLOWED_ORIGIN']);
+    $control = new PdoOwnerControl($db);
+    $controller = new OwnerAuthController($auth, $config['KP_ALLOWED_ORIGIN'], $control);
     $response = $controller->handle(
         $method,
         (string) $requestPath,

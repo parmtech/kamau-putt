@@ -7,12 +7,18 @@ The current owner-auth path is a backend prototype on the financial feature bran
 - `POST /api/auth/login` with JSON `{ "email", "password", "totp" }`; succeeds only on the configured HTTPS origin and sets an HttpOnly `__Host-kp_session` cookie plus a readable `__Host-kp_csrf` cookie.
 - `GET /api/auth/session` returns the authenticated owner's email when the session cookie, CSRF cookie and `X-CSRF-Token` header match.
 - `POST /api/auth/logout` requires the configured Origin and matching CSRF token; it revokes the server-side session and clears both cookies.
+- `GET /api/control/status` returns the authenticated financial and reservation snapshot.
+- `POST /api/control/stop` persists owner STOP through the dispatch gate and returns the post-stop snapshot.
+- `POST /api/control/resume/challenge` requires the active session, password and a fresh, unused TOTP code. It issues a five-minute one-use challenge, rotates the session cookie and returns the exact financial snapshot that must be reviewed.
+- `POST /api/control/resume/confirm` requires the rotated session, matching CSRF/origin, the challenge and exact phrase `RESUME KAMAU PUTT`. It resumes only if the session is still fresh, the challenge is unused, the system remains stopped and the financial snapshot/dispatch epoch have not changed.
 
 Cookies use `Secure`, `Path=/`, `SameSite=Strict`; the session token is HttpOnly. There is no CORS allowance or public registration route. The front controller requires HTTPS and uses the direct peer address for throttling; it does not trust forwarded IP headers.
 
+The summary includes settled cash, customer/tax/refund reserves, discretionary reservations, open reservation count and current mode/epoch. No durable job queue exists yet, so `job_queue_actions` reports zero. Normal resume preserves Survival mode; it never silently turns paid dispatch back on. Safe Shutdown requires a separate recovery decision.
+
 ## Provisioning configuration
 
-Apply `database/004_owner_auth.mysql.sql` using a restricted migration/admin runner. Provision the only owner with `php bin/bootstrap-owner.php` from a trusted CLI after setting these environment values:
+Apply migrations `001`, `002`, `004` and `005` in order using a restricted migration/admin runner. Provision the only owner with `php bin/bootstrap-owner.php` from a trusted CLI after setting these environment values:
 
 - `KP_MYSQL_DSN`, `KP_MYSQL_USER`, `KP_MYSQL_PASSWORD`
 - `KP_OWNER_EMAIL`, `KP_OWNER_PASSWORD`, `KP_OWNER_TOTP_SECRET`
@@ -24,4 +30,4 @@ Never put these values in Git, the public webroot, a URL, application logs or th
 
 ## Limits before deployment
 
-The web routes and DB-backed checks are on the branch, but there is no UI, password reset, MFA recovery, session inventory, role system, owner-auth binding to STOP/resume, independent security review or verified hosting setup. The cPanel document root must point to `public/`; SSL, environment-variable support, PDO MySQL, rewrite support, database grants, backup/restore and HTTPS behavior must be checked on the actual account before use. Do not deploy this as a live control surface yet.
+The authentication controller's 19 MySQL assertions passed on run `40246429206`. The newly added STOP/resume suite has not run yet. Routes have no UI, password reset, MFA recovery, session inventory, role system, durable job queue, independent security review or verified hosting setup. The cPanel document root must point to `public/`; SSL, environment-variable support, PDO MySQL, rewrite support, database grants, backup/restore and HTTPS behavior must be checked on the actual account before use. Do not deploy this as a live control surface yet.

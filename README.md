@@ -36,7 +36,7 @@ Persistent encrypted AI identity/memory + event journal + immutable accounting a
 - [ ] Architecture review and threat model
 - [x] Minimal Core preflight code skeleton (11 local unit cases; **not** live money-safe)
 - [ ] **KP-012** Financial reservations + double-entry ledger + prototype dispatch gate: MySQL 8.4 CI passed earlier feature-branch suites; current exact head must pass again after owner-auth controller changes. No production/staging approval; see [financial reservations](docs/FINANCIAL_RESERVATIONS.md)
-- [ ] **KP-013** Owner-auth core and same-origin HTTPS login/session/logout routes implemented; fresh controller CI, recovery, STOP/resume binding and independent review remain pending; see [owner authentication](docs/OWNER_AUTH.md)
+- [ ] **KP-013** Owner-auth core and HTTPS control routes implemented; 19 auth/controller MySQL assertions pass. Owner STOP/resume suite is pending CI; recovery and independent review remain; see [owner authentication](docs/OWNER_AUTH.md)
 - [ ] Durable Core implementation and staging verification
 - [ ] Sandbox integrations
 - [ ] Test APK / real incoming call proof-of-concept
