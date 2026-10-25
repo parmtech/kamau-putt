@@ -22,7 +22,7 @@
 ## 01 — Secure backend Core (START HERE)
 - [x] **KP-010** Minimal, framework-independent PHP Core skeleton and local test runner. Evidence: `src/Core`, `tests/run.php`, `composer.json`; local syntax check and 11 unit cases on PHP 8.4.24.
 - [x] **KP-011** Pure spending **preflight** policy: action cap, approved budget, free settled cash, scope, owner stop and survival mode. Evidence: 11/11 local unit tests. **NOT** a transactional lock, ledger or production safeguard.
-- [ ] **KP-012** InnoDB schema + PDO reservation/ledger prototype: 25 sequential, 29 ledger, and 33 independent-process cases pass locally on MariaDB 11.4.13; all three MySQL 8.4 CI matrix jobs passed on `ad139a4`. Migration/backup/restore and actual hosting still pending. See [financial reservations](FINANCIAL_RESERVATIONS.md).
+- [ ] **KP-012** InnoDB schema + PDO reservation/ledger prototype: 25 sequential, 29 ledger and 33 process cases passed locally on MariaDB 11.4.13; MySQL 8.4 run `40245586343` passed all three suites, including 40 concurrency cases. Migration/backup/restore and actual hosting still pending. See [financial reservations](FINANCIAL_RESERVATIONS.md).
 - [ ] **KP-013** Authenticated owner identity, 2FA and session security; roles/permissions.
 - [ ] **KP-014** Append-only event and decision audit journal; trusted timestamps and retention.
 - [ ] **KP-015** Secure encrypted credentials vault and audit; revocation/rotation.
@@ -30,10 +30,10 @@
 - [ ] **KP-017** CI lint/unit/static/security checks and verified staging deployment.
 
 ## 02 — Financial control and survival (must precede live autonomy)
-- [ ] **KP-020** Reservation + append-only double-entry ledger prototype locally tested with 25 sequential + 29 accounting + 33 independent-process assertions. Full real cash reconciliation, provider dispatch/reconciliation and authenticated stop/resume remain pending.
+- [ ] **KP-020** Reservation + append-only double-entry ledger prototype passed 25 sequential, 29 accounting and 33 local independent-process assertions; latest MySQL 8.4 CI passed 40 concurrency cases. Full real cash reconciliation, provider dispatch/reconciliation and authenticated stop/resume remain pending.
 - [ ] **KP-021** Budget policy: single AUD 200–300 planned capital injection, **AUD 500 cumulative external seed ceiling**; earned funds may be reinvested only under approved envelopes and reserves.
 - [ ] **KP-022** Track settled cash vs Stripe pending, customer liabilities, taxes, fulfilment, chargebacks, existing commitments and net contribution.
-- [ ] **KP-023** Owner Emergency Stop persists across restarts; cancels/pauses discretionary jobs and verifies third-party state. Prototype dispatch gate + STOP epoch fencing added; DB race CI pending; authenticated STOP and job cancellation remain incomplete.
+- [ ] **KP-023** Owner Emergency Stop persists across restarts; cancels/pauses discretionary jobs and verifies third-party state. Prototype dispatch gate + STOP epoch fencing pass MySQL 8.4 CI; authenticated STOP/resume, queue cancellation and provider reconciliation remain incomplete.
 - [ ] **KP-024** **Only Dad** can resume after brief risk/cost summary + authenticated confirmation; negative/replay/race tests.
 - [ ] **KP-025** Growth / Survival / Safe Shutdown, preserving prior paid-order/refund/legal duties.
 - [ ] **KP-026** Reconcile external payment/supplier ledger; test refunds, duplicate webhooks, provider timeouts, crash recovery.

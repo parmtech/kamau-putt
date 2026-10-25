@@ -12,6 +12,7 @@ All dates Australia/Sydney. Append a new dated entry for each substantive sessio
 - Added dispatch epochs to the finance control row and reservation authorization snapshot. The gate serializes a bounded callback with STOP; STOP increments the epoch and stale approvals cannot dispatch.
 - Added independent-process coverage for STOP waiting on an in-flight callback and blocking future calls. PHP syntax and pure checks pass; MySQL 8.4 race results are pending.
 - First dispatch-gate CI attempt found that the reservation control-row query omitted `dispatch_epoch`; fixed the query. Rerun is required.
+- Corrected MySQL 8.4 run 40245586343 passed reservation, accounting and concurrency suites; the concurrency suite reports 40 passing cases. PHP run 40245586377 is green. Callback tests are simulations only; owner authentication and live provider integration remain incomplete.
 - No authentication, resume, live provider adapter, durable external outbox or deployment is included.
 
 ## 2026-10-24 — Session: financial reservation prototype and hosting preflight

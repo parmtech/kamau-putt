@@ -26,10 +26,11 @@ Each significant checkbox needs one of: linked automated CI result, reproducible
 - The workflow matrix has three MySQL 8.4 suites. First ledger run passed PHP syntax and pure tests but all DB suites stopped on MySQL error 1419 while creating immutable triggers (test user lacks SUPER with binary logging enabled). Workflow now enables `log_bin_trust_function_creators` on its disposable server using its test-only root account. Follow-up run 40245143663 passed all three DB suites; PHP CI run 40245143656 also passed.
 - Limit: synthetic opening balances and internal postings only. No bank/provider reconciliation, customer liabilities, tax/refund journals, external dispatch, authenticated STOP/resume, backup restore, staging or live operations verified.
 
-## 2026-10-26 — STOP/dispatch gate prototype (DB checks pending)
+## 2026-10-26 — STOP/dispatch gate prototype
 - `php -l` across all PHP in `src/` and `tests/`: pass. Policy 11/11 and financial math 10/10 pass on PHP 8.5.12.
 - New independent-process cases exercise STOP waiting for a provider callback already in its serialized gate, epoch advancement, denial after STOP returns, stable provider idempotency context and survival-mode denial.
-- MySQL 8.4 run 40245464615 passed `mysql_integration` and `mysql_accounting`; `mysql_concurrency` failed on an undefined `dispatch_epoch` field in the reservation control-row select. Corrected the query; rerun is required. The callback is simulated only; no external provider operation is used.
+- MySQL 8.4 run 40245586343 passed `mysql_integration`, `mysql_accounting`, and `mysql_concurrency`; the latter reported 40 cases passed. PHP CI run 40245586377 also passed. An earlier run found a missing selected epoch field; that query was fixed before this passing run.
+- The callback is simulated only; no external provider operation is used. Since the callback runs under the finance-control transaction lock, bound network work and do not wire a real provider before replacing this prototype with an outbox/reconciliation design.
 
 ## 2026-10-25 — Disposable database validation implementation
 - Added isolated MySQL 8.4 service CI workflow with explicit PDO driver install and empty disposable database; no production credentials or external payment APIs.

@@ -2,7 +2,7 @@
 
 **Status: prototype locally tested on MariaDB 11.4.13 and MySQL 8.4 CI. No live spending permitted.**
 
-The next dispatch-gate prototype is implemented locally; its DB race checks are pending CI verification.
+The dispatch-gate prototype is implemented and validated by MySQL 8.4 CI; provider calls in tests are simulated, and the gate is not approved for live use.
 
 ## Purpose
 The existing `SpendGuard` provides advisory policy checks, not durable money control. This change adds:
@@ -41,13 +41,13 @@ php -l src/Core/PdoSpendReservations.php
 php tests/run.php
 php tests/financial_math.php
 ```
-Integration tests require a dedicated disposable database. The reservation/ledger suites passed on MariaDB 11.4.13 and MySQL 8.4 CI. The new dispatch epoch race assertions are pending CI. These tests cover sequential reservations, accounting invariants, concurrency, idempotency and DB rollback. Provider reconciliation, charge/refund, backup/restore and authenticated access still require separate work. No credentials may be committed to Git.
+Integration tests require a dedicated disposable database. The reservation/ledger suites passed on MariaDB 11.4.13; all MySQL 8.4 suites passed, including 40 independent-process concurrency assertions on run 40245586343. These tests cover sequential reservations, accounting invariants, STOP/dispatch serialization, epoch fencing, idempotency and DB rollback. Provider reconciliation, charge/refund, backup/restore and authenticated access still require separate work. No credentials may be committed to Git.
 
 ## Go-live blocker
 No payment, ads, supplier purchases, owner funds intake, owner STOP resume, AI autonomous finance or production deployment until audited authorization, atomic ledger, independent QA, staged reconciliations and legal/supplier checks pass.
 
 ## 2026-10-26 validation update
-`tests/mysql_integration.php` passes 25 sequential DB assertions, `tests/mysql_accounting.php` passes 29 ledger assertions, and `tests/mysql_concurrency.php` passes 33 independent-process assertions on local MariaDB 11.4.13. The concurrency suite covers budget/global cash contention, duplicate reservation/commit, committed stop waiting requests, connection persistence and killed-worker DB rollback. All three MySQL 8.4 CI matrix jobs passed on ledger head `ad139a4` (run 40245143663). CI uses its disposable root account only to enable trigger creation under binary logging; test suites run as the restricted test user. No external dispatch, authenticated stop/resume, reconciled real cash or production-readiness claim follows from these tests. Test stop is direct fixture SQL, not a privileged public API.
+`tests/mysql_integration.php` passes 25 sequential DB assertions, `tests/mysql_accounting.php` passes 29 ledger assertions, and `tests/mysql_concurrency.php` passes 33 local MariaDB assertions. The latest MySQL 8.4 CI run 40245586343 passes all three jobs, with 40 concurrency assertions including STOP waiting for an in-flight callback and blocking later callbacks. CI uses its disposable root account only to enable trigger creation under binary logging; test suites run as the restricted test user. No external provider, authenticated stop/resume, reconciled real cash or production-readiness claim follows from these tests. STOP is not exposed through a privileged public API.
 
-The dispatch gate adds STOP serialization, epoch fencing and stale-reservation denial; new independent-process cases verify STOP waits for an already-started callback and no callback begins after STOP returns. These new DB assertions are syntax-checked locally; database CI is pending.
+The dispatch gate adds STOP serialization, epoch fencing and stale-reservation denial; MySQL 8.4 CI verifies STOP waits for an already-started callback and no callback begins after STOP returns. The callback is simulated and intentionally runs under the control-row lock; this can hold that global lock for its full duration.
 
