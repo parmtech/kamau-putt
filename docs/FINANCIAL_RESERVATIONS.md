@@ -25,6 +25,7 @@ The existing `SpendGuard` provides advisory policy checks, not durable money con
 - Opening cash in tests is synthetic. Real cash, liabilities, tax, refunds and supplier balances have not been reconciled. The new journal is append-only application accounting, not a complete audited accounting system.
 - The `commit` method decreases `settled_cash_cents`; this simplifies the prototype but does not represent all card settlement and supplier payment timing. No live provider calls are wired.
 - Caller boolean `scopeAuthorized` is NOT authentication. A real caller must derive its permission server-side from validated owner/service identity; never expose raw methods to an LLM or public HTTP.
+- A separate owner-auth core prototype now exists (`PdoOwnerAuth`). It has not been independently reviewed or exposed through an HTTP layer; financial authorization still must be bound to authenticated server-side identity before any live action.
 - Reservation and ledger schemas constrain monetary values to the PHP signed 64-bit range. Local overflow and transaction rollback checks pass; migration upgrades, timeout behavior, multi-store accounting and backup/restore remain unverified.
 - Control-state activation and funding are deliberately not implemented. The database defaults STOPPED and with zero settled money.
 - The STOP primitive has no owner authentication yet. The dispatch callback runs inside a database transaction and can hold the global finance lock during network latency; it is a prototype gate only, not suitable for live provider wiring before a durable outbox/reconciliation design and bounded adapter exist.
@@ -50,4 +51,5 @@ No payment, ads, supplier purchases, owner funds intake, owner STOP resume, AI a
 `tests/mysql_integration.php` passes 25 sequential DB assertions, `tests/mysql_accounting.php` passes 29 ledger assertions, and `tests/mysql_concurrency.php` passes 33 local MariaDB assertions. The latest MySQL 8.4 CI run 40245586343 passes all three jobs, with 40 concurrency assertions including STOP waiting for an in-flight callback and blocking later callbacks. CI uses its disposable root account only to enable trigger creation under binary logging; test suites run as the restricted test user. No external provider, authenticated stop/resume, reconciled real cash or production-readiness claim follows from these tests. STOP is not exposed through a privileged public API.
 
 The dispatch gate adds STOP serialization, epoch fencing and stale-reservation denial; MySQL 8.4 CI verifies STOP waits for an already-started callback and no callback begins after STOP returns. The callback is simulated and intentionally runs under the control-row lock; this can hold that global lock for its full duration.
+
 

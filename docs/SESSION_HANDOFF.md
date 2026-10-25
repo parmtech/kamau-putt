@@ -26,8 +26,9 @@
 - No customer-facing identity assumption: public brands may have distinct names.
 
 ## Exact next actions
-1. **Dispatch-gate verification is complete at prototype CI level:** MySQL 8.4 run 40245586343 passed all suites; concurrency reported 40 cases, including STOP waiting for an in-flight callback and rejecting later callbacks. PHP CI run 40245586377 passed.
-2. Implement authenticated owner identity/MFA/session controls and a reviewed one-use resume flow; preserve default STOPPED state. No STOP method is currently exposed to an authenticated owner.
+- Dispatch-gate verification is complete at prototype CI level: MySQL 8.4 run 40245586343 passed all suites; concurrency reported 40 cases, including STOP waiting for an in-flight callback and rejecting later callbacks. PHP CI run 40245586377 passed.
+1. Run and resolve MySQL 8.4 `mysql_owner_auth` CI for the new owner authentication core; current local PHP lint/pure tests pass, DB results are pending.
+2. After green CI, build the web login/cookie/CSRF layer and account/MFA recovery decisions, then bind authenticated owner identity to STOP and reviewed one-use resume. Preserve default STOPPED state.
 3. Then build journaled audit/credentials and hosting preflight. Do not enable external payments or spending before independent staging review.
 
 ## Known limitations / open blockers
@@ -50,10 +51,12 @@
 ## 2026-10-26 authoritative continuation
 - Latest work adds `database/002_double_entry_ledger.mysql.sql`, `src/Core/PdoDoubleEntryLedger.php`, and atomic reservation-to-ledger posting; fresh local MariaDB suites passed: 25 reservation, 29 accounting, 33 concurrency assertions. MySQL 8.4 CI run 40245143663 passed `mysql_integration`, `mysql_accounting`, and `mysql_concurrency`; PHP CI run 40245143656 also passed.
 - `dispatch_epoch` and `authorization_epoch`, plus `PdoDispatchGate`, are now on the branch and validated on MySQL 8.4. The callback runs in the locked transaction and is simulated only; no provider adapter or owner authentication exists.
+- New local auth core adds migration 004, `PdoOwnerAuth`, CLI bootstrap and `tests/mysql_owner_auth.php`; these files are uncommitted and the MySQL auth suite is pending.
 - Local PHP 8.5.12 syntax lint, 11/11 policy checks, and 10/10 financial arithmetic checks passed again. A further DB rerun attempt hit local MariaDB authentication configuration (not a test assertion); prior fresh-database run remains evidence. Restore the local disposable DB login if re-running.
-- Canonical public repo: `parmtech/kamau-putt`; feature branch `feat/kp-financial-reservations-foundation`. Latest verified head `20b49cf` has green PHP and MySQL CI. Git push authentication is unavailable; synchronize future commits through the connected GitHub API.
+- Canonical public repo: `parmtech/kamau-putt`; feature branch `feat/kp-financial-reservations-foundation`. Latest verified head `d42d5c8` has green PHP and MySQL CI. Auth core is local/uncommitted pending validation. Git push auth is unavailable; synchronize through the connected GitHub API.
 - Runtime lives outside repo in task workspace .tools/: PHP 8.5.12, MariaDB 11.4.13. source/ is a connector-materialized snapshot, not a Git checkout. Never commit .tools/ or database contents.
 - Local test server stopped after suite. For process tests use pdo_mysql configured in PHP ini (child workers use same configuration), proc_open, explicit test opt-in and a NEW EMPTY disposable database per suite/run. Never point it at a real account database.
 - After ledger CI passes, implement durable stop/dispatch epoch semantics, then authenticated owner login/MFA/session/step-up and reviewed one-use resume; use existing KP items, not a replacement project. Actual hosting preflight remains an owner/account dependency.
 - Existing A to Z blueprint is Draft PR #2; merge/reconcile its overlapping docs before final design acceptance. Owner intent is automatic routine operations inside scoped budgets after live gates, not suggestion-only operation. No live spending yet.
+
 

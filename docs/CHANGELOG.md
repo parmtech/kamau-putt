@@ -13,6 +13,11 @@ All dates Australia/Sydney. Append a new dated entry for each substantive sessio
 - Added independent-process coverage for STOP waiting on an in-flight callback and blocking future calls. PHP syntax and pure checks pass; MySQL 8.4 race results are pending.
 - First dispatch-gate CI attempt found that the reservation control-row query omitted `dispatch_epoch`; fixed the query. Rerun is required.
 - Corrected MySQL 8.4 run 40245586343 passed reservation, accounting and concurrency suites; the concurrency suite reports 40 passing cases. PHP run 40245586377 is green. Callback tests are simulations only; owner authentication and live provider integration remain incomplete.
+
+## 2026-10-26 — Owner authentication core prototype
+- Added CLI-only bootstrap for one owner, password verification, encrypted TOTP MFA, anti-replay, HMAC-throttled failures, opaque server-side sessions and CSRF token validation with idle/absolute expiry.
+- Added a disposable MySQL auth test suite and CI matrix entry. Local PHP lint/pure checks pass; MySQL auth CI is pending.
+- No web endpoints, cookie handling, account recovery, MFA recovery, roles or authenticated STOP/resume flow are implemented.
 - No authentication, resume, live provider adapter, durable external outbox or deployment is included.
 
 ## 2026-10-24 — Session: financial reservation prototype and hosting preflight
@@ -44,4 +49,5 @@ All dates Australia/Sydney. Append a new dated entry for each substantive sessio
 - Added independent-process finance tests and a separate disposable database CI matrix suite.
 - Local MariaDB sequential 22/22 and concurrency 33/33 pass; prior PHP/DB GitHub reruns green after owner made repo public. Details and scope in VERIFICATION.md.
 - Updated tracker/handoff/README/AGENTS and finance documentation to distinguish tested reservation behavior from pending accounting/auth/provider/deploy gates. No production powers enabled.
+
 

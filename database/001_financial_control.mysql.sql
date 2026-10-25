@@ -75,3 +75,4 @@ CREATE TABLE IF NOT EXISTS kp_financial_events (
 INSERT IGNORE INTO kp_finance_control (id) VALUES (1);
 INSERT IGNORE INTO kp_financial_position (id) VALUES (1);
 
+
