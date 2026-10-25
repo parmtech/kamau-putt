@@ -24,7 +24,7 @@ $db = new PDO($dsn, getenv('KP_TEST_MYSQL_USER') ?: '', getenv('KP_TEST_MYSQL_PA
 if ((int) $db->query('SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=DATABASE()')->fetchColumn() !== 0) {
     throw new RuntimeException('Owner-control test requires an EMPTY disposable database');
 }
-foreach (['001_financial_control.mysql.sql', '004_owner_auth.mysql.sql', '005_owner_control.mysql.sql'] as $migration) {
+foreach (['001_financial_control.mysql.sql', '004_owner_auth.mysql.sql', '005_owner_control.mysql.sql', '006_owner_control_audit.mysql.sql'] as $migration) {
     $sql = file_get_contents(__DIR__ . '/../database/' . $migration);
     foreach (preg_split('/;\s*(?=\n|$)/', $sql) as $statement) { if (trim($statement) !== '') { $db->exec(trim($statement)); } }
 }
@@ -92,5 +92,15 @@ $shutdownDenied = false;
 try { $control->prepareResume($freshCookies['__Host-kp_session'], $freshCookies['__Host-kp_csrf']); }
 catch (RuntimeException) { $shutdownDenied = true; }
 $check('safe_shutdown_does_not_resume_through_normal_route', $shutdownDenied && $control->summary()['emergency_stopped']);
+$audit = $control->verifyAudit();
+$check('stop_and_resume_events_have_valid_hash_chain', $audit['events'] === 6 && preg_match('/^[a-f0-9]{64}$/', $audit['last_hash']) === 1);
+$updateDenied = false;
+try { $db->exec("UPDATE kp_owner_control_audit SET event_type='stop_applied' WHERE id=1"); }
+catch (PDOException) { $updateDenied = true; }
+$check('audit_update_is_rejected', $updateDenied);
+$deleteDenied = false;
+try { $db->exec('DELETE FROM kp_owner_control_audit WHERE id=1'); }
+catch (PDOException) { $deleteDenied = true; }
+$check('audit_delete_is_rejected', $deleteDenied && $control->verifyAudit()['events'] === 6);
 
 echo $passed . " owner control cases passed\n";

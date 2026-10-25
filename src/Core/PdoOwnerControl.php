@@ -22,11 +22,24 @@ final class PdoOwnerControl
         $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
     }
 
-    /** STOP serializes against dispatch initiation and returns a database snapshot. */
+    /** STOP serializes against dispatch initiation and journals its state change atomically. */
     public function emergencyStop(): array
     {
-        (new PdoDispatchGate($this->db))->emergencyStop();
-        return $this->summary();
+        $now = $this->now();
+        return $this->transaction(function () use ($now): array {
+            $control = $this->one('SELECT operating_mode,owner_emergency_stopped,dispatch_epoch FROM kp_finance_control WHERE id=1 FOR UPDATE');
+            if ($control === null) { throw new \RuntimeException('Finance control not initialized: fail closed'); }
+            $wasStopped = (bool) $control['owner_emergency_stopped'];
+            $epoch = (int) $control['dispatch_epoch'];
+            if (!$wasStopped) {
+                if ($epoch >= PHP_INT_MAX) { throw new \OverflowException('Dispatch epoch exhausted'); }
+                $epoch++;
+                $this->db->prepare('UPDATE kp_finance_control SET owner_emergency_stopped=1,dispatch_epoch=? WHERE id=1')->execute([$epoch]);
+            }
+            $summary = $this->summary();
+            $this->appendAudit($wasStopped ? 'stop_already_stopped' : 'stop_applied', $epoch, self::summaryHash($summary), $now);
+            return $summary;
+        });
     }
 
     /** @return array<string,int|string|bool> */
@@ -71,6 +84,7 @@ final class PdoOwnerControl
             $stmt = $this->db->prepare('INSERT INTO kp_owner_resume_challenges (token_hash,session_hash,dispatch_epoch,summary_hash,created_epoch,expires_epoch) VALUES (?,?,?,?,?,?)');
             $expires = $now + self::CHALLENGE_TTL_SECONDS;
             $stmt->execute([hash('sha256', $token), $sessionHash, (int) $control['dispatch_epoch'], self::summaryHash($summary), $now, $expires]);
+            $this->appendAudit('resume_challenge_issued', (int) $control['dispatch_epoch'], self::summaryHash($summary), $now);
             return ['token' => $token, 'expires_epoch' => $expires, 'summary' => $summary];
         });
     }
@@ -104,8 +118,38 @@ final class PdoOwnerControl
             $stmt->execute([$epoch]);
             if ($stmt->rowCount() !== 1) { throw new \RuntimeException('Resume state changed concurrently'); }
             $this->db->prepare('UPDATE kp_owner_resume_challenges SET consumed_epoch=? WHERE token_hash=? AND consumed_epoch IS NULL')->execute([$now, $challengeHash]);
-            return $this->summary();
+            $resumed = $this->summary();
+            $this->appendAudit('resume_confirmed', $epoch, self::summaryHash($resumed), $now);
+            return $resumed;
         });
+    }
+
+    /** Verify the complete append-only control-event hash chain. */
+    public function verifyAudit(): array
+    {
+        $rows = $this->db->query('SELECT actor_owner_id,event_type,dispatch_epoch,summary_hash,occurred_epoch,previous_hash,event_hash FROM kp_owner_control_audit ORDER BY id')->fetchAll(PDO::FETCH_ASSOC);
+        $previous = str_repeat('0', 64);
+        foreach ($rows as $row) {
+            if (!hash_equals($previous, (string) $row['previous_hash'])) { throw new \RuntimeException('Owner control audit chain is broken'); }
+            $expected = self::auditHash($previous, (int) $row['actor_owner_id'], (string) $row['event_type'], (int) $row['dispatch_epoch'], (string) $row['summary_hash'], (int) $row['occurred_epoch']);
+            if (!hash_equals($expected, (string) $row['event_hash'])) { throw new \RuntimeException('Owner control audit event was altered'); }
+            $previous = (string) $row['event_hash'];
+        }
+        return ['events' => count($rows), 'last_hash' => $previous];
+    }
+
+    private function appendAudit(string $type, int $epoch, string $summaryHash, int $now): void
+    {
+        $row = $this->one('SELECT event_hash FROM kp_owner_control_audit ORDER BY id DESC LIMIT 1 FOR UPDATE');
+        $previous = $row === null ? str_repeat('0', 64) : (string) $row['event_hash'];
+        $eventHash = self::auditHash($previous, 1, $type, $epoch, $summaryHash, $now);
+        $statement = $this->db->prepare('INSERT INTO kp_owner_control_audit (actor_owner_id,event_type,dispatch_epoch,summary_hash,occurred_epoch,previous_hash,event_hash) VALUES (1,?,?,?,?,?,?)');
+        $statement->execute([$type, $epoch, $summaryHash, $now, $previous, $eventHash]);
+    }
+
+    private static function auditHash(string $previous, int $actor, string $type, int $epoch, string $summaryHash, int $now): string
+    {
+        return hash('sha256', implode("\0", [$previous, (string) $actor, $type, (string) $epoch, $summaryHash, (string) $now]));
     }
 
     private function assertRecentSession(string $token, string $csrf, int $now): void

@@ -14,11 +14,11 @@ The current owner-auth path is a backend prototype on the financial feature bran
 
 Cookies use `Secure`, `Path=/`, `SameSite=Strict`; the session token is HttpOnly. There is no CORS allowance or public registration route. The front controller requires HTTPS and uses the direct peer address for throttling; it does not trust forwarded IP headers.
 
-The summary includes settled cash, customer/tax/refund reserves, discretionary reservations, open reservation count and current mode/epoch. No durable job queue exists yet, so `job_queue_actions` reports zero. Normal resume preserves Survival mode; it never silently turns paid dispatch back on. Safe Shutdown requires a separate recovery decision.
+The summary includes settled cash, customer/tax/refund reserves, discretionary reservations, open reservation count and current mode/epoch. No durable job queue exists yet, so `job_queue_actions` reports zero. Normal resume preserves Survival mode; it never silently turns paid dispatch back on. Safe Shutdown requires a separate recovery decision. STOP, repeated STOP, challenge issuance and successful resume append owner-control events to the hash-chained audit journal in the same transaction as each state change; SQL triggers reject audit updates and deletes.
 
 ## Provisioning configuration
 
-Apply migrations `001`, `002`, `004` and `005` in order using a restricted migration/admin runner. Provision the only owner with `php bin/bootstrap-owner.php` from a trusted CLI after setting these environment values:
+Apply migrations `001`, `002`, and `004` through `006` in order using a restricted migration/admin runner. Provision the only owner with `php bin/bootstrap-owner.php` from a trusted CLI after setting these environment values:
 
 - `KP_MYSQL_DSN`, `KP_MYSQL_USER`, `KP_MYSQL_PASSWORD`
 - `KP_OWNER_EMAIL`, `KP_OWNER_PASSWORD`, `KP_OWNER_TOTP_SECRET`
@@ -30,4 +30,4 @@ Never put these values in Git, the public webroot, a URL, application logs or th
 
 ## Limits before deployment
 
-The authentication controller's 19 MySQL assertions passed on run `40246429206`. The newly added STOP/resume suite has not run yet. Routes have no UI, password reset, MFA recovery, session inventory, role system, durable job queue, independent security review or verified hosting setup. The cPanel document root must point to `public/`; SSL, environment-variable support, PDO MySQL, rewrite support, database grants, backup/restore and HTTPS behavior must be checked on the actual account before use. Do not deploy this as a live control surface yet.
+MySQL 8.4 run `40246815770` passed all five DB suites, including 19 auth/controller and 12 owner-control assertions. Routes have no UI, password reset, MFA recovery, session inventory, role system, durable job queue, independent security review or verified hosting setup. The cPanel document root must point to `public/`; SSL, environment-variable support, PDO MySQL, rewrite support, database grants, backup/restore and HTTPS behavior must be checked on the actual account before use. Do not deploy this as a live control surface yet.
