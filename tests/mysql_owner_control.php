@@ -52,6 +52,7 @@ $passed = 0;
 $check = static function (string $label, bool $ok) use (&$passed): void { echo ($ok ? 'PASS ' : 'FAIL ') . $label . PHP_EOL; if (!$ok) { throw new RuntimeException('Failed owner-control invariant: ' . $label); } $passed++; };
 $initial = $control->summary();
 $check('new_control_state_is_stopped_and_unfunded', $initial['emergency_stopped'] && $initial['settled_cash_cents'] === 0 && $initial['operating_mode'] === 'survival');
+$db->exec('UPDATE kp_finance_control SET owner_emergency_stopped=0 WHERE id=1'); // test-only fixture for the active-to-stopped transition
 $login = $controller->handle('POST', '/api/auth/login', 'https://owner.example.test', [], null, json_encode(['email' => $email, 'password' => $password, 'totp' => $totp()]), true, '192.0.2.11');
 $check('owner_can_log_in_before_control_actions', $login['status'] === 200);
 $cookies = ['__Host-kp_session' => $login['cookies']['__Host-kp_session']['value'], '__Host-kp_csrf' => $login['cookies']['__Host-kp_csrf']['value']];
