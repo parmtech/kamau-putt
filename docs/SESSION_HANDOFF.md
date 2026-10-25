@@ -1,7 +1,7 @@
 # Kamau Putt — Session Resume / AI Handoff
 
-**Last updated:** 2026-10-24, Australia/Sydney  
-**Repo:** `manbir6-ux/kamau-putt` (PRIVATE). Default branch `main`.  
+**Last updated:** 2026-10-26, Australia/Sydney  
+**Repo:** `parmtech/kamau-putt` (PUBLIC; visibility changed by owner). Default branch `main`.  
 **User instruction:** Maintain complete development evidence in GitHub so *any later session* can continue without restarting.
 
 ## 2026-10-24 incremental finance foundation (feature branch; not merged)
@@ -46,3 +46,10 @@
 - Expanded integration harness with uncertain outcome retention, denied-release rollback, reconciled commit, conflicting provider reference, terminal transition and no-double-debit assertions (22 sequential database cases total).
 - Status: Implemented/Untested until the new CI run is observed passing. Local PHP/MySQL runtime unavailable in this session; no test pass claimed. Prior failed CI logs returned unavailable; root cause unknown.
 - Next: inspect new workflow result, fix concrete failures, then implement independent-process reservation and stop races. Authenticated stop/resume, full accounting and live deployment remain pending.
+
+## 2026-10-26 authoritative continuation
+- Latest work adds tests/mysql_concurrency.php (33 local independent-process assertions pass) and matrix CI alongside mysql_integration.php (22 local MariaDB assertions pass). Earlier GitHub PHP and MySQL reruns succeeded; inspect new head checks before claiming new process CI pass.
+- Runtime lives outside repo in task workspace .tools/: PHP 8.5.12, MariaDB 11.4.13. source/ is a connector-materialized snapshot, not a Git checkout. Never commit .tools/ or database contents.
+- Local test server stopped after suite. For process tests use pdo_mysql configured in PHP ini (child workers use same configuration), proc_open, explicit test opt-in and a NEW EMPTY disposable database per suite/run. Never point it at a real account database.
+- First next implementation: reconcilable double-entry accounting and durable stop/dispatch epoch semantics, then authenticated owner login/MFA/session/step-up and reviewed one-use resume; use existing KP items, not a replacement project. Actual hosting preflight remains an owner/account dependency.
+- Existing A to Z blueprint is Draft PR #2; merge/reconcile its overlapping docs before final design acceptance. Owner intent is automatic routine operations inside scoped budgets after live gates, not suggestion-only operation. No live spending yet.

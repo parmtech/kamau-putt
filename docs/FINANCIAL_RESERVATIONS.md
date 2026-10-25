@@ -40,3 +40,6 @@ Integration tests require a dedicated disposable database and are still pending.
 
 ## Go-live blocker
 No payment, ads, supplier purchases, owner funds intake, owner STOP resume, AI autonomous finance or production deployment until audited authorization, atomic ledger, independent QA, staged reconciliations and legal/supplier checks pass.
+
+## 2026-10-26 validation update
+The 22 sequential database cases pass on local MariaDB 11.4.13, and the earlier MySQL 8.4 CI job is green. tests/mysql_concurrency.php adds 33 independent-process assertions covering budget/global cash contention, duplicate reservation/commit, committed stop waiting requests, connection persistence and killed-worker DB rollback. CI runs each suite in its own initially empty DB. No external dispatch, authenticated stop/resume, double-entry accounting or production-readiness claim follows from these tests. Test stop is direct fixture SQL, not a privileged public API.

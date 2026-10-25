@@ -1,6 +1,6 @@
 # Kamau Putt — Ordered Build Checklist & Live Status
 
-**Updated:** 2026-10-24 (Australia/Sydney)  
+**Updated:** 2026-10-26 (Australia/Sydney)  
 **Owner decision:** Build/test backend and web controls first. **Android app last**.  
 **Current phase:** 01 — backend + financial reservation prototype, **in progress; not deployable**.  
 **Source:** [Master Plan](MASTER_PLAN.md) · [Decisions](DECISIONS.md) · [Next session handoff](SESSION_HANDOFF.md) · [Verification](VERIFICATION.md).
@@ -22,7 +22,7 @@
 ## 01 — Secure backend Core (START HERE)
 - [x] **KP-010** Minimal, framework-independent PHP Core skeleton and local test runner. Evidence: `src/Core`, `tests/run.php`, `composer.json`; local syntax check and 11 unit cases on PHP 8.4.24.
 - [x] **KP-011** Pure spending **preflight** policy: action cap, approved budget, free settled cash, scope, owner stop and survival mode. Evidence: 11/11 local unit tests. **NOT** a transactional lock, ledger or production safeguard.
-- [ ] **KP-012** InnoDB schema + PDO reservation prototype added on feature branch, with fail-closed defaults. MySQL integration/concurrency, migration/backup/restore tests still pending. See [financial reservations](FINANCIAL_RESERVATIONS.md).
+- [ ] **KP-012** InnoDB schema + PDO reservation prototype: 22 sequential and 33 independent-process cases pass locally; previous sequential MySQL CI rerun green. New process CI matrix pending. Migration/backup/restore and actual hosting still pending. See [financial reservations](FINANCIAL_RESERVATIONS.md).
 - [ ] **KP-013** Authenticated owner identity, 2FA and session security; roles/permissions.
 - [ ] **KP-014** Append-only event and decision audit journal; trusted timestamps and retention.
 - [ ] **KP-015** Secure encrypted credentials vault and audit; revocation/rotation.
@@ -30,7 +30,7 @@
 - [ ] **KP-017** CI lint/unit/static/security checks and verified staging deployment.
 
 ## 02 — Financial control and survival (must precede live autonomy)
-- [ ] **KP-020** Implemented unverified PDO/InnoDB reserve/commit/release/uncertain prototype and duplicate-idempotency denial. Independent DB locking/race/crash tests, authentic financial ledger and bank/provider reconciliation remain pending.
+- [ ] **KP-020** Reservation prototype locally tested with 22 sequential + 33 independent-process cases including budgets/shared cash, idempotency, committed stop and worker crash rollback. Full accounting, provider dispatch/reconciliation and authenticated stop/resume remain pending.
 - [ ] **KP-021** Budget policy: single AUD 200–300 planned capital injection, **AUD 500 cumulative external seed ceiling**; earned funds may be reinvested only under approved envelopes and reserves.
 - [ ] **KP-022** Track settled cash vs Stripe pending, customer liabilities, taxes, fulfilment, chargebacks, existing commitments and net contribution.
 - [ ] **KP-023** Owner Emergency Stop persists across restarts; cancels/pauses discretionary jobs and verifies third-party state.
@@ -101,3 +101,7 @@ Read `AGENTS.md` + `docs/SESSION_HANDOFF.md` at the start. Work on the first pra
 - Expanded integration harness with uncertain outcome retention, denied-release rollback, reconciled commit, conflicting provider reference, terminal transition and no-double-debit assertions (22 sequential database cases total).
 - Status: Implemented/Untested until the new CI run is observed passing. Local PHP/MySQL runtime unavailable in this session; no test pass claimed. Prior failed CI logs returned unavailable; root cause unknown.
 - Next: inspect new workflow result, fix concrete failures, then implement independent-process reservation and stop races. Authenticated stop/resume, full accounting and live deployment remain pending.
+
+## 2026-10-26 current evidence
+- 11 policy + 10 arithmetic + 22 sequential DB + 33 process checks pass locally; prior sequential DB and pure PHP GitHub checks green at 9ef0c3b. See VERIFICATION.md for exact runtime and scope.
+- KP-012/KP-020 stay incomplete: reservation tests do not complete an accounting system, deployment or authentication.

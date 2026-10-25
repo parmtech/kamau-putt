@@ -32,3 +32,12 @@ Each significant checkbox needs one of: linked automated CI result, reproducible
 - Materialized repository feature-branch source snapshot through connected GitHub read tools; interrupted clone had no commit and is not the working source. Local working snapshot: source/ in task workspace.
 - Actual commands: php tests/run.php (11/11 PASS), php tests/financial_math.php (10/10 PASS), php -l on all seven source/test PHP files (all PASS). Runtime PHP 8.5.12 Windows x64. PDO MySQL extension loads successfully.
 - Database integration/concurrency has NOT run yet. Next: workspace-only disposable MariaDB and independent-process race tests. No live spending/deployment.
+
+## 2026-10-26 — Real database and independent-process validation
+- User changed repository visibility to PUBLIC; canonical repository is parmtech/kamau-putt (id 1431801251). Do not put personal conversations, account identifiers, customer records, secrets or backup files into public source.
+- GitHub PHP check run 40206169925 attempt 2 and MySQL run 40206169926 attempt 2 succeeded after visibility change at commit 9ef0c3b662ed4f50479237fcdefd245282275e4b. Earlier account-billing blockage did not establish a code failure.
+- Local official portable MariaDB 11.4.13 x64 ZIP checksum verified against publisher checksum: d62986d433eeebfde218560b276103831604a61e929e87f1a17f5aebd80257e2. Test server bound to localhost only and stopped after tests; no system service installed.
+- Actual PHP 8.5.12 + MariaDB 11.4.13 tests/mysql_integration.php: 22/22 PASS on initially empty disposable DB. Prior local pure suites: 11/11 policy and 10/10 arithmetic, all PHP lint PASS.
+- New tests/mysql_concurrency.php: 33/33 PASS locally. Uses independent proc_open PHP processes and DB connections, barriers with parent-held control lock, three rounds each of budget/shared cash/duplicate reservation/duplicate commit competition, committed stop vs waiting requests, stop persistence across connections, and forcibly terminated uncommitted worker rollback/lock release.
+- Tests validate reservation serialization and DB rollback only. The raw SQL stop fixture is not authenticated owner stop/resume. No external provider, true double-entry accounting, dispatch race protection, migration rollback/backup restore, hosting account or production deployment is verified.
+- CI now runs sequential and process suites in separate disposable MySQL 8.4 matrix jobs. New matrix result must be observed independently; local MariaDB pass is not substituted for MySQL CI.

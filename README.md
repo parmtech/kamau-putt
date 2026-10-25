@@ -1,6 +1,6 @@
 # Kamau Putt (ਕਮਾਊ ਪੁੱਤ)
 
-> **Private backend-first development repository — October 24, 2026.** Planning, a locally tested policy skeleton and an experimental financial reservation feature branch. **No production app, store, API integration, autonomous agent or live business has been deployed.**
+> **Public backend-first development repository — October 26, 2026.** Planning, a locally tested policy skeleton and an experimental financial reservation feature branch. **No production app, store, API integration, autonomous agent or live business has been deployed.**
 
 ## Vision
 Kamau Putt is the private name of a long-term AI business operator that addresses its owner as **Dad**. The AI researches, launches and operates profitable digital businesses, starting with a small Australian dropshipping experiment, then expands only when actual funds and evidence justify it. Public brands may have completely different names.
@@ -34,7 +34,7 @@ Persistent encrypted AI identity/memory + event journal + immutable accounting a
 - [x] Product scope and requirements captured
 - [ ] Architecture review and threat model
 - [x] Minimal Core preflight code skeleton (11 local unit cases; **not** live money-safe)
-- [ ] Financial reservation feature branch: prototype + 10 local arithmetic tests; no MySQL/staging verification; see [financial reservations](docs/FINANCIAL_RESERVATIONS.md)
+- [ ] Financial reservation feature branch: prototype with local 22-case DB and 33-case process validation; earlier MySQL CI green; no production/staging approval; see [financial reservations](docs/FINANCIAL_RESERVATIONS.md)
 - [ ] Durable Core implementation and staging verification
 - [ ] Sandbox integrations
 - [ ] Test APK / real incoming call proof-of-concept
