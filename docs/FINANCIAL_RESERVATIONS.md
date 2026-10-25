@@ -1,6 +1,6 @@
 # KP-012 / KP-020 — Financial reservation foundation
 
-**Status: prototype locally tested on MariaDB 11.4.13; latest MySQL 8.4 CI for ledger changes pending. No live spending permitted.**
+**Status: prototype locally tested on MariaDB 11.4.13 and MySQL 8.4 CI. No live spending permitted.**
 
 ## Purpose
 The existing `SpendGuard` provides advisory policy checks, not durable money control. This change adds:
@@ -43,5 +43,5 @@ Integration tests require a dedicated disposable database. The local suites have
 No payment, ads, supplier purchases, owner funds intake, owner STOP resume, AI autonomous finance or production deployment until audited authorization, atomic ledger, independent QA, staged reconciliations and legal/supplier checks pass.
 
 ## 2026-10-26 validation update
-`tests/mysql_integration.php` passes 25 sequential DB assertions, `tests/mysql_accounting.php` passes 29 ledger assertions, and `tests/mysql_concurrency.php` passes 33 independent-process assertions on local MariaDB 11.4.13. The concurrency suite covers budget/global cash contention, duplicate reservation/commit, committed stop waiting requests, connection persistence and killed-worker DB rollback. CI runs each suite in its own initially empty DB; the newest MySQL 8.4 matrix result is pending. No external dispatch, authenticated stop/resume, reconciled real cash or production-readiness claim follows from these tests. Test stop is direct fixture SQL, not a privileged public API.
+`tests/mysql_integration.php` passes 25 sequential DB assertions, `tests/mysql_accounting.php` passes 29 ledger assertions, and `tests/mysql_concurrency.php` passes 33 independent-process assertions on local MariaDB 11.4.13. The concurrency suite covers budget/global cash contention, duplicate reservation/commit, committed stop waiting requests, connection persistence and killed-worker DB rollback. All three MySQL 8.4 CI matrix jobs passed on ledger head `ad139a4` (run 40245143663). CI uses its disposable root account only to enable trigger creation under binary logging; test suites run as the restricted test user. No external dispatch, authenticated stop/resume, reconciled real cash or production-readiness claim follows from these tests. Test stop is direct fixture SQL, not a privileged public API.
 

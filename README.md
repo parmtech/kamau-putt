@@ -34,7 +34,7 @@ Persistent encrypted AI identity/memory + event journal + immutable accounting a
 - [x] Product scope and requirements captured
 - [ ] Architecture review and threat model
 - [x] Minimal Core preflight code skeleton (11 local unit cases; **not** live money-safe)
-- [ ] Financial reservation + double-entry ledger feature branch: local MariaDB validation; MySQL 8.4 CI for latest ledger commit pending; no production/staging approval; see [financial reservations](docs/FINANCIAL_RESERVATIONS.md)
+- [ ] Financial reservation + double-entry ledger feature branch: local MariaDB and MySQL 8.4 CI validation; no production/staging approval; see [financial reservations](docs/FINANCIAL_RESERVATIONS.md)
 - [ ] Durable Core implementation and staging verification
 - [ ] Sandbox integrations
 - [ ] Test APK / real incoming call proof-of-concept

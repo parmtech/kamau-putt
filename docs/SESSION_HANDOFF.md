@@ -26,7 +26,7 @@
 - No customer-facing identity assumption: public brands may have distinct names.
 
 ## Exact next actions
-1. Verify the MySQL 8.4 trigger-creation configuration fix. The first ledger CI attempt failed before test assertions because binary logging requires `log_bin_trust_function_creators` for trigger creation; tests and pure PHP checks passed. The CI fix uses only the disposable test server and awaits a fresh run.
+1. **KP-012/KP-020 ledger verification is complete at local/CI level:** MySQL 8.4 matrix run 40245143663 passed all three suites; initial run exposed the binary-logging trigger rule, fixed only in disposable CI configuration.
 2. Add and test transactional stop/dispatch epoch semantics so an already approved action cannot dispatch after STOP; add race, timeout and restart cases.
 3. Implement authenticated owner identity, MFA/session controls and reviewed one-use resume; preserve default STOPPED state.
 4. Then build journaled audit/credentials and hosting preflight. Do not enable external payments or spending before independent staging review.
@@ -49,9 +49,9 @@
 - Next: inspect new workflow result, fix concrete failures, then implement independent-process reservation and stop races. Authenticated stop/resume, full accounting and live deployment remain pending.
 
 ## 2026-10-26 authoritative continuation
-- Latest work adds `database/002_double_entry_ledger.mysql.sql`, `src/Core/PdoDoubleEntryLedger.php`, and atomic reservation-to-ledger posting; fresh local MariaDB suites passed: 25 reservation, 29 accounting, 33 concurrency assertions. Latest MySQL 8.4 ledger CI is not yet observed.
+- Latest work adds `database/002_double_entry_ledger.mysql.sql`, `src/Core/PdoDoubleEntryLedger.php`, and atomic reservation-to-ledger posting; fresh local MariaDB suites passed: 25 reservation, 29 accounting, 33 concurrency assertions. MySQL 8.4 CI run 40245143663 passed `mysql_integration`, `mysql_accounting`, and `mysql_concurrency`; PHP CI run 40245143656 also passed.
 - Local PHP 8.5.12 syntax lint, 11/11 policy checks, and 10/10 financial arithmetic checks passed again. A further DB rerun attempt hit local MariaDB authentication configuration (not a test assertion); prior fresh-database run remains evidence. Restore the local disposable DB login if re-running.
-- Canonical public repo: `parmtech/kamau-putt`; feature branch `feat/kp-financial-reservations-foundation`. Latest ledger work and documentation are uncommitted at handoff and must be committed/pushed, then verify CI.
+- Canonical public repo: `parmtech/kamau-putt`; feature branch `feat/kp-financial-reservations-foundation`. The ledger and CI fix are on the branch; commit `ad139a4` is the latest code head, and its checks are green. Keep local commits synchronized through the connected GitHub API if ordinary git push authentication remains unavailable.
 - Runtime lives outside repo in task workspace .tools/: PHP 8.5.12, MariaDB 11.4.13. source/ is a connector-materialized snapshot, not a Git checkout. Never commit .tools/ or database contents.
 - Local test server stopped after suite. For process tests use pdo_mysql configured in PHP ini (child workers use same configuration), proc_open, explicit test opt-in and a NEW EMPTY disposable database per suite/run. Never point it at a real account database.
 - After ledger CI passes, implement durable stop/dispatch epoch semantics, then authenticated owner login/MFA/session/step-up and reviewed one-use resume; use existing KP items, not a replacement project. Actual hosting preflight remains an owner/account dependency.

@@ -22,7 +22,7 @@
 ## 01 — Secure backend Core (START HERE)
 - [x] **KP-010** Minimal, framework-independent PHP Core skeleton and local test runner. Evidence: `src/Core`, `tests/run.php`, `composer.json`; local syntax check and 11 unit cases on PHP 8.4.24.
 - [x] **KP-011** Pure spending **preflight** policy: action cap, approved budget, free settled cash, scope, owner stop and survival mode. Evidence: 11/11 local unit tests. **NOT** a transactional lock, ledger or production safeguard.
-- [ ] **KP-012** InnoDB schema + PDO reservation prototype: 25 sequential, 29 ledger, and 33 independent-process cases pass locally on MariaDB 11.4.13. Latest MySQL 8.4 CI matrix pending. Migration/backup/restore and actual hosting still pending. See [financial reservations](FINANCIAL_RESERVATIONS.md).
+- [ ] **KP-012** InnoDB schema + PDO reservation/ledger prototype: 25 sequential, 29 ledger, and 33 independent-process cases pass locally on MariaDB 11.4.13; all three MySQL 8.4 CI matrix jobs passed on `ad139a4`. Migration/backup/restore and actual hosting still pending. See [financial reservations](FINANCIAL_RESERVATIONS.md).
 - [ ] **KP-013** Authenticated owner identity, 2FA and session security; roles/permissions.
 - [ ] **KP-014** Append-only event and decision audit journal; trusted timestamps and retention.
 - [ ] **KP-015** Secure encrypted credentials vault and audit; revocation/rotation.
