@@ -8,7 +8,8 @@ CREATE TABLE IF NOT EXISTS kp_finance_control (
   external_seed_ceiling_cents BIGINT UNSIGNED NOT NULL DEFAULT 50000,
   external_seed_received_cents BIGINT UNSIGNED NOT NULL DEFAULT 0,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  CONSTRAINT chk_seed_cap CHECK (external_seed_received_cents <= external_seed_ceiling_cents)
+  CONSTRAINT chk_seed_cap CHECK (external_seed_received_cents <= external_seed_ceiling_cents),
+  CONSTRAINT chk_seed_php_range CHECK (external_seed_received_cents <= 9223372036854775807 AND external_seed_ceiling_cents <= 9223372036854775807)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS kp_financial_position (
@@ -18,7 +19,12 @@ CREATE TABLE IF NOT EXISTS kp_financial_position (
   tax_reserve_cents BIGINT UNSIGNED NOT NULL DEFAULT 0,
   refund_reserve_cents BIGINT UNSIGNED NOT NULL DEFAULT 0,
   discretionary_reserved_cents BIGINT UNSIGNED NOT NULL DEFAULT 0,
-  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT chk_position_php_range CHECK (
+    settled_cash_cents <= 9223372036854775807 AND customer_liabilities_cents <= 9223372036854775807 AND
+    tax_reserve_cents <= 9223372036854775807 AND refund_reserve_cents <= 9223372036854775807 AND
+    discretionary_reserved_cents <= 9223372036854775807
+  )
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS kp_budget_envelopes (
@@ -29,7 +35,11 @@ CREATE TABLE IF NOT EXISTS kp_budget_envelopes (
   spent_cents BIGINT UNSIGNED NOT NULL DEFAULT 0,
   reserved_cents BIGINT UNSIGNED NOT NULL DEFAULT 0,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  CONSTRAINT chk_budget_cap CHECK (spent_cents + reserved_cents <= approved_limit_cents)
+  CONSTRAINT chk_budget_cap CHECK (spent_cents + reserved_cents <= approved_limit_cents),
+  CONSTRAINT chk_budget_php_range CHECK (
+    approved_limit_cents <= 9223372036854775807 AND per_action_cap_cents <= 9223372036854775807 AND
+    spent_cents <= 9223372036854775807 AND reserved_cents <= 9223372036854775807
+  )
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS kp_spend_reservations (
@@ -45,7 +55,7 @@ CREATE TABLE IF NOT EXISTS kp_spend_reservations (
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   INDEX idx_scope_status (scope, status),
   CONSTRAINT fk_spend_scope FOREIGN KEY (scope) REFERENCES kp_budget_envelopes(scope),
-  CONSTRAINT chk_reservation_amount CHECK (amount_cents > 0)
+  CONSTRAINT chk_reservation_amount CHECK (amount_cents > 0 AND amount_cents <= 9223372036854775807)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS kp_financial_events (
@@ -62,3 +72,4 @@ CREATE TABLE IF NOT EXISTS kp_financial_events (
 -- administrative workflow may later change mode or stop flag.
 INSERT IGNORE INTO kp_finance_control (id) VALUES (1);
 INSERT IGNORE INTO kp_financial_position (id) VALUES (1);
+

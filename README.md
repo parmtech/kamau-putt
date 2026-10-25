@@ -30,11 +30,11 @@ Kamau Putt is the private name of a long-term AI business operator that addresse
 Persistent encrypted AI identity/memory + event journal + immutable accounting audit trail; autonomous business modules; provider-agnostic secure API gateway; customer-facing brand agents; Android voice/call app; web HQ dashboards. Multiple model keys per provider can be entered by the owner, with testing, approval, policy-compliant failover and global cost limits. No secrets or live customer data in Git.
 
 ## Status
-- [x] Private GitHub repository created and connected
+- [x] Public GitHub repository created and connected
 - [x] Product scope and requirements captured
 - [ ] Architecture review and threat model
 - [x] Minimal Core preflight code skeleton (11 local unit cases; **not** live money-safe)
-- [ ] Financial reservation feature branch: prototype with local 22-case DB and 33-case process validation; earlier MySQL CI green; no production/staging approval; see [financial reservations](docs/FINANCIAL_RESERVATIONS.md)
+- [ ] Financial reservation + double-entry ledger feature branch: local MariaDB validation; MySQL 8.4 CI for latest ledger commit pending; no production/staging approval; see [financial reservations](docs/FINANCIAL_RESERVATIONS.md)
 - [ ] Durable Core implementation and staging verification
 - [ ] Sandbox integrations
 - [ ] Test APK / real incoming call proof-of-concept
@@ -42,3 +42,4 @@ Persistent encrypted AI identity/memory + event journal + immutable accounting a
 - [ ] Live product validation and launch
 
 **Status clarification:** This repository contains plans and a small locally tested policy library; it is not evidence that any business will be profitable or that an autonomous production agent exists. **Android app is LAST in the development sequence** per the owner's latest decision. Start future sessions with [AGENTS.md](AGENTS.md) and [SESSION_HANDOFF.md](docs/SESSION_HANDOFF.md).
+

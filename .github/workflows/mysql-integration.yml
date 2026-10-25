@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        suite: [mysql_integration, mysql_concurrency]
+        suite: [mysql_integration, mysql_accounting, mysql_concurrency]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     services:
@@ -51,3 +51,4 @@ jobs:
           KP_TEST_MYSQL_USER: kamau_test
           KP_TEST_MYSQL_PASSWORD: disposable-test-only
         run: php tests/${{ matrix.suite }}.php
+

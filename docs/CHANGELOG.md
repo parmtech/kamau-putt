@@ -2,6 +2,12 @@
 
 All dates Australia/Sydney. Append a new dated entry for each substantive session. Keep code history in Git commits. **Do not delete or silently rewrite previously recorded decisions.**
 
+## 2026-10-26 — Double-entry ledger prototype
+- Added AUD chart of accounts, append-only balanced journal entries, source/idempotency uniqueness, hash chaining and DB-level update/delete guards.
+- Reservation commit now posts expense and settled-cash entries in the same DB transaction; rollback covers both records.
+- Added 29 accounting checks and expanded reservation integration to 25 checks; CI now runs reservation, accounting and concurrency suites in separate MySQL 8.4 jobs.
+- Local MariaDB 11.4.13 passed all three suites (25 + 29 + 33). Latest GitHub MySQL CI is pending. This does not verify real cash, refunds, liabilities, owner authentication, provider dispatch, hosting or production readiness.
+
 ## 2026-10-24 — Session: financial reservation prototype and hosting preflight
 - Kept work in existing private repository on `feat/kp-financial-reservations-foundation`; no replacement project.
 - Reviewed current Namecheap shared-host policy; created `docs/HOSTING_PREFLIGHT.md`, noting 5-minute minimum cron interval and prohibition on long-lived daemons; account checks still pending.
@@ -31,3 +37,4 @@ All dates Australia/Sydney. Append a new dated entry for each substantive sessio
 - Added independent-process finance tests and a separate disposable database CI matrix suite.
 - Local MariaDB sequential 22/22 and concurrency 33/33 pass; prior PHP/DB GitHub reruns green after owner made repo public. Details and scope in VERIFICATION.md.
 - Updated tracker/handoff/README/AGENTS and finance documentation to distinguish tested reservation behavior from pending accounting/auth/provider/deploy gates. No production powers enabled.
+

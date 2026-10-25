@@ -24,6 +24,7 @@ require_once __DIR__ . '/../src/Core/SpendDecision.php';
 require_once __DIR__ . '/../src/Core/SpendGuard.php';
 require_once __DIR__ . '/../src/Core/FinancialMath.php';
 require_once __DIR__ . '/../src/Core/PdoSpendReservations.php';
+require_once __DIR__ . '/../src/Core/PdoDoubleEntryLedger.php';
 
 use KamauPutt\Core\PdoSpendReservations;
 
@@ -41,6 +42,17 @@ foreach (preg_split('/;\s*(?=\n|$)/', $sql) as $statement) {
         $db->exec(trim($statement));
     }
 }
+$ledgerSql = file_get_contents(__DIR__ . '/../database/002_double_entry_ledger.mysql.sql');
+foreach (preg_split('/;\s*(?=\n|$)/', $ledgerSql) as $statement) {
+    if (trim($statement) !== '') {
+        $db->exec(trim($statement));
+    }
+}
+$accounting = new KamauPutt\Core\PdoDoubleEntryLedger($db);
+$accounting->post('test-opening-0001', 'opening:test-fixture', 'test:fixture', [
+    ['account' => 'cash_settled', 'debit_cents' => 1000, 'credit_cents' => 0, 'memo' => 'Synthetic disposable fixture funding'],
+    ['account' => 'owner_capital', 'debit_cents' => 0, 'credit_cents' => 1000, 'memo' => 'Synthetic disposable fixture funding'],
+]);
 $db->exec("INSERT INTO kp_budget_envelopes(scope,approved_limit_cents,per_action_cap_cents) VALUES ('test',1000,1000)");
 $db->exec("UPDATE kp_financial_position SET settled_cash_cents=1000 WHERE id=1");
 $ledger = new PdoSpendReservations($db);
@@ -98,6 +110,9 @@ try {
 $final = $db->query('SELECT settled_cash_cents, discretionary_reserved_cents FROM kp_financial_position WHERE id=1')->fetch();
 $tests['no_double_debit'] = (int) $final['settled_cash_cents'] === 300 && (int) $final['discretionary_reserved_cents'] === 0;
 $tests['only_successful_transitions_journaled'] = (int) $db->query('SELECT COUNT(*) FROM kp_financial_events')->fetchColumn() === 7;
+$tests['ledger_cash_matches_settled_position'] = $accounting->accountBalance('cash_settled') === 300;
+$tests['ledger_expense_matches_verified_commits'] = $accounting->accountBalance('operating_expense') === 700;
+$tests['ledger_balances_and_hash_chain_verify'] = $accounting->verify()['transactions'] === 3;
 
 foreach ($tests as $name => $pass) {
     echo ($pass ? 'PASS ' : 'FAIL ') . $name . PHP_EOL;
@@ -105,3 +120,4 @@ foreach ($tests as $name => $pass) {
 $passed = count(array_filter($tests));
 echo "$passed/" . count($tests) . " integration cases passed\n";
 exit($passed === count($tests) ? 0 : 1);
+

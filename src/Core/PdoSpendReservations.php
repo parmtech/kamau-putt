@@ -142,6 +142,17 @@ final class PdoSpendReservations
             }
             $amount = (int) $row['amount_cents'];
             if ($next === 'committed' || $next === 'released') {
+                if ($next === 'committed') {
+                    (new PdoDoubleEntryLedger($this->db))->postInTransaction(
+                        'reservation-charge:' . hash('sha256', $key),
+                        'reservation:' . hash('sha256', $key),
+                        'system:spend-ledger',
+                        [
+                            ['account' => 'operating_expense', 'debit_cents' => $amount, 'credit_cents' => 0, 'memo' => 'Verified provider charge'],
+                            ['account' => 'cash_settled', 'debit_cents' => 0, 'credit_cents' => $amount, 'memo' => 'Verified provider charge'],
+                        ]
+                    );
+                }
                 $this->exec('UPDATE kp_budget_envelopes SET reserved_cents = reserved_cents - ?' .
                     ($next === 'committed' ? ', spent_cents = spent_cents + ?' : '') .
                     ' WHERE scope = ?', $next === 'committed' ? [$amount, $amount, $row['scope']] : [$amount, $row['scope']]);
@@ -213,3 +224,4 @@ final class PdoSpendReservations
         return sprintf('%s-%s-%s-%s-%s', substr($hex, 0, 8), substr($hex, 8, 4), substr($hex, 12, 4), substr($hex, 16, 4), substr($hex, 20));
     }
 }
+

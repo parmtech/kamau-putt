@@ -12,6 +12,7 @@ require_once __DIR__ . '/../src/Core/SpendDecision.php';
 require_once __DIR__ . '/../src/Core/SpendGuard.php';
 require_once __DIR__ . '/../src/Core/FinancialMath.php';
 require_once __DIR__ . '/../src/Core/PdoSpendReservations.php';
+require_once __DIR__ . '/../src/Core/PdoDoubleEntryLedger.php';
 
 use KamauPutt\Core\PdoSpendReservations;
 
@@ -141,6 +142,31 @@ function fixture(PDO $db): void
     $db->exec('DELETE FROM kp_financial_events');
     $db->exec('DELETE FROM kp_spend_reservations');
     $db->exec('DELETE FROM kp_budget_envelopes');
+    $GLOBALS['fixtureSequence']++;
+    $accounting = new KamauPutt\Core\PdoDoubleEntryLedger($db);
+    $cash = $accounting->accountBalance('cash_settled');
+    $difference = 1000 - $cash;
+    if ($difference > 0) {
+        $lines = [
+            ['account' => 'cash_settled', 'debit_cents' => $difference, 'credit_cents' => 0, 'memo' => 'Synthetic disposable fixture funding'],
+            ['account' => 'owner_capital', 'debit_cents' => 0, 'credit_cents' => $difference, 'memo' => 'Synthetic disposable fixture funding'],
+        ];
+    } elseif ($difference < 0) {
+        $amount = -$difference;
+        $lines = [
+            ['account' => 'owner_capital', 'debit_cents' => $amount, 'credit_cents' => 0, 'memo' => 'Synthetic disposable fixture reset'],
+            ['account' => 'cash_settled', 'debit_cents' => 0, 'credit_cents' => $amount, 'memo' => 'Synthetic disposable fixture reset'],
+        ];
+    }
+    if ($difference !== 0) {
+        $sequence = $GLOBALS['fixtureSequence'];
+        $accounting->post(
+            'fixture-opening-' . str_pad((string) $sequence, 8, '0', STR_PAD_LEFT),
+            'opening:fixture-' . $sequence,
+            'test:fixture',
+            $lines
+        );
+    }
     $db->exec("INSERT INTO kp_budget_envelopes(scope,approved_limit_cents,per_action_cap_cents) VALUES ('test',1000,1000),('other',1000,1000)");
     $db->exec('UPDATE kp_financial_position SET settled_cash_cents=1000, customer_liabilities_cents=0, tax_reserve_cents=0, refund_reserve_cents=0, discretionary_reserved_cents=0 WHERE id=1');
     $db->exec("UPDATE kp_finance_control SET operating_mode='growth',owner_emergency_stopped=0 WHERE id=1");
@@ -190,7 +216,13 @@ if (($argv[1] ?? '') === '--worker') {
 if ((int) $db->query('SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = DATABASE()')->fetchColumn() !== 0) {
     throw new RuntimeException('Concurrency test requires an EMPTY disposable database');
 }
+$GLOBALS['fixtureSequence'] = 0;
 foreach (preg_split('/;\s*(?=\n|$)/', file_get_contents(__DIR__ . '/../database/001_financial_control.mysql.sql')) as $statement) {
+    if (trim($statement) !== '') {
+        $db->exec(trim($statement));
+    }
+}
+foreach (preg_split('/;\s*(?=\n|$)/', file_get_contents(__DIR__ . '/../database/002_double_entry_ledger.mysql.sql')) as $statement) {
     if (trim($statement) !== '') {
         $db->exec(trim($statement));
     }
@@ -244,3 +276,4 @@ checkCase('crashed_process_rolls_back_budget', (int) $db->query("SELECT reserved
 checkCase('crashed_lock_released', $ledger->reserve('after-crash-0001','test','supplier_order',100,100,true)['allowed']);
 
 echo $GLOBALS['passedCases'] . " concurrency cases passed\n";
+

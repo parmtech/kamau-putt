@@ -26,9 +26,10 @@
 - No customer-facing identity assumption: public brands may have distinct names.
 
 ## Exact next actions
-1. **KP-003:** Verify actual cPanel runtime/extensions, database engine, SSL, cron, SSH, memory and backups against provider policy; do not upload secrets.
-2. **KP-012/KP-020:** Review branch prototype; run disposable DB integration, 2-process concurrent reservation and owner-stop race checks; verify no double charge and rollback on crashes. Build reconcilable double-entry accounting before staging approval.
-3. **KP-013/KP-023/024:** Implement durable auth/owner-stop controls with independent staging verification before enabling any live spending.
+1. Observe MySQL 8.4 CI for the latest ledger commit; fix any concrete failure.
+2. Add and test transactional stop/dispatch epoch semantics so an already approved action cannot dispatch after STOP; add race, timeout and restart cases.
+3. Implement authenticated owner identity, MFA/session controls and reviewed one-use resume; preserve default STOPPED state.
+4. Then build journaled audit/credentials and hosting preflight. Do not enable external payments or spending before independent staging review.
 
 ## Known limitations / open blockers
 - No verified live hosting environment, database, cron behavior, Stripe integration, Android background-calling stack or vetted live suppliers.
@@ -48,8 +49,11 @@
 - Next: inspect new workflow result, fix concrete failures, then implement independent-process reservation and stop races. Authenticated stop/resume, full accounting and live deployment remain pending.
 
 ## 2026-10-26 authoritative continuation
-- Latest work adds tests/mysql_concurrency.php (33 local independent-process assertions pass) and matrix CI alongside mysql_integration.php (22 local MariaDB assertions pass). Earlier GitHub PHP and MySQL reruns succeeded; inspect new head checks before claiming new process CI pass.
+- Latest work adds `database/002_double_entry_ledger.mysql.sql`, `src/Core/PdoDoubleEntryLedger.php`, and atomic reservation-to-ledger posting; fresh local MariaDB suites passed: 25 reservation, 29 accounting, 33 concurrency assertions. Latest MySQL 8.4 ledger CI is not yet observed.
+- Local PHP 8.5.12 syntax lint, 11/11 policy checks, and 10/10 financial arithmetic checks passed again. A further DB rerun attempt hit local MariaDB authentication configuration (not a test assertion); prior fresh-database run remains evidence. Restore the local disposable DB login if re-running.
+- Canonical public repo: `parmtech/kamau-putt`; feature branch `feat/kp-financial-reservations-foundation`. Latest ledger work and documentation are uncommitted at handoff and must be committed/pushed, then verify CI.
 - Runtime lives outside repo in task workspace .tools/: PHP 8.5.12, MariaDB 11.4.13. source/ is a connector-materialized snapshot, not a Git checkout. Never commit .tools/ or database contents.
 - Local test server stopped after suite. For process tests use pdo_mysql configured in PHP ini (child workers use same configuration), proc_open, explicit test opt-in and a NEW EMPTY disposable database per suite/run. Never point it at a real account database.
-- First next implementation: reconcilable double-entry accounting and durable stop/dispatch epoch semantics, then authenticated owner login/MFA/session/step-up and reviewed one-use resume; use existing KP items, not a replacement project. Actual hosting preflight remains an owner/account dependency.
+- After ledger CI passes, implement durable stop/dispatch epoch semantics, then authenticated owner login/MFA/session/step-up and reviewed one-use resume; use existing KP items, not a replacement project. Actual hosting preflight remains an owner/account dependency.
 - Existing A to Z blueprint is Draft PR #2; merge/reconcile its overlapping docs before final design acceptance. Owner intent is automatic routine operations inside scoped budgets after live gates, not suggestion-only operation. No live spending yet.
+

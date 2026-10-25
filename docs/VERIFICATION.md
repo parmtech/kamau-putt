@@ -19,6 +19,13 @@
 ## Completion policy
 Each significant checkbox needs one of: linked automated CI result, reproducible local test evidence, verifiable staging report, or real production observation. Mark the level explicitly. Never infer production readiness solely from a passing unit test.
 
+## 2026-10-26 — Double-entry ledger and atomic reservation posting
+- Runtime: portable PHP 8.5.12 and MariaDB 11.4.13 on Windows; local test databases were disposable and external to the repository.
+- `php -l` over every PHP file in `src/` and `tests/`: all pass. `php tests/run.php`: 11/11. `php tests/financial_math.php`: 10/10.
+- `tests/mysql_integration.php`: 25/25; `tests/mysql_accounting.php`: 29/29; `tests/mysql_concurrency.php`: 33/33 passed on fresh local databases. Coverage includes balanced posting, stable idempotency, append-only triggers, hash verification, integer overflow rejection, atomic rollback, concurrent reservations and worker crash rollback.
+- The workflow matrix now has three MySQL 8.4 suites. CI for the previous commit passed the reservation and concurrency jobs; CI for this ledger commit is pending and must be observed before claiming MySQL 8.4 verification.
+- Limit: synthetic opening balances and internal postings only. No bank/provider reconciliation, customer liabilities, tax/refund journals, external dispatch, authenticated STOP/resume, backup restore, staging or live operations verified.
+
 ## 2026-10-25 — Disposable database validation implementation
 - Added isolated MySQL 8.4 service CI workflow with explicit PDO driver install and empty disposable database; no production credentials or external payment APIs.
 - Expanded integration harness with uncertain outcome retention, denied-release rollback, reconciled commit, conflicting provider reference, terminal transition and no-double-debit assertions (22 sequential database cases total).
@@ -41,3 +48,4 @@ Each significant checkbox needs one of: linked automated CI result, reproducible
 - New tests/mysql_concurrency.php: 33/33 PASS locally. Uses independent proc_open PHP processes and DB connections, barriers with parent-held control lock, three rounds each of budget/shared cash/duplicate reservation/duplicate commit competition, committed stop vs waiting requests, stop persistence across connections, and forcibly terminated uncommitted worker rollback/lock release.
 - Tests validate reservation serialization and DB rollback only. The raw SQL stop fixture is not authenticated owner stop/resume. No external provider, true double-entry accounting, dispatch race protection, migration rollback/backup restore, hosting account or production deployment is verified.
 - CI now runs sequential and process suites in separate disposable MySQL 8.4 matrix jobs. New matrix result must be observed independently; local MariaDB pass is not substituted for MySQL CI.
+

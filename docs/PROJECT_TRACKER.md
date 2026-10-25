@@ -12,7 +12,7 @@
 - No automatic switch from local tests to real spending or customer operations.
 
 ## 00 — Project control and research (first)
-- [x] **KP-000** Private GitHub repository and original owner requirements captured. Evidence: existing README, FEATURES, MASTER_PLAN, DECISIONS.
+- [x] **KP-000** Public GitHub repository and original owner requirements captured. Evidence: repository `parmtech/kamau-putt`; owner changed visibility to public on 2026-10-26.
 - [x] **KP-001** Numbered end-to-end sequence, session handoff, changelog, verification and AI continuation instructions. Evidence: this tracker + `AGENTS.md`.
 - [x] **KP-002** Record revised build order: backend first, Android last. Evidence: DECISIONS and ROADMAP.
 - [ ] **KP-003** Namecheap provider documentation reviewed; shared hosting prohibits <5-min cron and stand-alone daemons. Actual account extensions, TLS, SSH, backup/restore and resource limits still UNVERIFIED. See [hosting preflight](HOSTING_PREFLIGHT.md).
@@ -22,7 +22,7 @@
 ## 01 — Secure backend Core (START HERE)
 - [x] **KP-010** Minimal, framework-independent PHP Core skeleton and local test runner. Evidence: `src/Core`, `tests/run.php`, `composer.json`; local syntax check and 11 unit cases on PHP 8.4.24.
 - [x] **KP-011** Pure spending **preflight** policy: action cap, approved budget, free settled cash, scope, owner stop and survival mode. Evidence: 11/11 local unit tests. **NOT** a transactional lock, ledger or production safeguard.
-- [ ] **KP-012** InnoDB schema + PDO reservation prototype: 22 sequential and 33 independent-process cases pass locally; previous sequential MySQL CI rerun green. New process CI matrix pending. Migration/backup/restore and actual hosting still pending. See [financial reservations](FINANCIAL_RESERVATIONS.md).
+- [ ] **KP-012** InnoDB schema + PDO reservation prototype: 25 sequential, 29 ledger, and 33 independent-process cases pass locally on MariaDB 11.4.13. Latest MySQL 8.4 CI matrix pending. Migration/backup/restore and actual hosting still pending. See [financial reservations](FINANCIAL_RESERVATIONS.md).
 - [ ] **KP-013** Authenticated owner identity, 2FA and session security; roles/permissions.
 - [ ] **KP-014** Append-only event and decision audit journal; trusted timestamps and retention.
 - [ ] **KP-015** Secure encrypted credentials vault and audit; revocation/rotation.
@@ -30,7 +30,7 @@
 - [ ] **KP-017** CI lint/unit/static/security checks and verified staging deployment.
 
 ## 02 — Financial control and survival (must precede live autonomy)
-- [ ] **KP-020** Reservation prototype locally tested with 22 sequential + 33 independent-process cases including budgets/shared cash, idempotency, committed stop and worker crash rollback. Full accounting, provider dispatch/reconciliation and authenticated stop/resume remain pending.
+- [ ] **KP-020** Reservation + append-only double-entry ledger prototype locally tested with 25 sequential + 29 accounting + 33 independent-process assertions. Full real cash reconciliation, provider dispatch/reconciliation and authenticated stop/resume remain pending.
 - [ ] **KP-021** Budget policy: single AUD 200–300 planned capital injection, **AUD 500 cumulative external seed ceiling**; earned funds may be reinvested only under approved envelopes and reserves.
 - [ ] **KP-022** Track settled cash vs Stripe pending, customer liabilities, taxes, fulfilment, chargebacks, existing commitments and net contribution.
 - [ ] **KP-023** Owner Emergency Stop persists across restarts; cancels/pauses discretionary jobs and verifies third-party state.
@@ -105,3 +105,4 @@ Read `AGENTS.md` + `docs/SESSION_HANDOFF.md` at the start. Work on the first pra
 ## 2026-10-26 current evidence
 - 11 policy + 10 arithmetic + 22 sequential DB + 33 process checks pass locally; prior sequential DB and pure PHP GitHub checks green at 9ef0c3b. See VERIFICATION.md for exact runtime and scope.
 - KP-012/KP-020 stay incomplete: reservation tests do not complete an accounting system, deployment or authentication.
+
