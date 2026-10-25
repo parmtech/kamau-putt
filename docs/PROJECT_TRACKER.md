@@ -5,6 +5,11 @@
 **Current phase:** 01 — minimal backend foundation, **in progress**.  
 **Source:** [Master Plan](MASTER_PLAN.md) · [Decisions](DECISIONS.md) · [Next session handoff](SESSION_HANDOFF.md) · [Verification](VERIFICATION.md).
 
+## 2026-10-25 blueprint update
+- [x] **Design document only:** [A to Z blueprint](BLUEPRINT_A_TO_Z.md) covers modules, data contracts, authority, financial/order state flows, threat controls, recovery, validation and delivery gates.
+- [ ] Resolve owner configuration in blueprint section Y; verify hosting, design and staging gates. No implementation checkbox is completed by documentation.
+- Existing unmerged Draft PR #1 contains financial reservation work; latest inspected CI failed. Reuse/review that work and preserve its branch documentation on merge.
+
 ## Status conventions
 - [ ] **Pending / blocked / in progress** — see notes, not complete.
 - [x] **Complete with stated evidence** — a completed *document*, *local unit test*, *staging test*, and *production operation* are different levels. Do not conflate them.

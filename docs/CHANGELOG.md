@@ -13,3 +13,9 @@ All dates Australia/Sydney. Append a new dated entry for each substantive sessio
 ## 2026-10-24 — Earlier conversational design work
 - Captured identity, autonomy, financial safety, Australian dropshipping plan, provider-agnostic API vault, memory, collaboration, call scheduling, owner emergency stop and future physical-hardware aspirations in Master Plan/Features/Decisions.
 - These were **requirements only**, not implemented commercial features.
+
+## 2026-10-25 — A to Z blueprint design baseline
+- Added BLUEPRINT_A_TO_Z.md, expanding existing scope into 26 design sections covering interfaces/data, delegated authority, financial and commerce state flows, stop/resume, jobs, memory, model routing, security, backups, operations, test matrix and acceptance gates.
+- Preserved backend-first/Android-last and cumulative seed constraints; owner decisions and account verification remain explicit.
+- Linked README/tracker/handoff. Inspected existing unmerged PR #1 and failed latest CI; no code or live operations changed.
+- Validation: documentation cross-check against existing Master Plan/Architecture/Decisions/Features/Roadmap; no runtime tests executed or newly claimed.

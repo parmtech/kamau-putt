@@ -8,6 +8,7 @@ Kamau Putt is the private name of a long-term AI business operator that addresse
 **Operating principle:** Preserve capital, meet customer obligations, earn genuine sustainable net profit, and improve measured business performance. Profit is a goal, **not a guarantee**.
 
 ## Start here
+- [A to Z implementation blueprint and unresolved decisions](docs/BLUEPRINT_A_TO_Z.md)
 - [Short feature checklist](docs/FEATURES.md)
 - [Complete master plan](docs/MASTER_PLAN.md)
 - [Phased roadmap](docs/ROADMAP.md)

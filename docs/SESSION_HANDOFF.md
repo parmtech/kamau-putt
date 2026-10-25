@@ -4,6 +4,13 @@
 **Repo:** `manbir6-ux/kamau-putt` (PRIVATE). Default branch `main`.  
 **User instruction:** Maintain complete development evidence in GitHub so *any later session* can continue without restarting.
 
+## 2026-10-25 documentation handoff
+- Owner requested A to Z blueprint and an interactive discussion of gaps. Read BLUEPRINT_A_TO_Z.md; status is PLANNED design baseline, not implemented/verified production.
+- Proposed design supplies data contracts, authorization and money/order flows, security, recovery, tests and staged delivery. Owner configuration questions are in section Y; ask one at a time.
+- First question pending: research/recommendations only versus bounded routine operations after explicit owner live-launch approval. Existing budget/Android-last decisions remain unchanged.
+- IMPORTANT: Draft PR #1 on feat/kp-financial-reservations-foundation already contains additional finance code and branch-specific progress docs. Latest inspected Actions runs 40064013299 and 40064010910 failed. Cause not established. Review/reuse existing work; reconcile overlapping documents when merging, do not restart.
+- Next independent task: diagnose failing CI and obtain redacted hosting capability evidence. No live actions or costs enabled.
+
 ## Current verified state
 1. Planning docs exist: `README.md`, `docs/MASTER_PLAN.md`, `docs/FEATURES.md`, `docs/DECISIONS.md`, `docs/ROADMAP.md`.
 2. Ordered task board: `docs/PROJECT_TRACKER.md`; completion conventions are mandatory.
