@@ -60,5 +60,5 @@ All dates Australia/Sydney. Append a new dated entry for each substantive sessio
 - Updated tracker/handoff/README/AGENTS and finance documentation to distinguish tested reservation behavior from pending accounting/auth/provider/deploy gates. No production powers enabled.
 
 # 2026-10-26 — Encrypted provider credential vault foundation
-- Added migration 007 and an owner-authenticated credential lifecycle: encrypted inactive storage, masked metadata, internal-only smoke-test evidence, fresh MFA plus exact confirmation for activation, revocation, and append-only hash-chained lifecycle events. CI database suite and review remain pending; there is no live provider adapter or HTTP test endpoint.
+- Added migration 007 and an owner-authenticated credential lifecycle: encrypted inactive storage, masked metadata, internal-only smoke-test evidence, fresh MFA plus exact confirmation for activation, revocation, and append-only hash-chained lifecycle events. MySQL 8.4 CI run `40247547998` passed all six suites; vault lifecycle assertions passed 16/16. There is no live provider adapter or HTTP test endpoint.
 - Vault encryption uses a separate `KP_VAULT_ENCRYPTION_KEY`. Losing this key prevents decryption. Provider credentials must not be used for real calls until STOP fencing, spend reservations, privacy/security review and provider adapters are complete.

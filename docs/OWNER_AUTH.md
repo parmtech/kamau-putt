@@ -32,7 +32,7 @@ Apply migrations `001` through `007` in order using a restricted migration/admin
 
 Never put these values in Git, the public webroot, a URL, application logs or the Android app. The bootstrap is single-use and refuses an existing owner row. The owner must enroll the supplied TOTP secret into an authenticator before discarding the bootstrap environment. Back up the vault key separately: losing it permanently prevents decrypting stored provider credentials.
 
-Credential lifecycle evidence is in `tests/mysql_credential_vault.php`; the CI run is the authoritative database verification. The current code intentionally has no provider adapter, key smoke-test transport, model router, usage metering or cost ledger connection. Internal test reports are trusted service inputs, not owner-submitted HTTP data. Do not activate or use a real provider key until that adapter, STOP fencing, cost reservation, privacy review and independent security review exist.
+Credential lifecycle evidence is in `tests/mysql_credential_vault.php`; MySQL 8.4 run `40247547998` passed all six DB suites and the vault suite's 16 lifecycle assertions. The PHP workflow for the same commit also passed. The current code intentionally has no provider adapter, key smoke-test transport, model router, usage metering or cost ledger connection. Internal test reports are trusted service inputs, not owner-submitted HTTP data. Do not activate or use a real provider key until that adapter, STOP fencing, cost reservation, privacy review and independent security review exist.
 
 ## Limits before deployment
 
