@@ -7,6 +7,12 @@ namespace KamauPutt\Core;
 use PDO;
 use Throwable;
 
+require_once __DIR__ . '/FinancialMath.php';
+require_once __DIR__ . '/SpendDecision.php';
+require_once __DIR__ . '/SpendGuard.php';
+require_once __DIR__ . '/PdoDoubleEntryLedger.php';
+require_once __DIR__ . '/PdoSpendReservations.php';
+
 /**
  * Durable reservation-backed outbox foundation. Provider dispatch happens only
  * inside a short callback while the finance control row is locked. A lost or
