@@ -27,7 +27,7 @@
 - [ ] **KP-014** Append-only owner STOP/resume audit journal, hash-chain verification and SQL update/delete guards passed on MySQL 8.4 run `40247011094` (owner-control suite 15/15). General business decision/event journal, retention and independent timestamp source remain.
 - [ ] **KP-015** Encrypted provider-key storage, masked listing, pending/activate/revoke lifecycle and immutable hash-chained audit implemented; MySQL 8.4 CI run `40247547998` passed 16 vault assertions. No provider adapter, live key test, rotation UI or production key use.
 - [ ] **KP-016** Same-origin static owner HQ shell now uses authenticated status/STOP/reviewed-resume and masked vault APIs; header, hosting and browser integration verification remain. No credential entry/activation UI or deployment.
-- [ ] **KP-017** CI lint/unit/static/security checks and verified staging deployment.
+- [ ] **KP-017** PHP lint/policy and MySQL integration suites run in GitHub CI; Owner HQ JavaScript syntax check is now added to that workflow. Static/security audit and verified staging deployment remain open.
 
 ## 02 — Financial control and survival (must precede live autonomy)
 - [ ] **KP-020** Reservation + append-only double-entry ledger prototype passed 25 sequential, 29 accounting and 33 local independent-process assertions; latest MySQL 8.4 CI passed 40 concurrency cases. Full real cash reconciliation, provider dispatch/reconciliation and authenticated stop/resume remain pending.

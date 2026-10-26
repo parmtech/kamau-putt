@@ -74,3 +74,4 @@ All dates Australia/Sydney. Append a new dated entry for each substantive sessio
 
 # 2026-10-26 — Owner HQ review fixes
 - Addressed independent read-only review: removed ineffective framing/cache meta directives and documented reliance on verified HTTP headers; logout/session expiry now clears resume challenge and review DOM; increased muted text contrast. Rechecked JS syntax and whitespace locally.
+- Added the Owner HQ JavaScript syntax check to the PHP foundation GitHub workflow.
