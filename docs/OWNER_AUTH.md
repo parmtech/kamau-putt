@@ -11,6 +11,9 @@ The current owner-auth path is a backend prototype on the financial feature bran
 - `POST /api/control/stop` persists owner STOP through the dispatch gate and returns the post-stop snapshot.
 - `POST /api/control/resume/challenge` requires the active session, password and a fresh, unused TOTP code. It issues a five-minute one-use challenge, rotates the session cookie and returns the exact financial snapshot that must be reviewed.
 - `POST /api/control/resume/confirm` requires the rotated session, matching CSRF/origin, the challenge and exact phrase `RESUME KAMAU PUTT`. It resumes only if the session is still fresh, the challenge is unused, the system remains stopped and the financial snapshot/dispatch epoch have not changed.
+- `GET /api/vault/credentials` returns owner-authenticated masked credential metadata; `POST /api/vault/credentials` stores a provider key encrypted and inactive.
+- `POST /api/vault/credentials/{id}/activate` requires fresh password/TOTP, exact phrase `ACTIVATE CREDENTIAL`, and a passing internal smoke-test record no older than five minutes.
+- `POST /api/vault/credentials/{id}/revoke` revokes a key; immutable credential rows remain for audit. No route performs an external provider test or returns key material.
 
 Cookies use `Secure`, `Path=/`, `SameSite=Strict`; the session token is HttpOnly. There is no CORS allowance or public registration route. The front controller requires HTTPS and uses the direct peer address for throttling; it does not trust forwarded IP headers.
 
@@ -18,15 +21,18 @@ The summary includes settled cash, customer/tax/refund reserves, discretionary r
 
 ## Provisioning configuration
 
-Apply migrations `001`, `002`, and `004` through `006` in order using a restricted migration/admin runner. Provision the only owner with `php bin/bootstrap-owner.php` from a trusted CLI after setting these environment values:
+Apply migrations `001` through `007` in order using a restricted migration/admin runner. Provision the only owner with `php bin/bootstrap-owner.php` from a trusted CLI after setting these environment values:
 
 - `KP_MYSQL_DSN`, `KP_MYSQL_USER`, `KP_MYSQL_PASSWORD`
 - `KP_OWNER_EMAIL`, `KP_OWNER_PASSWORD`, `KP_OWNER_TOTP_SECRET`
 - `KP_MFA_ENCRYPTION_KEY` (base64-encoded 32 random bytes)
 - `KP_AUTH_RATE_LIMIT_KEY` (base64-encoded, at least 32 random bytes)
+- `KP_VAULT_ENCRYPTION_KEY` (base64-encoded 32 random bytes, kept separate from the MFA key; required for vault routes)
 - For the web front controller: `KP_ALLOWED_ORIGIN` (one exact HTTPS origin)
 
-Never put these values in Git, the public webroot, a URL, application logs or the Android app. The bootstrap is single-use and refuses an existing owner row. The owner must enroll the supplied TOTP secret into an authenticator before discarding the bootstrap environment.
+Never put these values in Git, the public webroot, a URL, application logs or the Android app. The bootstrap is single-use and refuses an existing owner row. The owner must enroll the supplied TOTP secret into an authenticator before discarding the bootstrap environment. Back up the vault key separately: losing it permanently prevents decrypting stored provider credentials.
+
+Credential lifecycle evidence is in `tests/mysql_credential_vault.php`; the CI run is the authoritative database verification. The current code intentionally has no provider adapter, key smoke-test transport, model router, usage metering or cost ledger connection. Internal test reports are trusted service inputs, not owner-submitted HTTP data. Do not activate or use a real provider key until that adapter, STOP fencing, cost reservation, privacy review and independent security review exist.
 
 ## Limits before deployment
 

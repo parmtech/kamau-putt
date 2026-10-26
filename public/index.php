@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 use KamauPutt\Core\PdoOwnerAuth;
 use KamauPutt\Core\PdoOwnerControl;
+use KamauPutt\Core\PdoCredentialVault;
 use KamauPutt\Http\OwnerAuthController;
 
 require_once __DIR__ . '/../src/Core/PdoOwnerAuth.php';
 require_once __DIR__ . '/../src/Core/PdoDispatchGate.php';
 require_once __DIR__ . '/../src/Core/PdoOwnerControl.php';
+require_once __DIR__ . '/../src/Core/PdoCredentialVault.php';
 require_once __DIR__ . '/../src/Http/OwnerAuthController.php';
 
 header('Cache-Control: no-store, max-age=0');
@@ -25,8 +27,11 @@ $allowedRoutes = [
     'POST /api/control/stop',
     'POST /api/control/resume/challenge',
     'POST /api/control/resume/confirm',
+    'GET /api/vault/credentials',
+    'POST /api/vault/credentials',
 ];
-if (!in_array($method . ' ' . $requestPath, $allowedRoutes, true)) {
+$credentialRoute = is_string($requestPath) && preg_match('#^/api/vault/credentials/[1-9][0-9]*/(?:activate|revoke)$#D', $requestPath) === 1;
+if (!in_array($method . ' ' . $requestPath, $allowedRoutes, true) && !($method === 'POST' && $credentialRoute)) {
     http_response_code(404);
     header('Content-Type: application/json; charset=utf-8');
     echo '{"error":"not_found"}';
@@ -90,7 +95,10 @@ try {
     ]);
     $auth = new PdoOwnerAuth($db, $mfaKey, $rateKey);
     $control = new PdoOwnerControl($db);
-    $controller = new OwnerAuthController($auth, $config['KP_ALLOWED_ORIGIN'], $control);
+    $vaultKeyText = getenv('KP_VAULT_ENCRYPTION_KEY');
+    $vaultKey = is_string($vaultKeyText) ? base64_decode($vaultKeyText, true) : false;
+    $vault = is_string($vaultKey) && strlen($vaultKey) === SODIUM_CRYPTO_SECRETBOX_KEYBYTES ? new PdoCredentialVault($db, $vaultKey) : null;
+    $controller = new OwnerAuthController($auth, $config['KP_ALLOWED_ORIGIN'], $control, $vault);
     $response = $controller->handle(
         $method,
         (string) $requestPath,

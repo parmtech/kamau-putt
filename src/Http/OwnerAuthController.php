@@ -6,6 +6,7 @@ namespace KamauPutt\Http;
 
 use KamauPutt\Core\PdoOwnerAuth;
 use KamauPutt\Core\PdoOwnerControl;
+use KamauPutt\Core\PdoCredentialVault;
 
 /** Same-origin JSON controller for the owner-auth core; no CORS or registration. */
 final class OwnerAuthController
@@ -14,7 +15,7 @@ final class OwnerAuthController
     private const CSRF_COOKIE = '__Host-kp_csrf';
     private const SESSION_MAX_AGE = 43200;
 
-    public function __construct(private readonly PdoOwnerAuth $auth, private readonly string $allowedOrigin, private readonly ?PdoOwnerControl $control = null)
+    public function __construct(private readonly PdoOwnerAuth $auth, private readonly string $allowedOrigin, private readonly ?PdoOwnerControl $control = null, private readonly ?PdoCredentialVault $vault = null)
     {
         $parts = parse_url($allowedOrigin);
         if (!is_array($parts) || ($parts['scheme'] ?? '') !== 'https' || !isset($parts['host']) || isset($parts['user']) || isset($parts['pass']) || isset($parts['query']) || isset($parts['fragment']) || !in_array($parts['path'] ?? '', ['', '/'], true)) {
@@ -130,12 +131,82 @@ final class OwnerAuthController
             return $this->reply(200, ['control' => $control]);
         }
 
+        if ($path === '/api/vault/credentials' && $method === 'GET') {
+            if ($this->vault === null) { return $this->reply(503, ['error' => 'vault_unavailable']); }
+            if ($this->identity($cookies, $csrfHeader) === null) { return $this->reply(401, ['authenticated' => false]); }
+            return $this->reply(200, ['credentials' => $this->vault->listForOwner($cookies[self::SESSION_COOKIE], $csrfHeader)]);
+        }
+
+        if ($path === '/api/vault/credentials' && $method === 'POST') {
+            if (!$this->validOrigin($origin)) { return $this->reply(403, ['error' => 'origin_denied']); }
+            if ($this->vault === null) { return $this->reply(503, ['error' => 'vault_unavailable']); }
+            if ($this->identity($cookies, $csrfHeader) === null) { return $this->reply(401, ['error' => 'authentication_required']); }
+            $payload = json_decode($body, true);
+            if (!is_array($payload) || !is_string($payload['provider'] ?? null) || !is_string($payload['label'] ?? null) || !is_string($payload['secret'] ?? null)) {
+                return $this->reply(400, ['error' => 'invalid_request']);
+            }
+            try {
+                $credential = $this->vault->storePending($cookies[self::SESSION_COOKIE], $csrfHeader, $payload['provider'], $payload['label'], $payload['secret']);
+            } catch (\PDOException $error) {
+                throw $error;
+            } catch (\InvalidArgumentException) {
+                return $this->reply(400, ['error' => 'invalid_request']);
+            } catch (\RuntimeException) {
+                return $this->reply(409, ['error' => 'credential_not_stored']);
+            }
+            return $this->reply(201, ['credential' => $credential]);
+        }
+
+        if (preg_match('#^/api/vault/credentials/([1-9][0-9]*)/activate$#D', $path, $match) === 1 && $method === 'POST') {
+            if (!$this->validOrigin($origin)) { return $this->reply(403, ['error' => 'origin_denied']); }
+            if ($this->vault === null) { return $this->reply(503, ['error' => 'vault_unavailable']); }
+            $identity = $this->identity($cookies, $csrfHeader);
+            if ($identity === null) { return $this->reply(401, ['error' => 'authentication_required']); }
+            $payload = json_decode($body, true);
+            if (!is_array($payload) || !is_string($payload['password'] ?? null) || !is_string($payload['totp'] ?? null) || !is_string($payload['confirmation'] ?? null)) {
+                return $this->reply(400, ['error' => 'invalid_request']);
+            }
+            if ($payload['confirmation'] !== 'ACTIVATE CREDENTIAL') { return $this->reply(409, ['error' => 'explicit_confirmation_required']); }
+            $stepUp = $this->auth->authenticate($identity['email'], $payload['password'], $payload['totp'], $trustedRemoteAddress);
+            if (!$stepUp['authenticated']) { return $this->reply($stepUp['reason'] === 'rate_limited' ? 429 : 401, ['error' => $stepUp['reason']]); }
+            try {
+                $this->vault->activate($stepUp['session_token'], $stepUp['csrf_token'], (int) $match[1], $payload['confirmation']);
+            } catch (\PDOException $error) {
+                $this->auth->revokeSession($stepUp['session_token']);
+                throw $error;
+            } catch (\RuntimeException) {
+                $this->auth->revokeSession($stepUp['session_token']);
+                return $this->reply(409, ['error' => 'credential_activation_denied']);
+            }
+            return $this->reply(200, ['activated' => true], [
+                self::SESSION_COOKIE => $this->cookie($stepUp['session_token'], true, self::SESSION_MAX_AGE),
+                self::CSRF_COOKIE => $this->cookie($stepUp['csrf_token'], false, self::SESSION_MAX_AGE),
+            ]);
+        }
+
+        if (preg_match('#^/api/vault/credentials/([1-9][0-9]*)/revoke$#D', $path, $match) === 1 && $method === 'POST') {
+            if (!$this->validOrigin($origin)) { return $this->reply(403, ['error' => 'origin_denied']); }
+            if ($this->vault === null) { return $this->reply(503, ['error' => 'vault_unavailable']); }
+            if ($this->identity($cookies, $csrfHeader) === null) { return $this->reply(401, ['error' => 'authentication_required']); }
+            try {
+                $this->vault->revoke($cookies[self::SESSION_COOKIE], $csrfHeader, (int) $match[1]);
+            } catch (\PDOException $error) {
+                throw $error;
+            } catch (\RuntimeException) {
+                return $this->reply(409, ['error' => 'credential_revocation_denied']);
+            }
+            return $this->reply(204, []);
+        }
+
         if (in_array($path, ['/api/auth/login', '/api/auth/session', '/api/auth/logout'], true)) {
             $allow = $path === '/api/auth/session' ? 'GET' : 'POST';
             return $this->reply(405, ['error' => 'method_not_allowed'], [], ['Allow' => $allow]);
         }
         if (in_array($path, ['/api/control/status', '/api/control/stop', '/api/control/resume/challenge', '/api/control/resume/confirm'], true)) {
             return $this->reply(405, ['error' => 'method_not_allowed'], [], ['Allow' => $path === '/api/control/status' ? 'GET' : 'POST']);
+        }
+        if (preg_match('#^/api/vault/credentials(?:/[1-9][0-9]*/(?:activate|revoke))?$#D', $path) === 1) {
+            return $this->reply(405, ['error' => 'method_not_allowed'], [], ['Allow' => $path === '/api/vault/credentials' ? 'GET, POST' : 'POST']);
         }
         return $this->reply(404, ['error' => 'not_found']);
     }

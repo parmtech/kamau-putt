@@ -25,7 +25,7 @@
 - [ ] **KP-012** InnoDB schema + PDO reservation/ledger prototype: MySQL 8.4 run `40247011094` passed all five reservation, accounting, concurrency, auth and owner-control DB suites. Migration/backup/restore and actual hosting still pending. See [financial reservations](FINANCIAL_RESERVATIONS.md).
 - [ ] **KP-013** Authenticated owner identity, 2FA and session security; roles/permissions. CLI-only bootstrap and same-origin HTTPS auth routes are implemented. MySQL 8.4 run `40246815770` passed owner auth/controller 19/19 and owner-control 12/12. Recovery, roles, UI and independent review remain incomplete.
 - [ ] **KP-014** Append-only owner STOP/resume audit journal, hash-chain verification and SQL update/delete guards passed on MySQL 8.4 run `40247011094` (owner-control suite 15/15). General business decision/event journal, retention and independent timestamp source remain.
-- [ ] **KP-015** Secure encrypted credentials vault and audit; revocation/rotation.
+- [ ] **KP-015** Encrypted provider-key storage, masked listing, pending/activate/revoke lifecycle and immutable hash-chained audit implemented; MySQL CI verification pending. No provider adapter, live key test, rotation UI or production key use.
 - [ ] **KP-016** Secure web HQ admin shell, no unauthenticated sensitive endpoints.
 - [ ] **KP-017** CI lint/unit/static/security checks and verified staging deployment.
 
@@ -47,7 +47,7 @@
 - [ ] **KP-034** Schedule/availability memory and owner collaboration logic independent of Android.
 
 ## 04 — AI providers and cost router
-- [ ] **KP-040** Multi-provider, multi-key vault: Gemini, OpenAI, future services; masked key health and usage.
+- [ ] **KP-040** Multi-provider credential vault foundation for Gemini/OpenAI/future providers implemented; only one immutable credential version may be stored per provider/key fingerprint. Health smoke-test transport, multiple key versions, usage, UI and real provider integration remain.
 - [ ] **KP-041** Bounded privacy-aware model/key test suite with comparable quality, latency, price and Punjabi speech metrics.
 - [ ] **KP-042** Owner approval before activating new keys; policy-compliant provider fallback and quota monitoring.
 - [ ] **KP-043** Token/audio/image/video costs journaled and reconciled with hard spend reservations and fallbacks.
