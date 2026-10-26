@@ -63,6 +63,7 @@ $check('key_fingerprint_is_keyed_and_does_not_expose_secret', is_string($storedF
 $metadata = $controller->handle('GET', '/api/vault/credentials', null, $cookies, $cookies['__Host-kp_csrf'], '', true, '192.0.2.21');
 $check('owner_listing_is_masked_and_pending', $metadata['status'] === 200 && $metadata['body']['credentials'][0]['masked_key'] === '••••2345' && $metadata['body']['credentials'][0]['status'] === 'pending' && !array_key_exists('secret', $metadata['body']['credentials'][0]));
 $activationPath = '/api/vault/credentials/' . $credentialId . '/activate';
+$now += 30; // TOTP replay prevention rejects reusing the login code for step-up authentication.
 $blocked = $controller->handle('POST', $activationPath, 'https://owner.example.test', $cookies, $cookies['__Host-kp_csrf'], json_encode(['password' => $password, 'totp' => $totp(), 'confirmation' => 'ACTIVATE CREDENTIAL']), true, '192.0.2.21');
 $check('activation_blocked_until_smoke_test_passes', $blocked['status'] === 409);
 $vault->recordSmokeTest((int) $credentialId, false, 'test-request-0001', 100);
