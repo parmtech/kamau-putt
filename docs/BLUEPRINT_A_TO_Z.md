@@ -3,14 +3,14 @@ Date: 2026-10-25 (Australia/Sydney)
 Status: DESIGN BASELINE with verified prototype progress on draft PR #1; staging and production are separate gates.
 Read with MASTER_PLAN.md, DECISIONS.md and PROJECT_TRACKER.md. Backend first; Android last. This expands existing requirements without granting live spending or changing owner decisions.
 
-## Implementation evidence snapshot — 2026-10-26
-The design is written A to Z, but requirements, prototypes, independently reviewed readiness and production are distinct states. Draft PR #1 now contains financial reservations, double-entry ledger, dispatch/STOP gate, owner auth and stop/resume, encrypted provider-key vault, reservation-backed outbox, a pure privacy-aware route policy, and the Punjabi static Owner HQ shell for login, control status, emergency STOP and reviewed resume. The code remains unmerged and undeployed.
+## Implementation evidence snapshot — 2026-10-27
+The design is written A to Z, while implementation, review, staging and production remain separate. Draft PR #1 is still open and unmerged. Its latest head, `be19a790e33014de46d4b441c853b570607f946c`, adds migration 009 and separates durable-job authorization, provider I/O and settlement into two phases. Provider I/O runs outside the finance DB transaction. STOP cancels unstarted jobs and flags already-authorized in-flight attempts while keeping their reservation held; STOP cannot recall an already-authorized provider request.
 
-- MySQL 8.4 run `40309790257` passed all seven suites, including 20 durable-job cases; PHP run `40309790387` passed.
-- PHP run `40310403543` passed 13 provider-route policy cases; MySQL workflow run `40310403535` passed.
-- Vault lifecycle passed 16 cases on MySQL run `40247547998`; authenticated stop/resume passed earlier on run `40247011094`.
-- Owner HQ local syntax/whitespace checks passed; a read-only review found no XSS/CSRF issue in the examined paths and its three UI/configuration findings were fixed. Commit `ca6d8ab` passed PHP run `40311875586` and MySQL run `40311875558`, including the HQ JavaScript syntax check and all seven DB suites.
-- Local checks and CI do not verify the actual hosting account, HTTP security headers, provider terms or live prices, backups/restores, deployment, live payment, real provider calls, independent security review, or profitability. A browser-integrated HQ, supervised worker, persistent memory and Android/voice app are not complete.
+- Fresh local PHP 8.5.12 + MariaDB 11.4.13: durable-job suite 27/27 and owner-control suite 15/15 passed, including STOP during unlocked callback, exception-to-uncertain, expired-attempt recovery and one-time late settlement by exact attempt ID.
+- Local pure suites passed: policy 11/11, financial math 10/10, provider routing 13/13. PHP lint across src/tests/bin/public and git whitespace checks passed.
+- Current GitHub PHP and disposable MySQL 8.4 checks are queued/running as runs 40423366115 and 40423366112. Earlier green MySQL run 40309790257 covered migration 008 and 20 queue cases only; it does not verify migration 009.
+- A read-only implementation review found no critical correctness issue. Operational boundaries: dispatch-start commit is the irrevocable authorization point, so a paused worker may invoke its callback after STOP is requested; the 30-second lease still begins at claim time, so a slow adapter may be marked uncertain before returning. A real adapter must enforce a strict transport deadline.
+- No real provider call, live spending, deployment, staging, browser-integrated HQ, verified hosting, commercial compliance, backup restore or profitability is established. No supervised worker, reconciliation UI, persistent memory or Android/voice app is complete.
 
 See the current tracker for item-level status. Keep this blueprint as the A–Z design baseline; update this snapshot as PR #1 progresses.
 

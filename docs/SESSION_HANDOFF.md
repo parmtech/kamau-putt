@@ -1,15 +1,15 @@
 # Kamau Putt — Session Resume / AI Handoff
 
-**Last updated:** 2026-10-24, Australia/Sydney  
-**Repo:** `manbir6-ux/kamau-putt` (PRIVATE). Default branch `main`.  
+**Last updated:** 2026-10-26, Australia/Sydney  
+**Repo:** `parmtech/kamau-putt` (PUBLIC; visibility changed by owner). Default branch `main`.  
 **User instruction:** Maintain complete development evidence in GitHub so *any later session* can continue without restarting.
 
-## 2026-10-25 documentation handoff
-- Owner requested A to Z blueprint and an interactive discussion of gaps. Read BLUEPRINT_A_TO_Z.md; status is PLANNED design baseline, not implemented/verified production.
-- Proposed design supplies data contracts, authorization and money/order flows, security, recovery, tests and staged delivery. Owner configuration questions are in section Y; ask one at a time.
-- First question pending: research/recommendations only versus bounded routine operations after explicit owner live-launch approval. Existing budget/Android-last decisions remain unchanged.
-- IMPORTANT: Draft PR #1 on feat/kp-financial-reservations-foundation already contains additional finance code and branch-specific progress docs. Latest inspected Actions runs 40064013299 and 40064010910 failed. Cause not established. Review/reuse existing work; reconcile overlapping documents when merging, do not restart.
-- Next independent task: diagnose failing CI and obtain redacted hosting capability evidence. No live actions or costs enabled.
+## 2026-10-24 incremental finance foundation (feature branch; not merged)
+- Branch: `feat/kp-financial-reservations-foundation`. Draft PR proposed for review. GitHub workflow runs #7 and #17 reported FAILURE; job logs/steps were unavailable through connector. Investigate GitHub Actions UI and re-run before merge.
+- Added `database/001_financial_control.mysql.sql`, `src/Core/FinancialMath.php`, `src/Core/PdoSpendReservations.php`, `tests/financial_math.php`, optional `tests/mysql_integration.php`, workflow `.github/workflows/php-foundation.yml`.
+- Local PHP 8.4.24 syntax checks passed on FinancialMath and PdoSpendReservations. **10/10** new pure financial arithmetic tests passed locally. **Original 11/11** policy tests were verified in the prior session only. GitHub CI, actual MySQL transactions, concurrency and crash tests NOT YET VERIFIED.
+- No external charge, bank, supplier, ads or customer operations implemented. All database defaults fail closed. Opt-in staging integration test is not a live money test.
+- Provider-level Namecheap cron/daemon/PHP constraints researched: `docs/HOSTING_PREFLIGHT.md`; actual account unverified.
 
 ## Current verified state
 1. Planning docs exist: `README.md`, `docs/MASTER_PLAN.md`, `docs/FEATURES.md`, `docs/DECISIONS.md`, `docs/ROADMAP.md`.
@@ -26,9 +26,12 @@
 - No customer-facing identity assumption: public brands may have distinct names.
 
 ## Exact next actions
-1. **KP-003:** Verify actual Namecheap hosting PHP/MySQL/cron/worker/deploy constraints before choosing background scheduler or framework. Ask for access only if it is actually required, and do not upload secrets.
-2. **KP-005/KP-012:** Propose and implement a schema/migration + **atomic reserve/commit/release** budget protocol with transaction isolation, idempotency keys, customer liabilities, no credit against unsettled funds. Test concurrency/duplicate/timeout cases using an available DB/test harness.
-3. **KP-013/KP-023/024:** Implement durable auth/owner-stop controls with independent staging verification before enabling any live spending.
+- Dispatch-gate verification is complete at prototype CI level: MySQL 8.4 run 40245586343 passed all suites; concurrency reported 40 cases, including STOP waiting for an in-flight callback and rejecting later callbacks. PHP CI run 40245586377 passed.
+1. Authenticated STOP/resume and its audit are verified at prototype CI level: MySQL 8.4 run `40247011094` passed five suites, including 15 owner-control/audit and 19 owner-auth assertions; PHP run `40247011117` passed.
+2. Owner-control audit migration 006 and expanded suite are verified: run `40247011094` passed five MySQL suites, owner-control 15/15; PHP run `40247011117` passed. Encrypted provider-vault migration 007 passed on MySQL 8.4 run `40247547998`, including 16/16 vault assertions. Durable outbox migration 008 passed MySQL 8.4 run `40309790257` across all seven suites, including 20/20 queue assertions; PHP run `40309790387` passed. See `docs/DURABLE_JOBS.md`. Next: bounded provider adapters that use the vault and obey STOP, spend, privacy and reconciliation controls.
+3. Local provider routing policy passed PHP run `40310403543` with 13 cases; MySQL workflow `40310403535` also passed. Contract and limits are in `docs/PROVIDER_ROUTING.md`. It needs trusted fresh AUD quotes, active keys, task/language/data-class permission and quality/cost bounds; routing does not approve or execute spend.
+4. Minimal owner HQ static shell is now in `public/hq/` with session login, control snapshot, STOP, reviewed resume and masked credential inventory. Browser/staging verification and host header/routing checks remain. See `docs/OWNER_HQ.md`.
+5. Do not deploy the web routes before actual host, TLS, DB grant and backup checks. Keep Android last.
 
 ## Known limitations / open blockers
 - No verified live hosting environment, database, cron behavior, Stripe integration, Android background-calling stack or vetted live suppliers.
@@ -40,3 +43,36 @@
 - Verify current main branch HEAD; make focused changes + tests, capture outcomes.
 - Update tracker, changelog, handoff and verification **in same commit as code whenever possible**.
 - Clearly separate tested code from simulations, deploys and live operations.
+
+## 2026-10-26 — Owner HQ shell follow-up
+- Added the static same-origin Owner HQ UI in `public/hq/` with Punjabi labels/status messages, owner login, financial/control summary, emergency STOP, fresh-MFA resume review, and masked read-only credential inventory. Resume requires the server-provided exact phrase `RESUME KAMAU PUTT`; the challenge stays in memory only.
+- The shell has not been browser-tested against a configured API/database or deployed. Host header/CSP behavior, TLS, routing, and production readiness remain open. `node --check public/hq/hq.js` and `git diff --check` passed locally; see `docs/VERIFICATION.md`.
+- Next: synchronize the focused change to draft PR #1 via the connected GitHub API, observe its PHP/MySQL CI, then continue with a bounded provider adapter contract and its STOP/reservation/reconciliation tests. No live provider call or deployment.
+
+## 2026-10-25 — Disposable database validation implementation
+- Added isolated MySQL 8.4 service CI workflow with explicit PDO driver install and empty disposable database; no production credentials or external payment APIs.
+- Expanded integration harness with uncertain outcome retention, denied-release rollback, reconciled commit, conflicting provider reference, terminal transition and no-double-debit assertions (22 sequential database cases total).
+- Status: Implemented/Untested until the new CI run is observed passing. Local PHP/MySQL runtime unavailable in this session; no test pass claimed. Prior failed CI logs returned unavailable; root cause unknown.
+- Next: inspect new workflow result, fix concrete failures, then implement independent-process reservation and stop races. Authenticated stop/resume, full accounting and live deployment remain pending.
+
+## 2026-10-26 authoritative continuation
+- Latest work adds `database/002_double_entry_ledger.mysql.sql`, `src/Core/PdoDoubleEntryLedger.php`, and atomic reservation-to-ledger posting; fresh local MariaDB suites passed: 25 reservation, 29 accounting, 33 concurrency assertions. MySQL 8.4 CI run 40245143663 passed `mysql_integration`, `mysql_accounting`, and `mysql_concurrency`; PHP CI run 40245143656 also passed.
+- `dispatch_epoch` and `authorization_epoch`, plus `PdoDispatchGate`, are now on the branch and validated on MySQL 8.4. The callback runs in the locked transaction and is simulated only; no provider adapter or owner-auth binding exists.
+- Owner auth/control adds migrations 004–006, `PdoOwnerAuth`, `PdoOwnerControl`, CLI bootstrap, same-origin HTTPS controller/front controller and audit chain. MySQL 8.4 run `40247011094` passed owner-auth/controller 19/19 and owner-control/audit 15/15; PHP run `40247011117` passed.
+- Local PHP 8.5.12 syntax lint, 11/11 policy checks, and 10/10 financial arithmetic checks passed again. A further DB rerun attempt hit local MariaDB authentication configuration (not a test assertion); prior fresh-database run remains evidence. Restore the local disposable DB login if re-running.
+- Canonical public repo: `parmtech/kamau-putt`; feature branch `feat/kp-financial-reservations-foundation`. Latest verified head `6de7355` has green PHP and four-suite MySQL CI. Git push auth is unavailable; synchronize future commits through the connected GitHub API.
+- Runtime lives outside repo in task workspace .tools/: PHP 8.5.12, MariaDB 11.4.13. source/ is a connector-materialized snapshot, not a Git checkout. Never commit .tools/ or database contents.
+- Local test server stopped after suite. For process tests use pdo_mysql configured in PHP ini (child workers use same configuration), proc_open, explicit test opt-in and a NEW EMPTY disposable database per suite/run. Never point it at a real account database.
+- After ledger CI passes, implement durable stop/dispatch epoch semantics, then authenticated owner login/MFA/session/step-up and reviewed one-use resume; use existing KP items, not a replacement project. Actual hosting preflight remains an owner/account dependency.
+- Existing A to Z blueprint is Draft PR #2; merge/reconcile its overlapping docs before final design acceptance. Owner intent is automatic routine operations inside scoped budgets after live gates, not suggestion-only operation. No live spending yet.
+
+
+### Owner HQ review follow-up
+- Independent read-only review found no XSS/CSRF issue in the examined paths. Its three actionable findings (meta CSP framing/cache directives, stale resume state after logout, small muted-text contrast) were fixed on PR #1 commit `6b0fd99`; PHP and all seven MySQL suites passed on runs `40311665244` / `40311665418`. Hosting must emit real anti-frame/cache headers; meta directives cannot substitute.
+- The PHP foundation workflow now includes `node --check public/hq/hq.js`; commit `ca6d8ab` passed PHP run `40311875586` and all seven MySQL suites in run `40311875558`. No browser/hosting integration is verified.
+
+### 2026-10-27 — Durable dispatch follow-up
+- Current local checkout is branch `feat/kp-financial-reservations-foundation`, parent `5949d6d792f214c7895ccb721737f27615c48965`; uncommitted changes add migration 009 and two-phase dispatch. The GitHub connector is needed to publish because local push authentication is unavailable.
+- Local MariaDB 11.4.13 validation: durable jobs 27/27 and owner control 15/15. PHP policy 11/11, financial math 10/10, provider routing 13/13; PHP lint and whitespace checks pass. Details in `VERIFICATION.md`.
+- The provider callback now runs outside SQL transactions. `dispatch_started` commits the irrevocable attempt authorization; STOP after that point marks in-flight work and cannot promise to prevent a callback already authorized. A late result is accepted only for the matching attempt ID. The existing lease expires 30 seconds after claim, not after adapter start; a slow callback may be marked uncertain while it is still running. No production provider adapters exist.
+- Next: finish review and docs, commit the verified source/docs/migration to existing draft PR #1 via GitHub Git Data API, observe PHP and MySQL 8.4 CI and repair any concrete failures. Then update A–Z draft PR #2 with the exact new state and evidence. Keep both PRs in draft. Continue with bounded adapter design only after this transaction/STOP contract is verified; Android remains last.
