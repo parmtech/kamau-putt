@@ -29,6 +29,7 @@
 - Dispatch-gate verification is complete at prototype CI level: MySQL 8.4 run 40245586343 passed all suites; concurrency reported 40 cases, including STOP waiting for an in-flight callback and rejecting later callbacks. PHP CI run 40245586377 passed.
 1. Authenticated STOP/resume and its audit are verified at prototype CI level: MySQL 8.4 run `40247011094` passed five suites, including 15 owner-control/audit and 19 owner-auth assertions; PHP run `40247011117` passed.
 2. Owner-control audit migration 006 and expanded suite are verified: run `40247011094` passed five MySQL suites, owner-control 15/15; PHP run `40247011117` passed. Encrypted provider-vault migration 007 passed on MySQL 8.4 run `40247547998`, including 16/16 vault assertions. Durable outbox migration 008 passed MySQL 8.4 run `40309790257` across all seven suites, including 20/20 queue assertions; PHP run `40309790387` passed. See `docs/DURABLE_JOBS.md`. Next: bounded provider adapters that use the vault and obey STOP, spend, privacy and reconciliation controls.
+3. Local provider routing policy and 13-case pure test suite were added after those green runs. CI verification is pending. It needs fresh AUD quotes, active keys, task/language/data-class permission and quality/cost bounds; routing does not approve or execute spend.
 3. Do not deploy the web routes before actual host, TLS, DB grant and backup checks. Keep Android last.
 
 ## Known limitations / open blockers

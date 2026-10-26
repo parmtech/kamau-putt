@@ -48,7 +48,7 @@
 
 ## 04 — AI providers and cost router
 - [ ] **KP-040** Multi-provider credential vault foundation for Gemini/OpenAI/future providers implemented; only one immutable credential version may be stored per provider/key fingerprint. Health smoke-test transport, multiple key versions, usage, UI and real provider integration remain.
-- [ ] **KP-041** Bounded privacy-aware model/key test suite with comparable quality, latency, price and Punjabi speech metrics.
+- [ ] **KP-041** Pure privacy-aware route policy now filters inactive keys, stale/non-AUD quotes, data class, task/language capability, quality floor and action cost ceiling; cheapest eligible offer wins. New 13-case suite pending CI; provider benchmarks, measured Punjabi speech and live quote provenance remain.
 - [ ] **KP-042** Owner approval before activating new keys; policy-compliant provider fallback and quota monitoring.
 - [ ] **KP-043** Token/audio/image/video costs journaled and reconciled with hard spend reservations and fallbacks.
 

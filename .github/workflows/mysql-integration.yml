@@ -49,6 +49,7 @@ jobs:
         run: |
           php tests/run.php
           php tests/financial_math.php
+          php tests/provider_route_policy.php
       - name: Disposable MySQL integration
         env:
           KP_TEST_ALLOW_DB_WRITE: I_UNDERSTAND_STAGING_ONLY

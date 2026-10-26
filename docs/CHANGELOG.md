@@ -65,3 +65,6 @@ All dates Australia/Sydney. Append a new dated entry for each substantive sessio
 
 # 2026-10-26 — Durable reservation-backed job outbox foundation
 - Added migration 008, one-use worker leases, a stable provider idempotency key, stop/epoch fencing, conservative lease-expiry handling, append-only hash-chained job events, and atomic job + reservation + ledger outcomes. MySQL 8.4 run `40309790257` passed all seven suites, including 20 durable-job assertions; PHP run `40309790387` passed. Independent code review found a missing reservation-state recheck and missing release on queued STOP cancellation; both were fixed and covered by this green run. No scheduler, supervised worker, UI or live provider integration exists.
+
+# 2026-10-26 — Provider route policy foundation
+- Added a local deterministic router that rejects stale or non-AUD quotes, inactive keys, unsupported task/language/data class, low quality and over-cap estimates. The policy only selects an eligible offer; dispatch still requires an authorized reservation and outbox lease. CI verification is pending; no live provider price, quality or Punjabi speech claims are embedded.

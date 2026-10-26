@@ -26,4 +26,5 @@ jobs:
         run: |
           php tests/run.php
           php tests/financial_math.php
+          php tests/provider_route_policy.php
 # MySQL integration is intentionally excluded until a disposable test DB exists.
