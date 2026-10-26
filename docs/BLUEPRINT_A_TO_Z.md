@@ -4,12 +4,13 @@ Status: DESIGN BASELINE with verified prototype progress on draft PR #1; staging
 Read with MASTER_PLAN.md, DECISIONS.md and PROJECT_TRACKER.md. Backend first; Android last. This expands existing requirements without granting live spending or changing owner decisions.
 
 ## Implementation evidence snapshot — 2026-10-26
-The design is written A to Z, but requirements, prototypes, independently reviewed readiness and production are distinct states. Draft PR #1 now contains financial reservations, double-entry ledger, dispatch/STOP gate, owner auth and stop/resume, encrypted provider-key vault, reservation-backed outbox, and a pure privacy-aware route policy. The code remains unmerged and undeployed.
+The design is written A to Z, but requirements, prototypes, independently reviewed readiness and production are distinct states. Draft PR #1 now contains financial reservations, double-entry ledger, dispatch/STOP gate, owner auth and stop/resume, encrypted provider-key vault, reservation-backed outbox, a pure privacy-aware route policy, and the Punjabi static Owner HQ shell for login, control status, emergency STOP and reviewed resume. The code remains unmerged and undeployed.
 
 - MySQL 8.4 run `40309790257` passed all seven suites, including 20 durable-job cases; PHP run `40309790387` passed.
 - PHP run `40310403543` passed 13 provider-route policy cases; MySQL workflow run `40310403535` passed.
 - Vault lifecycle passed 16 cases on MySQL run `40247547998`; authenticated stop/resume passed earlier on run `40247011094`.
-- Local checks and CI do not verify the actual hosting account, provider terms or live prices, backups/restores, deployment, live payment, real provider calls, security review, or profitability. The worker, web HQ, persistent memory and Android/voice app are not complete.
+- Owner HQ local syntax/whitespace checks passed; a read-only review found no XSS/CSRF issue in the examined paths and its three UI/configuration findings were fixed. GitHub CI passed PHP and all seven MySQL suites for the HQ shell and review-fix commits. The latest CI workflow also adds an HQ JavaScript syntax check; its result is pending.
+- Local checks and CI do not verify the actual hosting account, HTTP security headers, provider terms or live prices, backups/restores, deployment, live payment, real provider calls, independent security review, or profitability. A browser-integrated HQ, supervised worker, persistent memory and Android/voice app are not complete.
 
 See the current tracker for item-level status. Keep this blueprint as the A–Z design baseline; update this snapshot as PR #1 progresses.
 
