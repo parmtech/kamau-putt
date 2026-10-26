@@ -69,4 +69,4 @@
 
 ### Owner HQ review follow-up
 - Independent read-only review found no XSS/CSRF issue in the examined paths. Its three actionable findings (meta CSP framing/cache directives, stale resume state after logout, small muted-text contrast) were fixed on PR #1 commit `6b0fd99`; PHP and all seven MySQL suites passed on runs `40311665244` / `40311665418`. Hosting must emit real anti-frame/cache headers; meta directives cannot substitute.
-- The PHP foundation workflow now includes `node --check public/hq/hq.js`; this workflow edit still needs a CI run. No browser/hosting integration is verified.
+- The PHP foundation workflow now includes `node --check public/hq/hq.js`; commit `ca6d8ab` passed PHP run `40311875586` and all seven MySQL suites in run `40311875558`. No browser/hosting integration is verified.

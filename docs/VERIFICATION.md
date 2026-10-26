@@ -81,4 +81,4 @@ Each significant checkbox needs one of: linked automated CI result, reproducible
 - Read-only helper review found three issues, all addressed: ineffective meta-only framing/cache directives, stale resume review state after logout/session expiry, and insufficient contrast for small muted text.
 - Re-ran `node --check public/hq/hq.js`: PASS. `git diff --check`: PASS.
 - Anti-framing and `no-store` still require hosting to serve the configured HTTP headers. No browser/staging verification has been performed.
-- Added `node --check public/hq/hq.js` to the GitHub PHP foundation workflow. CI evidence is pending for this workflow edit.
+- Added `node --check public/hq/hq.js` to the GitHub PHP foundation workflow. On commit `ca6d8ab`, PHP workflow `40311875586` and MySQL 8.4 workflow `40311875558` passed; all seven disposable DB suites succeeded and PHP workflow included the Owner HQ JavaScript syntax check.
