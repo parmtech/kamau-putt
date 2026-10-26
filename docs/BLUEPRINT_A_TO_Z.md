@@ -9,7 +9,7 @@ The design is written A to Z, but requirements, prototypes, independently review
 - MySQL 8.4 run `40309790257` passed all seven suites, including 20 durable-job cases; PHP run `40309790387` passed.
 - PHP run `40310403543` passed 13 provider-route policy cases; MySQL workflow run `40310403535` passed.
 - Vault lifecycle passed 16 cases on MySQL run `40247547998`; authenticated stop/resume passed earlier on run `40247011094`.
-- Owner HQ local syntax/whitespace checks passed; a read-only review found no XSS/CSRF issue in the examined paths and its three UI/configuration findings were fixed. GitHub CI passed PHP and all seven MySQL suites for the HQ shell and review-fix commits. The latest CI workflow also adds an HQ JavaScript syntax check; its result is pending.
+- Owner HQ local syntax/whitespace checks passed; a read-only review found no XSS/CSRF issue in the examined paths and its three UI/configuration findings were fixed. Commit `ca6d8ab` passed PHP run `40311875586` and MySQL run `40311875558`, including the HQ JavaScript syntax check and all seven DB suites.
 - Local checks and CI do not verify the actual hosting account, HTTP security headers, provider terms or live prices, backups/restores, deployment, live payment, real provider calls, independent security review, or profitability. A browser-integrated HQ, supervised worker, persistent memory and Android/voice app are not complete.
 
 See the current tracker for item-level status. Keep this blueprint as the A–Z design baseline; update this snapshot as PR #1 progresses.
