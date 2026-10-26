@@ -1,7 +1,17 @@
 # Kamau Putt — A to Z implementation blueprint
 Date: 2026-10-25 (Australia/Sydney)
-Status: PLANNED design baseline; implementation, staging and production are separate gates.
+Status: DESIGN BASELINE with verified prototype progress on draft PR #1; staging and production are separate gates.
 Read with MASTER_PLAN.md, DECISIONS.md and PROJECT_TRACKER.md. Backend first; Android last. This expands existing requirements without granting live spending or changing owner decisions.
+
+## Implementation evidence snapshot — 2026-10-26
+The design is written A to Z, but requirements, prototypes, independently reviewed readiness and production are distinct states. Draft PR #1 now contains financial reservations, double-entry ledger, dispatch/STOP gate, owner auth and stop/resume, encrypted provider-key vault, reservation-backed outbox, and a pure privacy-aware route policy. The code remains unmerged and undeployed.
+
+- MySQL 8.4 run `40309790257` passed all seven suites, including 20 durable-job cases; PHP run `40309790387` passed.
+- PHP run `40310403543` passed 13 provider-route policy cases; MySQL workflow run `40310403535` passed.
+- Vault lifecycle passed 16 cases on MySQL run `40247547998`; authenticated stop/resume passed earlier on run `40247011094`.
+- Local checks and CI do not verify the actual hosting account, provider terms or live prices, backups/restores, deployment, live payment, real provider calls, security review, or profitability. The worker, web HQ, persistent memory and Android/voice app are not complete.
+
+See the current tracker for item-level status. Keep this blueprint as the A–Z design baseline; update this snapshot as PR #1 progresses.
 
 ## A. Purpose and completion definition
 One private, owner-controlled AI business operator, with Punjabi Dad conversation, persistent memory and bounded delegated authority. Start with one Australia-focused low-liability dropshipping product. Success means reconciled cash and positive contribution after all obligations, not revenue alone. No profit or uptime promise. V1 excludes multi-brand expansion, robots and model training.
@@ -115,11 +125,11 @@ Maintenance retains customer contact/refund routes. Health checks must not expos
 - Commerce: test checkout/webhooks, repeated/out-of-order events, stock failure, refunds, customer support and reconciliation.
 - Recovery: isolated backup restore, stop persistence, key recovery and split-brain prevention.
 - Android: real-device call/notification tests and authentication.
-Document exact environment, command, result and unresolved cases. Existing recorded 11 policy and 10 arithmetic unit cases are historical local evidence, not fresh execution here. Latest inspected PR #1 Actions runs failed; cause remains unverified.
+Document exact environment, command, result and unresolved cases. PHP run `40310403543` passed 13 provider-route cases. MySQL run `40309790257` passed the seven existing DB suites, including 20 durable-job cases; run `40247547998` passed vault lifecycle coverage. These are prototype CI results, not live provider or deployment evidence.
 
 ## W. Delivery gates and dependencies
 G0: hosting feasibility and scoped security/commercial review.
-G1: schema/auth/vault/journal and green reproducible CI.
+G1: schema/auth/vault/journal and green reproducible CI. Prototype components now exist on unmerged PR #1; independent review, safe recovery, privacy review and staging gates still apply.
 G2: transactional finance, stop/resume, accounting, reconciliation and independent staging failure tests.
 G3: memory/router/queue/web HQ plus bounded-cost and restore demonstrations.
 G4: sourced single-product decision and end-to-end test commerce.
@@ -129,7 +139,7 @@ G7: Android last, real-device QA.
 Map to existing KP-003..KP-114 tasks; do not reset progress or check implementation boxes for this document.
 
 ## X. Existing work integration
-Main contains the initial PHP preflight library. Draft PR #1 contains financial reservation prototype and additional documents; it is unmerged and latest inspected CI fails. Review/reuse it rather than rebuild. This documentation proposal does not approve, replace or merge PR #1. Reconcile overlapping handoff/tracker edits when merging either branch. Earlier MASTER_PLAN section 14 Android-first language is superseded by DECISIONS item 14 and ROADMAP.
+Main contains the initial PHP preflight library. Draft PR #1 contains the current backend prototypes and is still unmerged; latest code checks passed on MySQL 8.4 runs `40309790257` and `40310403535`, and PHP runs `40309790387` and `40310403543`. Review and reuse those changes rather than rebuilding. This documentation proposal does not approve, replace or merge PR #1. Reconcile overlapping README/tracker/handoff edits before merging either branch. Earlier MASTER_PLAN section 14 Android-first language is superseded by DECISIONS item 14 and ROADMAP.
 
 ## Y. Owner decisions still needed
 Ask one at a time; use already confirmed choices without re-asking.
