@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS kp_durable_job_events (
   job_id CHAR(36) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
   actor_kind ENUM('owner','system','worker') NOT NULL,
   actor_owner_id TINYINT UNSIGNED NULL,
-  event_type ENUM('queued','lease_issued','stop_canceled','stop_cancel_requested','provider_completed','provider_failed_no_effect','provider_outcome_uncertain','lease_expired_uncertain') NOT NULL,
+  event_type ENUM('queued','lease_issued','stop_canceled','stop_cancel_requested','dispatch_rejected','provider_completed','provider_failed_no_effect','provider_outcome_uncertain','lease_expired_uncertain') NOT NULL,
   detail_json JSON NOT NULL,
   occurred_epoch BIGINT UNSIGNED NOT NULL,
   previous_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,

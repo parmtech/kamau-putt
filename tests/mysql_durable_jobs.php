@@ -51,7 +51,7 @@ $check('uncertain_work_is_not_automatically_retried', $jobs->claimNext() === nul
 $check('third_reservation_is_created', $makeReservation(3)['allowed']);
 $jobs->enqueue('job-reserve-0003', 'job-key-00000003', 'payload-ref:00000003');
 $control->emergencyStop();
-$check('owner_stop_cancels_queued_jobs_atomically', $state($queued['id'])['status'] === 'completed' && $state((string) $db->query("SELECT id FROM kp_durable_jobs WHERE job_key='job-key-00000003'")->fetchColumn())['status'] === 'canceled');
+$check('owner_stop_cancels_queued_jobs_and_releases_reserved_funds', $state($queued['id'])['status'] === 'completed' && $state((string) $db->query("SELECT id FROM kp_durable_jobs WHERE job_key='job-key-00000003'")->fetchColumn())['status'] === 'canceled' && $reservations->release('job-reserve-0003') === 'idempotent_released');
 $summary = $control->summary();
 $check('stop_summary_counts_only_open_or_uncertain_work', $summary['emergency_stopped'] && $summary['job_queue_actions'] === 1);
 
@@ -70,9 +70,16 @@ $jobs->enqueue('job-reserve-0005', 'job-key-00000005', 'payload-ref:00000005');
 $noEffectLease = $jobs->claimNext();
 $noEffect = $jobs->dispatch($noEffectLease['id'], $noEffectLease['lease_token'], static fn(): array => ['outcome' => 'no_effect']);
 $check('verified_no_effect_releases_budget_and_closes_job', $noEffect['status'] === 'failed_no_effect' && $state($noEffectLease['id'])['status'] === 'failed' && $reservations->release('job-reserve-0005') === 'idempotent_released');
+$check('sixth_reservation_is_created_for_stale_reservation_guard', $makeReservation(6)['allowed']);
+$jobs->enqueue('job-reserve-0006', 'job-key-00000006', 'payload-ref:00000006');
+$staleLease = $jobs->claimNext();
+$reservations->markUncertain('job-reserve-0006');
+$providerCalled = false;
+$staleDispatch = $jobs->dispatch($staleLease['id'], $staleLease['lease_token'], static function () use (&$providerCalled): array { $providerCalled = true; return ['outcome' => 'accepted', 'reference' => 'must-not-run-0006']; });
+$check('dispatch_rechecks_reservation_before_calling_provider', !$providerCalled && $staleDispatch['reason'] === 'reservation_not_dispatchable' && $state($staleLease['id'])['status'] === 'uncertain');
 $audit = $jobs->verifyAudit();
-$check('durable_job_hash_chain_verifies', $audit['events'] === 15 && preg_match('/^[a-f0-9]{64}$/', $audit['last_hash']) === 1);
+$check('durable_job_hash_chain_verifies', $audit['events'] === 18 && preg_match('/^[a-f0-9]{64}$/', $audit['last_hash']) === 1);
 $eventUpdateDenied = false;
 try { $db->exec("UPDATE kp_durable_job_events SET event_type='queued' WHERE id=1"); } catch (PDOException) { $eventUpdateDenied = true; }
-$check('durable_job_events_are_append_only', $eventUpdateDenied && $jobs->verifyAudit()['events'] === 15);
+$check('durable_job_events_are_append_only', $eventUpdateDenied && $jobs->verifyAudit()['events'] === 18);
 echo $passed . " durable job cases passed\n";

@@ -109,6 +109,17 @@ final class PdoDurableJobs
                 $this->appendEvent($jobId, 'system', null, 'stop_cancel_requested', ['reason' => 'dispatch_fence'], $now);
                 return ['dispatched' => false, 'reason' => 'dispatch_fenced'];
             }
+            $reservation = $this->one('SELECT idempotency_key,status,authorization_epoch FROM kp_spend_reservations WHERE id=? FOR UPDATE', [$job['reservation_id']]);
+            if ($reservation === null) { throw new \RuntimeException('Outbox reservation is missing'); }
+            if ($reservation['status'] !== 'reserved' || (int) $reservation['authorization_epoch'] !== (int) $control['dispatch_epoch']) {
+                $next = $reservation['status'] === 'uncertain' || ($reservation['status'] === 'reserved' && (int) $reservation['authorization_epoch'] !== (int) $control['dispatch_epoch']) ? 'uncertain' : 'canceled';
+                if ($next === 'uncertain' && $reservation['status'] === 'reserved') {
+                    (new PdoSpendReservations($this->db))->transitionInTransaction((string) $reservation['idempotency_key'], 'uncertain');
+                }
+                $this->updateJob($jobId, $next, null, null, null, $now);
+                $this->appendEvent($jobId, 'system', null, 'dispatch_rejected', ['reason' => 'reservation_not_current'], $now);
+                return ['dispatched' => false, 'reason' => 'reservation_not_dispatchable'];
+            }
             // Must remain bounded. A process crash after provider acceptance is recovered as uncertain.
             $outcome = $providerCall([
                 'action_type' => (string) $job['action_type'], 'payload_ref' => (string) $job['payload_ref'],
@@ -118,8 +129,6 @@ final class PdoDurableJobs
             if (!is_array($outcome) || !in_array($outcome['outcome'] ?? null, ['accepted', 'no_effect', 'unknown'], true)) {
                 throw new \RuntimeException('Provider adapter returned an invalid outcome');
             }
-            $reservation = $this->one('SELECT idempotency_key FROM kp_spend_reservations WHERE id=? FOR UPDATE', [$job['reservation_id']]);
-            if ($reservation === null) { throw new \RuntimeException('Outbox reservation is missing'); }
             $reservations = new PdoSpendReservations($this->db);
             if ($outcome['outcome'] === 'accepted') {
                 $reference = $outcome['reference'] ?? null;
@@ -146,11 +155,19 @@ final class PdoDurableJobs
     public static function requestStopInTransaction(PDO $db, int $now): void
     {
         if (!$db->inTransaction()) { throw new \LogicException('STOP queue update requires an active transaction'); }
-        $stmt = $db->query("SELECT id,status,authorization_epoch,lease_token_hash,lease_expires_epoch FROM kp_durable_jobs WHERE status IN ('queued','leased') ORDER BY id FOR UPDATE");
+        $stmt = $db->query("SELECT id,reservation_id,status,authorization_epoch,lease_token_hash,lease_expires_epoch FROM kp_durable_jobs WHERE status IN ('queued','leased') ORDER BY id FOR UPDATE");
         foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $job) {
             $next = $job['status'] === 'queued' ? 'canceled' : 'cancel_requested';
             $update = $db->prepare('UPDATE kp_durable_jobs SET status=?,lease_token_hash=?,lease_expires_epoch=?,updated_epoch=? WHERE id=?');
             $update->execute([$next, $next === 'cancel_requested' ? $job['lease_token_hash'] : null, $next === 'cancel_requested' ? $job['lease_expires_epoch'] : null, $now, $job['id']]);
+            if ($next === 'canceled') {
+                $reservation = $db->prepare('SELECT idempotency_key,status FROM kp_spend_reservations WHERE id=? FOR UPDATE');
+                $reservation->execute([$job['reservation_id']]);
+                $reserved = $reservation->fetch(PDO::FETCH_ASSOC);
+                if ($reserved !== false && $reserved['status'] === 'reserved') {
+                    (new PdoSpendReservations($db))->transitionInTransaction((string) $reserved['idempotency_key'], 'released');
+                }
+            }
             self::appendEventForDb($db, (string) $job['id'], 'owner', 1, $next === 'canceled' ? 'stop_canceled' : 'stop_cancel_requested', ['authorization_epoch' => (int) $job['authorization_epoch']], $now);
         }
     }
