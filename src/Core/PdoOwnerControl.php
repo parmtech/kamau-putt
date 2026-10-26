@@ -7,6 +7,8 @@ namespace KamauPutt\Core;
 use PDO;
 use Throwable;
 
+require_once __DIR__ . '/PdoDurableJobs.php';
+
 /** Owner-authenticated STOP and explicit, single-use resume foundation. */
 final class PdoOwnerControl
 {
@@ -35,6 +37,7 @@ final class PdoOwnerControl
                 if ($epoch >= PHP_INT_MAX) { throw new \OverflowException('Dispatch epoch exhausted'); }
                 $epoch++;
                 $this->db->prepare('UPDATE kp_finance_control SET owner_emergency_stopped=1,dispatch_epoch=? WHERE id=1')->execute([$epoch]);
+                PdoDurableJobs::requestStopInTransaction($this->db, $now);
             }
             $summary = $this->summary();
             $this->appendAudit($wasStopped ? 'stop_already_stopped' : 'stop_applied', $epoch, self::summaryHash($summary), $now);
@@ -49,7 +52,8 @@ final class PdoOwnerControl
             "SELECT c.operating_mode,c.owner_emergency_stopped,c.dispatch_epoch,
                     p.settled_cash_cents,p.customer_liabilities_cents,p.tax_reserve_cents,
                     p.refund_reserve_cents,p.discretionary_reserved_cents,
-                    (SELECT COUNT(*) FROM kp_spend_reservations r WHERE r.status IN ('reserved','uncertain')) AS open_reservation_count
+                    (SELECT COUNT(*) FROM kp_spend_reservations r WHERE r.status IN ('reserved','uncertain')) AS open_reservation_count,
+                    (SELECT COUNT(*) FROM kp_durable_jobs j WHERE j.status IN ('queued','leased','cancel_requested','uncertain')) AS job_queue_actions
              FROM kp_finance_control c JOIN kp_financial_position p ON p.id=1 WHERE c.id=1"
         );
         if ($row === null) { throw new \RuntimeException('Owner control state unavailable: fail closed'); }
@@ -63,7 +67,7 @@ final class PdoOwnerControl
             'refund_reserve_cents' => (int) $row['refund_reserve_cents'],
             'discretionary_reserved_cents' => (int) $row['discretionary_reserved_cents'],
             'open_reservation_count' => (int) $row['open_reservation_count'],
-            'job_queue_actions' => 0,
+            'job_queue_actions' => (int) $row['job_queue_actions'],
         ];
     }
 

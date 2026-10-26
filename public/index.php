@@ -11,6 +11,7 @@ require_once __DIR__ . '/../src/Core/PdoOwnerAuth.php';
 require_once __DIR__ . '/../src/Core/PdoDispatchGate.php';
 require_once __DIR__ . '/../src/Core/PdoOwnerControl.php';
 require_once __DIR__ . '/../src/Core/PdoCredentialVault.php';
+require_once __DIR__ . '/../src/Core/PdoDurableJobs.php';
 require_once __DIR__ . '/../src/Http/OwnerAuthController.php';
 
 header('Cache-Control: no-store, max-age=0');

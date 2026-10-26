@@ -118,8 +118,16 @@ final class PdoSpendReservations
 
     private function transition(string $key, string $next, ?string $reference = null): string
     {
-        return $this->transaction(function () use ($key, $next, $reference): string {
-            $this->controlLock(); // same serial lock as reserve and future owner stop
+        return $this->transaction(fn(): string => $this->transitionInTransaction($key, $next, $reference));
+    }
+
+    /** Compose an outcome with a durable job transition in one DB transaction. */
+    public function transitionInTransaction(string $key, string $next, ?string $reference = null): string
+    {
+        if (!$this->db->inTransaction()) { throw new \LogicException('Reservation composition requires an active transaction'); }
+        if (!in_array($next, ['uncertain', 'committed', 'released'], true)) { throw new \InvalidArgumentException('Unsupported reservation transition'); }
+        if ($next === 'committed' && ($reference === null || $reference === '' || strlen($reference) > 255)) { throw new \InvalidArgumentException('Provider reference required'); }
+        $this->controlLock(); // same serial lock as reserve and owner STOP
             $row = $this->one('SELECT * FROM kp_spend_reservations WHERE idempotency_key = ? FOR UPDATE', [$key]);
             if ($row === null) {
                 throw new \RuntimeException('Unknown spending request');
@@ -163,7 +171,6 @@ final class PdoSpendReservations
             $this->exec('UPDATE kp_spend_reservations SET status = ?, external_reference = COALESCE(?, external_reference) WHERE id = ?', [$next, $reference, $row['id']]);
             $this->event((string) $row['id'], $next, $amount);
             return $next;
-        });
     }
 
     private function controlLock(): array

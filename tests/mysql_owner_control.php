@@ -24,7 +24,7 @@ $db = new PDO($dsn, getenv('KP_TEST_MYSQL_USER') ?: '', getenv('KP_TEST_MYSQL_PA
 if ((int) $db->query('SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=DATABASE()')->fetchColumn() !== 0) {
     throw new RuntimeException('Owner-control test requires an EMPTY disposable database');
 }
-foreach (['001_financial_control.mysql.sql', '004_owner_auth.mysql.sql', '005_owner_control.mysql.sql', '006_owner_control_audit.mysql.sql'] as $migration) {
+foreach (['001_financial_control.mysql.sql', '004_owner_auth.mysql.sql', '005_owner_control.mysql.sql', '006_owner_control_audit.mysql.sql', '008_durable_jobs.mysql.sql'] as $migration) {
     $sql = file_get_contents(__DIR__ . '/../database/' . $migration);
     foreach (preg_split('/;\s*(?=\n|$)/', $sql) as $statement) { if (trim($statement) !== '') { $db->exec(trim($statement)); } }
 }

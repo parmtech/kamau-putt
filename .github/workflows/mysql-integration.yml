@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        suite: [mysql_integration, mysql_accounting, mysql_concurrency, mysql_owner_auth, mysql_owner_control, mysql_credential_vault]
+        suite: [mysql_integration, mysql_accounting, mysql_concurrency, mysql_owner_auth, mysql_owner_control, mysql_credential_vault, mysql_durable_jobs]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     services:

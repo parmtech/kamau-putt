@@ -62,3 +62,6 @@ All dates Australia/Sydney. Append a new dated entry for each substantive sessio
 # 2026-10-26 — Encrypted provider credential vault foundation
 - Added migration 007 and an owner-authenticated credential lifecycle: encrypted inactive storage, masked metadata, internal-only smoke-test evidence, fresh MFA plus exact confirmation for activation, revocation, and append-only hash-chained lifecycle events. MySQL 8.4 CI run `40247547998` passed all six suites; vault lifecycle assertions passed 16/16. There is no live provider adapter or HTTP test endpoint.
 - Vault encryption uses a separate `KP_VAULT_ENCRYPTION_KEY`. Losing this key prevents decryption. Provider credentials must not be used for real calls until STOP fencing, spend reservations, privacy/security review and provider adapters are complete.
+
+# 2026-10-26 — Durable reservation-backed job outbox foundation
+- Added migration 008, one-use worker leases, a stable provider idempotency key, stop/epoch fencing, conservative lease-expiry handling, append-only hash-chained job events, and atomic job + reservation + ledger outcomes. A fresh seven-suite MySQL run is required before treating this prototype as verified. No scheduler, supervised worker, UI or live provider integration exists.

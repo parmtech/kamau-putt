@@ -30,6 +30,7 @@ _Last updated: 24 October 2026. Specifications, not implemented features._
 - [ ] One-time AUD 200–300 seed budget; never beyond AUD 500 cumulative start unless Dad explicitly changes limit.
 - [ ] Growth / Survival / Safe Shutdown financial modes; no discretionary overspend or personal bank autonomy.
 - [ ] Emergency stop button and voice command; pause new paid operations; protect existing customer obligations.
+- [ ] Durable queue: reservation-backed one-use leases, STOP fencing and no automatic retry on uncertain provider outcomes (prototype implementation is tracked in `docs/DURABLE_JOBS.md`).
 - [ ] Resume only after Dad sees concise risk/cost summary and explicitly approves; no self-resume.
 - [ ] Secure multi-key provider vault (OpenAI, Gemini, more); test and compare keys/models; Dad approves activation.
 - [ ] Provider-policy-compliant model routing / quota handling; free/cheap-first subject to privacy and quality.

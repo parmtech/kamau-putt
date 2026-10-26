@@ -14,14 +14,15 @@ The current owner-auth path is a backend prototype on the financial feature bran
 - `GET /api/vault/credentials` returns owner-authenticated masked credential metadata; `POST /api/vault/credentials` stores a provider key encrypted and inactive.
 - `POST /api/vault/credentials/{id}/activate` requires fresh password/TOTP, exact phrase `ACTIVATE CREDENTIAL`, and a passing internal smoke-test record no older than five minutes.
 - `POST /api/vault/credentials/{id}/revoke` revokes a key; immutable credential rows remain for audit. No route performs an external provider test or returns key material.
+- Owner-control status includes open/uncertain outbox actions. STOP cancels queued work and fences leased work in the same transaction as the dispatch epoch change.
 
 Cookies use `Secure`, `Path=/`, `SameSite=Strict`; the session token is HttpOnly. There is no CORS allowance or public registration route. The front controller requires HTTPS and uses the direct peer address for throttling; it does not trust forwarded IP headers.
 
-The summary includes settled cash, customer/tax/refund reserves, discretionary reservations, open reservation count and current mode/epoch. No durable job queue exists yet, so `job_queue_actions` reports zero. Normal resume preserves Survival mode; it never silently turns paid dispatch back on. Safe Shutdown requires a separate recovery decision. STOP, repeated STOP, challenge issuance and successful resume append owner-control events to the hash-chained audit journal in the same transaction as each state change; SQL triggers reject audit updates and deletes.
+The summary includes settled cash, customer/tax/refund reserves, discretionary reservations, open reservation count, open/uncertain jobs and current mode/epoch. Normal resume preserves Survival mode; it never silently turns paid dispatch back on. Safe Shutdown requires a separate recovery decision. STOP, repeated STOP, challenge issuance and successful resume append owner-control events to the hash-chained audit journal in the same transaction as each state change; SQL triggers reject audit updates and deletes. See [durable jobs](DURABLE_JOBS.md) for queue and STOP semantics.
 
 ## Provisioning configuration
 
-Apply migrations `001` through `007` in order using a restricted migration/admin runner. Provision the only owner with `php bin/bootstrap-owner.php` from a trusted CLI after setting these environment values:
+Apply the available migrations `001`, `002`, and `004` through `008` in order using a restricted migration/admin runner. Provision the only owner with `php bin/bootstrap-owner.php` from a trusted CLI after setting these environment values:
 
 - `KP_MYSQL_DSN`, `KP_MYSQL_USER`, `KP_MYSQL_PASSWORD`
 - `KP_OWNER_EMAIL`, `KP_OWNER_PASSWORD`, `KP_OWNER_TOTP_SECRET`
@@ -36,4 +37,4 @@ Credential lifecycle evidence is in `tests/mysql_credential_vault.php`; MySQL 8.
 
 ## Limits before deployment
 
-MySQL 8.4 run `40247011094` passed all five DB suites, including 19 auth/controller and 15 owner-control/audit assertions. PHP run `40247011117` passed. Routes have no UI, password reset, MFA recovery, session inventory, role system, durable job queue, independent security review or verified hosting setup. The cPanel document root must point to `public/`; SSL, environment-variable support, PDO MySQL, rewrite support, database grants, backup/restore and HTTPS behavior must be checked on the actual account before use. Do not deploy this as a live control surface yet.
+MySQL 8.4 run `40247011094` passed five DB suites, including 19 auth/controller and 15 owner-control/audit assertions. Credential-vault lifecycle passed 16 assertions on run `40247547998`. The durable-jobs suite is pending CI. Routes have no UI, password reset, MFA recovery, session inventory, role system, verified scheduler/worker, independent security review or verified hosting setup. The cPanel document root must point to `public/`; SSL, environment-variable support, PDO MySQL, rewrite support, database grants, backup/restore and HTTPS behavior must be checked on the actual account before use. Do not deploy this as a live control surface yet.
