@@ -76,3 +76,8 @@ Each significant checkbox needs one of: linked automated CI result, reproducible
 - Added Punjabi labels, state text, confirmation prompts and UI error messages; the backend-defined resume confirmation phrase remains exact and is rendered from the API response.
 - `node --check public/hq/hq.js`: PASS. `git diff --check`: PASS.
 - Not verified: browser behavior against a configured API/database, HTTP response headers on actual hosting, TLS, deployment, or live owner login/STOP/resume. No live services were contacted.
+
+## 2026-10-26 — Owner HQ review fixes
+- Read-only helper review found three issues, all addressed: ineffective meta-only framing/cache directives, stale resume review state after logout/session expiry, and insufficient contrast for small muted text.
+- Re-ran `node --check public/hq/hq.js`: PASS. `git diff --check`: PASS.
+- Anti-framing and `no-store` still require hosting to serve the configured HTTP headers. No browser/staging verification has been performed.

@@ -7,6 +7,15 @@
   const connection = $('#connection');
   let resumeChallenge = null;
 
+  function clearResumeState() {
+    resumeChallenge = null;
+    $('#step-up-form').reset();
+    $('#confirm-form').reset();
+    $('#resume-review').hidden = true;
+    $('#review-summary').replaceChildren();
+    $('#confirmation-phrase').textContent = '';
+  }
+
   function csrfToken() {
     const match = document.cookie.match(/(?:^|;\s*)__Host-kp_csrf=([^;]+)/);
     return match ? decodeURIComponent(match[1]) : '';
@@ -102,6 +111,7 @@
         return;
       }
       if (error.status === 401) {
+        clearResumeState();
         dashboard.hidden = true; loginPanel.hidden = false; connection.textContent = 'ਸਾਈਨ ਇਨ ਲੋੜੀਂਦਾ ਹੈ';
       } else {
         showNotice('ਮਾਲਕ ਦਾ ਸੈਸ਼ਨ ਨਹੀਂ ਮਿਲਿਆ। ਸੇਵਾ ਸ਼ਾਇਦ ਉਪਲਬਧ ਨਹੀਂ।', true);
@@ -113,7 +123,7 @@
     let status;
     try { status = await api('/api/control/status'); renderSummary(status.control); }
     catch (error) {
-      if (error.status === 401) { dashboard.hidden = true; loginPanel.hidden = false; connection.textContent = 'ਸਾਈਨ ਇਨ ਲੋੜੀਂਦਾ ਹੈ'; }
+      if (error.status === 401) { clearResumeState(); dashboard.hidden = true; loginPanel.hidden = false; connection.textContent = 'ਸਾਈਨ ਇਨ ਲੋੜੀਂਦਾ ਹੈ'; }
       else { showNotice('ਸਿਸਟਮ ਦੀ ਹਾਲਤ ਨਹੀਂ ਮਿਲੀ। ਕੋਈ ਕੰਟਰੋਲ ਕਾਰਵਾਈ ਨਹੀਂ ਹੋਈ।', true); connection.textContent = 'ਹਾਲਤ ਉਪਲਬਧ ਨਹੀਂ'; }
       return;
     }
@@ -185,6 +195,7 @@
     clearNotice();
     try { await api('/api/auth/logout', { method: 'POST', body: '{}' }); }
     catch { /* Clear the local view even if the server session already expired. */ }
+    clearResumeState();
     dashboard.hidden = true; loginPanel.hidden = false; connection.textContent = 'ਸਾਈਨ ਆਉਟ ਹੋ ਗਿਆ';
   });
 

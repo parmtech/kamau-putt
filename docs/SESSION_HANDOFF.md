@@ -66,3 +66,6 @@
 - After ledger CI passes, implement durable stop/dispatch epoch semantics, then authenticated owner login/MFA/session/step-up and reviewed one-use resume; use existing KP items, not a replacement project. Actual hosting preflight remains an owner/account dependency.
 - Existing A to Z blueprint is Draft PR #2; merge/reconcile its overlapping docs before final design acceptance. Owner intent is automatic routine operations inside scoped budgets after live gates, not suggestion-only operation. No live spending yet.
 
+
+### Owner HQ review follow-up
+- Independent read-only review found no XSS/CSRF issue in the examined paths. Its three actionable findings (meta CSP framing/cache directives, stale resume state after logout, small muted-text contrast) were fixed locally after the first HQ commit. These fixes still need syncing to PR #1 and CI. Hosting must emit real anti-frame/cache headers; meta directives cannot substitute.

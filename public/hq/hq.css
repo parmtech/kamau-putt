@@ -1,7 +1,7 @@
 :root {
   color-scheme: light;
   --ink: #18302b;
-  --muted: #6b7c76;
+  --muted: #52645e;
   --line: #dce7e2;
   --paper: #f5f8f5;
   --white: #fff;
@@ -75,7 +75,7 @@ input:focus { border-color: #4a9a78; box-shadow: 0 0 0 3px rgba(55, 142, 103, .1
 .text-button { padding: 8px 0; border: 0; background: none; color: var(--green); cursor: pointer; font-weight: 700; }
 .notice { margin: 0 0 16px; padding: 13px 15px; border: 1px solid #f1d4a2; border-radius: 10px; background: #fff9eb; color: #704e12; font-size: .9rem; }
 .notice.error { border-color: #efc5c2; background: var(--red-bg); color: var(--red); }
-.disclaimer { margin-top: 26px; color: #84918c; text-align: center; font-size: .75rem; }
+.disclaimer { margin-top: 26px; color: #52645e; text-align: center; font-size: .75rem; }
 [hidden] { display: none !important; }
 
 @media (max-width: 760px) {

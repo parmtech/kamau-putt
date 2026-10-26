@@ -71,3 +71,6 @@ All dates Australia/Sydney. Append a new dated entry for each substantive sessio
 
 # 2026-10-26 — Owner HQ browser shell
 - Added local static owner UI for login, financial/control snapshot, STOP, fresh-MFA resume review and masked provider-key inventory. Same-origin calls use secure cookies/CSRF; UI stores no secrets or resume tokens. Browser/staging/hosting validation remains pending.
+
+# 2026-10-26 — Owner HQ review fixes
+- Addressed independent read-only review: removed ineffective framing/cache meta directives and documented reliance on verified HTTP headers; logout/session expiry now clears resume challenge and review DOM; increased muted text contrast. Rechecked JS syntax and whitespace locally.
