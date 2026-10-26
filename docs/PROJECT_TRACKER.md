@@ -1,6 +1,6 @@
 # Kamau Putt — Ordered Build Checklist & Live Status
 
-**Updated:** 2026-10-26 (Australia/Sydney)  
+**Updated:** 2026-10-27 (Australia/Sydney)
 **Owner decision:** Build/test backend and web controls first. **Android app last**.  
 **Current phase:** 01 — backend + financial reservation prototype, **in progress; not deployable**.  
 **Source:** [Master Plan](MASTER_PLAN.md) · [Decisions](DECISIONS.md) · [Next session handoff](SESSION_HANDOFF.md) · [Verification](VERIFICATION.md).
@@ -33,7 +33,7 @@
 - [ ] **KP-020** Reservation + append-only double-entry ledger prototype passed 25 sequential, 29 accounting and 33 local independent-process assertions; latest MySQL 8.4 CI passed 40 concurrency cases. Full real cash reconciliation, provider dispatch/reconciliation and authenticated stop/resume remain pending.
 - [ ] **KP-021** Budget policy: single AUD 200–300 planned capital injection, **AUD 500 cumulative external seed ceiling**; earned funds may be reinvested only under approved envelopes and reserves.
 - [ ] **KP-022** Track settled cash vs Stripe pending, customer liabilities, taxes, fulfilment, chargebacks, existing commitments and net contribution.
-- [ ] **KP-023** Owner Emergency Stop persists across restarts; cancels/pauses discretionary jobs and verifies third-party state. Authenticated STOP/epoch audit passed run `40247011094`; MySQL run `40309790257` passed queue cancellation/epoch and reservation safeguards. Third-party cancellation/reconciliation and concurrent worker-specific STOP tests remain.
+- [ ] **KP-023** Owner Emergency Stop persists across restarts; cancels/pauses discretionary jobs and verifies third-party state. Authenticated STOP/epoch audit passed run `40247011094`; MySQL run `40309790257` passed queue cancellation/epoch and reservation safeguards. Local MariaDB 11.4 recheck passed the STOP-during-provider-I/O scenario: STOP returns while the callback has no DB transaction, marks the attempt in flight, and the exact accepted result settles once. MySQL 8.4 CI for migration 009 is pending. Third-party cancellation/reconciliation and staging races remain.
 - [ ] **KP-024** **Only Dad** can resume after brief risk/cost summary + fresh password/TOTP, exact confirmation phrase and one-use state-bound challenge. Fifteen owner-control assertions passed on run `40247011094`, including audit immutability, changed-summary denial, replay denial and Safe Shutdown refusal. Android/UI, concurrency race tests and independent security review remain.
 - [ ] **KP-025** Growth / Survival / Safe Shutdown, preserving prior paid-order/refund/legal duties.
 - [ ] **KP-026** Reconcile external payment/supplier ledger; test refunds, duplicate webhooks, provider timeouts, crash recovery.
@@ -53,7 +53,7 @@
 - [ ] **KP-043** Token/audio/image/video costs journaled and reconciled with hard spend reservations and fallbacks.
 
 ## 05 — Reliable autonomy infrastructure
-- [ ] **KP-050** Durable reservation-backed outbox with one-use leases, stable idempotency keys, atomic ledger settlement, STOP fencing, append-only audit and no automatic retry after ambiguity implemented; MySQL 8.4 run `40309790257` passed all seven suites, including 20 queue assertions. Scheduler, supervised workers, payload store and reconciliation UI remain.
+- [ ] **KP-050** Durable reservation-backed outbox with one-use leases, stable idempotency keys, atomic ledger settlement, STOP fencing, append-only audit and no automatic retry after ambiguity implemented. Prior MySQL 8.4 run `40309790257` passed all seven suites, including 20 queue assertions. The current two-phase dispatch update passed 27/27 durable-job and 15/15 owner-control assertions on fresh local MariaDB 11.4.13 databases; new migration/behavior still awaits MySQL 8.4 CI. Scheduler, supervised workers, bounded real adapter, payload store and reconciliation UI remain.
 - [ ] **KP-051** Tool authorization scopes, action plans, evidence, audit, sandbox/testing and rollback.
 - [ ] **KP-052** Owner web HQ chat, decisions, financial reporting, approvals and notifications.
 

@@ -12,7 +12,7 @@ $dsn = getenv('KP_TEST_MYSQL_DSN');
 if (!is_string($dsn) || !str_starts_with($dsn, 'mysql:') || !extension_loaded('pdo_mysql')) { fwrite(STDERR, "SKIP: configured MySQL PDO driver required\n"); exit(2); }
 $db = new PDO($dsn, getenv('KP_TEST_MYSQL_USER') ?: '', getenv('KP_TEST_MYSQL_PASSWORD') ?: '', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_EMULATE_PREPARES => false, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC]);
 if ((int) $db->query('SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=DATABASE()')->fetchColumn() !== 0) { throw new RuntimeException('Durable-jobs test requires an EMPTY disposable database'); }
-foreach (['001_financial_control.mysql.sql','002_double_entry_ledger.mysql.sql','004_owner_auth.mysql.sql','005_owner_control.mysql.sql','006_owner_control_audit.mysql.sql','008_durable_jobs.mysql.sql'] as $migration) {
+foreach (['001_financial_control.mysql.sql','002_double_entry_ledger.mysql.sql','004_owner_auth.mysql.sql','005_owner_control.mysql.sql','006_owner_control_audit.mysql.sql','008_durable_jobs.mysql.sql','009_durable_job_dispatch_attempt.mysql.sql'] as $migration) {
     $sql = file_get_contents(__DIR__ . '/../database/' . $migration);
     foreach (preg_split('/;\s*(?=\n|$)/', $sql) as $statement) { if (trim($statement) !== '') { $db->exec(trim($statement)); } }
 }
@@ -29,7 +29,7 @@ $control = new KamauPutt\Core\PdoOwnerControl($db, $clock);
 $passed = 0;
 $check = static function (string $label, bool $ok) use (&$passed): void { echo ($ok ? 'PASS ' : 'FAIL ') . $label . PHP_EOL; if (!$ok) { throw new RuntimeException('Failed durable-job invariant: ' . $label); } $passed++; };
 $makeReservation = static function (int $n) use ($reservations): array { return $reservations->reserve(sprintf('job-reserve-%04d', $n), 'ai_api', 'ai_call', 100, 1000, true); };
-$state = static function (string $jobId) use ($db): array { $stmt=$db->prepare('SELECT status,attempt_count FROM kp_durable_jobs WHERE id=?');$stmt->execute([$jobId]);return $stmt->fetch(PDO::FETCH_ASSOC); };
+$state = static function (string $jobId) use ($db): array { $stmt=$db->prepare('SELECT status,attempt_count,updated_epoch,dispatch_attempt_id FROM kp_durable_jobs WHERE id=?');$stmt->execute([$jobId]);return $stmt->fetch(PDO::FETCH_ASSOC); };
 
 $check('reservation_allows_durable_job_intent', $makeReservation(1)['allowed']);
 $queued = $jobs->enqueue('job-reserve-0001', 'job-key-00000001', 'payload-ref:00000001');
@@ -60,9 +60,10 @@ $check('fourth_reservation_is_created_after_test_resume', $makeReservation(4)['a
 $jobs->enqueue('job-reserve-0004', 'job-key-00000004', 'payload-ref:00000004');
 $cancelLease = $jobs->claimNext();
 $control->emergencyStop();
-$check('stop_fences_a_claimed_but_not_dispatched_job', $state($cancelLease['id'])['status'] === 'cancel_requested' && $jobs->dispatch($cancelLease['id'], $cancelLease['lease_token'], static fn(): array => ['outcome' => 'accepted', 'reference' => 'never-call-0004'])['reason'] === 'lease_unavailable');
+$providerCalled = false;
+$check('stop_cancels_unstarted_lease_and_releases_its_reservation', $state($cancelLease['id'])['status'] === 'canceled' && $jobs->dispatch($cancelLease['id'], $cancelLease['lease_token'], static function () use (&$providerCalled): array { $providerCalled = true; return ['outcome' => 'accepted', 'reference' => 'never-call-0004']; })['reason'] === 'lease_unavailable' && !$providerCalled && $reservations->release('job-reserve-0004') === 'idempotent_released');
 $now += 31;
-$check('expired_cancelled_lease_becomes_uncertain_without_retry', $jobs->claimNext() === null && $state($cancelLease['id'])['status'] === 'uncertain' && $reservations->markUncertain('job-reserve-0004') === 'idempotent_uncertain');
+$check('canceled_unstarted_lease_stays_terminal', $jobs->claimNext() === null && $state($cancelLease['id'])['status'] === 'canceled');
 
 $db->exec('UPDATE kp_finance_control SET owner_emergency_stopped=0,dispatch_epoch=dispatch_epoch+1 WHERE id=1');
 $check('fifth_reservation_is_created_for_verified_no_effect_path', $makeReservation(5)['allowed']);
@@ -77,9 +78,38 @@ $reservations->markUncertain('job-reserve-0006');
 $providerCalled = false;
 $staleDispatch = $jobs->dispatch($staleLease['id'], $staleLease['lease_token'], static function () use (&$providerCalled): array { $providerCalled = true; return ['outcome' => 'accepted', 'reference' => 'must-not-run-0006']; });
 $check('dispatch_rechecks_reservation_before_calling_provider', !$providerCalled && $staleDispatch['reason'] === 'reservation_not_dispatchable' && $state($staleLease['id'])['status'] === 'uncertain');
+
+$check('seventh_reservation_is_created_for_stop_during_provider_io', $makeReservation(7)['allowed']);
+$jobs->enqueue('job-reserve-0007', 'job-key-00000007', 'payload-ref:00000007');
+$stopLease = $jobs->claimNext();
+$stopObserverDb = new PDO($dsn, getenv('KP_TEST_MYSQL_USER') ?: '', getenv('KP_TEST_MYSQL_PASSWORD') ?: '', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_EMULATE_PREPARES => false, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC]);
+$stopObserverControl = new KamauPutt\Core\PdoOwnerControl($stopObserverDb, $clock);
+$callbackOutsideTransaction = false;
+$stopSummary = [];
+$stopDuringDispatch = $jobs->dispatch($stopLease['id'], $stopLease['lease_token'], static function (array $request) use ($db, $stopObserverControl, &$callbackOutsideTransaction, &$stopSummary): array {
+    $callbackOutsideTransaction = !$db->inTransaction() && is_string($request['attempt_id'] ?? null);
+    $stopSummary = $stopObserverControl->emergencyStop();
+    return ['outcome' => 'accepted', 'reference' => 'provider-ref-after-stop-0007'];
+});
+$check('provider_callback_runs_outside_transaction_and_STOP_reports_inflight_attempt', $callbackOutsideTransaction && $stopSummary['emergency_stopped'] && $stopSummary['job_queue_actions'] >= 3 && $state($stopLease['id'])['status'] === 'completed');
+$check('accepted_inflight_attempt_settles_once_after_STOP', $stopDuringDispatch['status'] === 'completed' && $reservations->commit('job-reserve-0007', 'provider-ref-after-stop-0007') === 'idempotent_committed');
+
+$db->exec('UPDATE kp_finance_control SET owner_emergency_stopped=0,dispatch_epoch=dispatch_epoch+1 WHERE id=1');
+$check('eighth_reservation_is_created_for_adapter_exception', $makeReservation(8)['allowed']);
+$jobs->enqueue('job-reserve-0008', 'job-key-00000008', 'payload-ref:00000008');
+$throwLease = $jobs->claimNext();
+$thrown = $jobs->dispatch($throwLease['id'], $throwLease['lease_token'], static function (): array { throw new RuntimeException('transport outcome not observed'); });
+$check('transport_exception_becomes_uncertain_and_holds_reservation', $thrown['status'] === 'uncertain' && $state($throwLease['id'])['status'] === 'uncertain' && $reservations->markUncertain('job-reserve-0008') === 'idempotent_uncertain');
+
+$check('ninth_reservation_is_created_for_late_known_outcome', $makeReservation(9)['allowed']);
+$jobs->enqueue('job-reserve-0009', 'job-key-00000009', 'payload-ref:00000009');
+$lateLease = $jobs->claimNext();
+$lateOutcome = $jobs->dispatch($lateLease['id'], $lateLease['lease_token'], static function () use (&$now, $jobs): array { $now += 31; $jobs->claimNext(); return ['outcome' => 'accepted', 'reference' => 'provider-ref-late-0009']; });
+$lateState = $state($lateLease['id']);
+$check('recovered_attempt_accepts_its_exact_late_result_without_retry', $lateOutcome['status'] === 'completed' && $lateState['status'] === 'completed' && (int) $lateState['updated_epoch'] === $now && $reservations->commit('job-reserve-0009', 'provider-ref-late-0009') === 'idempotent_committed');
 $audit = $jobs->verifyAudit();
-$check('durable_job_hash_chain_verifies', $audit['events'] === 18 && preg_match('/^[a-f0-9]{64}$/', $audit['last_hash']) === 1);
+$check('durable_job_hash_chain_verifies', $audit['events'] === 34 && preg_match('/^[a-f0-9]{64}$/', $audit['last_hash']) === 1);
 $eventUpdateDenied = false;
 try { $db->exec("UPDATE kp_durable_job_events SET event_type='queued' WHERE id=1"); } catch (PDOException) { $eventUpdateDenied = true; }
-$check('durable_job_events_are_append_only', $eventUpdateDenied && $jobs->verifyAudit()['events'] === 18);
+$check('durable_job_events_are_append_only', $eventUpdateDenied && $jobs->verifyAudit()['events'] === 34);
 echo $passed . " durable job cases passed\n";

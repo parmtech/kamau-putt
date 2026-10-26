@@ -53,7 +53,7 @@ final class PdoOwnerControl
                     p.settled_cash_cents,p.customer_liabilities_cents,p.tax_reserve_cents,
                     p.refund_reserve_cents,p.discretionary_reserved_cents,
                     (SELECT COUNT(*) FROM kp_spend_reservations r WHERE r.status IN ('reserved','uncertain')) AS open_reservation_count,
-                    (SELECT COUNT(*) FROM kp_durable_jobs j WHERE j.status IN ('queued','leased','cancel_requested','uncertain')) AS job_queue_actions
+                    (SELECT COUNT(*) FROM kp_durable_jobs j WHERE j.status IN ('queued','leased','dispatching','cancel_requested','uncertain')) AS job_queue_actions
              FROM kp_finance_control c JOIN kp_financial_position p ON p.id=1 WHERE c.id=1"
         );
         if ($row === null) { throw new \RuntimeException('Owner control state unavailable: fail closed'); }

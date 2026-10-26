@@ -82,3 +82,11 @@ Each significant checkbox needs one of: linked automated CI result, reproducible
 - Re-ran `node --check public/hq/hq.js`: PASS. `git diff --check`: PASS.
 - Anti-framing and `no-store` still require hosting to serve the configured HTTP headers. No browser/staging verification has been performed.
 - Added `node --check public/hq/hq.js` to the GitHub PHP foundation workflow. On commit `ca6d8ab`, PHP workflow `40311875586` and MySQL 8.4 workflow `40311875558` passed; all seven disposable DB suites succeeded and PHP workflow included the Owner HQ JavaScript syntax check.
+
+## 2026-10-27 — Two-phase durable provider dispatch (local verification)
+- Runtime: portable PHP 8.5.12 and MariaDB 11.4.13. Used two newly created empty databases on the task-local MariaDB server; no remote account, provider or payment service was contacted.
+- `tests/mysql_durable_jobs.php`: **27/27 PASS**, including the new migration 009, callback outside a DB transaction, concurrent authenticated STOP during callback, exact settlement after STOP, transport exception to uncertain, expired attempt recovery and exact late-result settlement, no retry, and append-only audit checks.
+- `tests/mysql_owner_control.php`: **15/15 PASS** after applying migration 009.
+- `tests/run.php`: **11/11 PASS**; `tests/financial_math.php`: **10/10 PASS**; `tests/provider_route_policy.php`: **13/13 PASS**. PHP lint across `src/`, `tests/`, `bin/`, and `public/` passed; `git diff --check` passed.
+- Independent read-only agent review found no critical correctness issue. It notes dispatch authorization is committed before callback invocation, so STOP cannot prevent an already-authorized attempt in that tiny process scheduling gap. Also, the current lease begins at claim time; a slow adapter can be marked uncertain while still executing. Keep provider I/O disabled until a real adapter enforces a strict deadline and these semantics are accepted through MySQL CI and operational review.
+- GitHub MySQL 8.4 and PHP CI for migration 009 have **not yet run**. The prior MySQL 8.4 green run `40309790257` only covered migration 008 and 20 queue assertions; do not apply it to this change.
