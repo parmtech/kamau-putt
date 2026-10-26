@@ -13,6 +13,7 @@ Kamau Putt is the private name of a long-term AI business operator that addresse
 - [Phased roadmap](docs/ROADMAP.md)
 - [Confirmed decisions and safeguards](docs/DECISIONS.md)
 - [Owner authentication routes and provisioning](docs/OWNER_AUTH.md)
+- [Provider routing policy](docs/PROVIDER_ROUTING.md)
 - [LIVE ordered checklist and verified progress](docs/PROJECT_TRACKER.md)
 - [Continue across sessions: next actions](docs/SESSION_HANDOFF.md)
 - [Developer/AI continuation rules](AGENTS.md)
@@ -40,7 +41,7 @@ Persistent encrypted AI identity/memory + event journal + immutable accounting a
 - [ ] **KP-014** STOP/resume hash-chained audit journal and DB mutation guards passed on MySQL 8.4 run `40247011094`; general event journal and independent time source remain.
 - [ ] **KP-015 / KP-040** Encrypted owner-managed provider credential vault foundation has immutable storage, masked metadata, fresh-MFA activation, internal smoke-test evidence and revocation. MySQL CI passed 16 lifecycle cases; no provider adapter, external key test, model routing or live usage.
 - [ ] **KP-023 / KP-050** Durable reservation-backed outbox now has single-use leases, stop fencing, conservative uncertain outcomes, and atomic reservation/ledger settlement. All seven MySQL suites passed on run `40309790257` (20 queue cases); no supervised worker or live provider adapter exists.
-- [ ] **KP-041** A local provider route policy now requires fresh AUD quotes, an active key, task/language support, privacy-class permission, measured quality floor and action cost cap. CI pending; selecting a route does not authorize spend.
+- [ ] **KP-041** A local provider route policy now requires fresh AUD quotes, an active key, task/language support, privacy-class permission, measured quality floor and action cost cap. PHP run `40310403543` passed 13 route cases; selecting a route does not authorize spend.
 - [ ] Durable Core implementation and staging verification
 - [ ] Sandbox integrations
 - [ ] Test APK / real incoming call proof-of-concept
