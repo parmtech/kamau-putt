@@ -26,7 +26,7 @@
 - [ ] **KP-013** Authenticated owner identity, 2FA and session security; roles/permissions. CLI-only bootstrap and same-origin HTTPS auth routes are implemented. MySQL 8.4 run `40246815770` passed owner auth/controller 19/19 and owner-control 12/12. Recovery, roles, UI and independent review remain incomplete.
 - [ ] **KP-014** Append-only owner STOP/resume audit journal, hash-chain verification and SQL update/delete guards passed on MySQL 8.4 run `40247011094` (owner-control suite 15/15). General business decision/event journal, retention and independent timestamp source remain.
 - [ ] **KP-015** Encrypted provider-key storage, masked listing, pending/activate/revoke lifecycle and immutable hash-chained audit implemented; MySQL 8.4 CI run `40247547998` passed 16 vault assertions. No provider adapter, live key test, rotation UI or production key use.
-- [ ] **KP-016** Secure web HQ admin shell, no unauthenticated sensitive endpoints.
+- [ ] **KP-016** Same-origin static owner HQ shell now uses authenticated status/STOP/reviewed-resume and masked vault APIs; header, hosting and browser integration verification remain. No credential entry/activation UI or deployment.
 - [ ] **KP-017** CI lint/unit/static/security checks and verified staging deployment.
 
 ## 02 — Financial control and survival (must precede live autonomy)

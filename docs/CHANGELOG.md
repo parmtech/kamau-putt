@@ -68,3 +68,6 @@ All dates Australia/Sydney. Append a new dated entry for each substantive sessio
 
 # 2026-10-26 — Provider route policy foundation
 - Added a local deterministic router that rejects stale or non-AUD quotes, inactive keys, unsupported task/language/data class, low quality and over-cap estimates. The policy only selects an eligible offer; dispatch still requires an authorized reservation and outbox lease. PHP run `40310403543` passed all 13 route cases; MySQL workflow run `40310403535` passed. No live provider price, quality or Punjabi speech claims are embedded.
+
+# 2026-10-26 — Owner HQ browser shell
+- Added local static owner UI for login, financial/control snapshot, STOP, fresh-MFA resume review and masked provider-key inventory. Same-origin calls use secure cookies/CSRF; UI stores no secrets or resume tokens. Browser/staging/hosting validation remains pending.

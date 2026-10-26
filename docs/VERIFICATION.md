@@ -71,3 +71,8 @@ Each significant checkbox needs one of: linked automated CI result, reproducible
 - Tests validate reservation serialization and DB rollback only. The raw SQL stop fixture is not authenticated owner stop/resume. No external provider, true double-entry accounting, dispatch race protection, migration rollback/backup restore, hosting account or production deployment is verified.
 - CI now runs sequential and process suites in separate disposable MySQL 8.4 matrix jobs. New matrix result must be observed independently; local MariaDB pass is not substituted for MySQL CI.
 
+
+## 2026-10-26 — Owner HQ localization and static checks
+- Added Punjabi labels, state text, confirmation prompts and UI error messages; the backend-defined resume confirmation phrase remains exact and is rendered from the API response.
+- `node --check public/hq/hq.js`: PASS. `git diff --check`: PASS.
+- Not verified: browser behavior against a configured API/database, HTTP response headers on actual hosting, TLS, deployment, or live owner login/STOP/resume. No live services were contacted.

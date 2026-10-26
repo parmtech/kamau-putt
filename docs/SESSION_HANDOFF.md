@@ -30,7 +30,8 @@
 1. Authenticated STOP/resume and its audit are verified at prototype CI level: MySQL 8.4 run `40247011094` passed five suites, including 15 owner-control/audit and 19 owner-auth assertions; PHP run `40247011117` passed.
 2. Owner-control audit migration 006 and expanded suite are verified: run `40247011094` passed five MySQL suites, owner-control 15/15; PHP run `40247011117` passed. Encrypted provider-vault migration 007 passed on MySQL 8.4 run `40247547998`, including 16/16 vault assertions. Durable outbox migration 008 passed MySQL 8.4 run `40309790257` across all seven suites, including 20/20 queue assertions; PHP run `40309790387` passed. See `docs/DURABLE_JOBS.md`. Next: bounded provider adapters that use the vault and obey STOP, spend, privacy and reconciliation controls.
 3. Local provider routing policy passed PHP run `40310403543` with 13 cases; MySQL workflow `40310403535` also passed. Contract and limits are in `docs/PROVIDER_ROUTING.md`. It needs trusted fresh AUD quotes, active keys, task/language/data-class permission and quality/cost bounds; routing does not approve or execute spend.
-3. Do not deploy the web routes before actual host, TLS, DB grant and backup checks. Keep Android last.
+4. Minimal owner HQ static shell is now in `public/hq/` with session login, control snapshot, STOP, reviewed resume and masked credential inventory. Browser/staging verification and host header/routing checks remain. See `docs/OWNER_HQ.md`.
+5. Do not deploy the web routes before actual host, TLS, DB grant and backup checks. Keep Android last.
 
 ## Known limitations / open blockers
 - No verified live hosting environment, database, cron behavior, Stripe integration, Android background-calling stack or vetted live suppliers.
@@ -42,6 +43,11 @@
 - Verify current main branch HEAD; make focused changes + tests, capture outcomes.
 - Update tracker, changelog, handoff and verification **in same commit as code whenever possible**.
 - Clearly separate tested code from simulations, deploys and live operations.
+
+## 2026-10-26 — Owner HQ shell follow-up
+- Added the static same-origin Owner HQ UI in `public/hq/` with Punjabi labels/status messages, owner login, financial/control summary, emergency STOP, fresh-MFA resume review, and masked read-only credential inventory. Resume requires the server-provided exact phrase `RESUME KAMAU PUTT`; the challenge stays in memory only.
+- The shell has not been browser-tested against a configured API/database or deployed. Host header/CSP behavior, TLS, routing, and production readiness remain open. `node --check public/hq/hq.js` and `git diff --check` passed locally; see `docs/VERIFICATION.md`.
+- Next: synchronize the focused change to draft PR #1 via the connected GitHub API, observe its PHP/MySQL CI, then continue with a bounded provider adapter contract and its STOP/reservation/reconciliation tests. No live provider call or deployment.
 
 ## 2026-10-25 — Disposable database validation implementation
 - Added isolated MySQL 8.4 service CI workflow with explicit PDO driver install and empty disposable database; no production credentials or external payment APIs.
