@@ -39,7 +39,7 @@ Persistent encrypted AI identity/memory + event journal + immutable accounting a
 - [ ] **KP-013** Owner-auth core and HTTPS control routes implemented; MySQL 8.4 passed 19 auth/controller and 15 owner-control/audit assertions on run `40247011094`. Recovery, UI and independent review remain; see [owner authentication](docs/OWNER_AUTH.md)
 - [ ] **KP-014** STOP/resume hash-chained audit journal and DB mutation guards passed on MySQL 8.4 run `40247011094`; general event journal and independent time source remain.
 - [ ] **KP-015 / KP-040** Encrypted owner-managed provider credential vault foundation has immutable storage, masked metadata, fresh-MFA activation, internal smoke-test evidence and revocation. MySQL CI passed 16 lifecycle cases; no provider adapter, external key test, model routing or live usage.
-- [ ] **KP-023 / KP-050** Durable reservation-backed outbox now has single-use leases, stop fencing, conservative uncertain outcomes, and atomic reservation/ledger settlement. Seven-suite MySQL CI is pending; there is no supervised worker or live provider adapter.
+- [ ] **KP-023 / KP-050** Durable reservation-backed outbox now has single-use leases, stop fencing, conservative uncertain outcomes, and atomic reservation/ledger settlement. All seven MySQL suites passed on run `40309790257` (20 queue cases); no supervised worker or live provider adapter exists.
 - [ ] Durable Core implementation and staging verification
 - [ ] Sandbox integrations
 - [ ] Test APK / real incoming call proof-of-concept

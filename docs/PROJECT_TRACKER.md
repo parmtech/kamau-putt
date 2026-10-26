@@ -33,7 +33,7 @@
 - [ ] **KP-020** Reservation + append-only double-entry ledger prototype passed 25 sequential, 29 accounting and 33 local independent-process assertions; latest MySQL 8.4 CI passed 40 concurrency cases. Full real cash reconciliation, provider dispatch/reconciliation and authenticated stop/resume remain pending.
 - [ ] **KP-021** Budget policy: single AUD 200–300 planned capital injection, **AUD 500 cumulative external seed ceiling**; earned funds may be reinvested only under approved envelopes and reserves.
 - [ ] **KP-022** Track settled cash vs Stripe pending, customer liabilities, taxes, fulfilment, chargebacks, existing commitments and net contribution.
-- [ ] **KP-023** Owner Emergency Stop persists across restarts; cancels/pauses discretionary jobs and verifies third-party state. Authenticated STOP/epoch audit passed run `40247011094`; migration 008 now binds queued/leased outbox work to STOP atomically. Durable-jobs CI and third-party cancellation/reconciliation remain pending.
+- [ ] **KP-023** Owner Emergency Stop persists across restarts; cancels/pauses discretionary jobs and verifies third-party state. Authenticated STOP/epoch audit passed run `40247011094`; MySQL run `40309790257` passed queue cancellation/epoch and reservation safeguards. Third-party cancellation/reconciliation and concurrent worker-specific STOP tests remain.
 - [ ] **KP-024** **Only Dad** can resume after brief risk/cost summary + fresh password/TOTP, exact confirmation phrase and one-use state-bound challenge. Fifteen owner-control assertions passed on run `40247011094`, including audit immutability, changed-summary denial, replay denial and Safe Shutdown refusal. Android/UI, concurrency race tests and independent security review remain.
 - [ ] **KP-025** Growth / Survival / Safe Shutdown, preserving prior paid-order/refund/legal duties.
 - [ ] **KP-026** Reconcile external payment/supplier ledger; test refunds, duplicate webhooks, provider timeouts, crash recovery.
@@ -53,7 +53,7 @@
 - [ ] **KP-043** Token/audio/image/video costs journaled and reconciled with hard spend reservations and fallbacks.
 
 ## 05 — Reliable autonomy infrastructure
-- [ ] **KP-050** Durable reservation-backed outbox with one-use leases, stable idempotency keys, atomic ledger settlement, STOP fencing, append-only audit and no automatic retry after ambiguity implemented; new MySQL CI pending. Scheduler, supervised workers, payload store and reconciliation UI remain.
+- [ ] **KP-050** Durable reservation-backed outbox with one-use leases, stable idempotency keys, atomic ledger settlement, STOP fencing, append-only audit and no automatic retry after ambiguity implemented; MySQL 8.4 run `40309790257` passed all seven suites, including 20 queue assertions. Scheduler, supervised workers, payload store and reconciliation UI remain.
 - [ ] **KP-051** Tool authorization scopes, action plans, evidence, audit, sandbox/testing and rollback.
 - [ ] **KP-052** Owner web HQ chat, decisions, financial reporting, approvals and notifications.
 
