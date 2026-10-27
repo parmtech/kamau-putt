@@ -242,7 +242,19 @@ final class PdoDurableJobs
 
     private static function eventHash(string $previous, string $jobId, string $actorKind, ?int $ownerId, string $type, array $details, int $now): string
     {
+        // MySQL JSON columns normalize object-member order, and that order can change by release.
+        // Hash a canonical representation so verification is independent of storage ordering.
+        $details = self::canonicalJsonValue($details);
         return hash('sha256', implode("\0", [$previous, $jobId, $actorKind, $ownerId === null ? '' : (string) $ownerId, $type, json_encode($details, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), (string) $now]));
+    }
+
+    private static function canonicalJsonValue(mixed $value): mixed
+    {
+        if (!is_array($value)) { return $value; }
+        if (array_is_list($value)) { return array_map(self::canonicalJsonValue(...), $value); }
+        ksort($value, SORT_STRING);
+        foreach ($value as $key => $child) { $value[$key] = self::canonicalJsonValue($child); }
+        return $value;
     }
 
     private function lockControl(): array

@@ -10,7 +10,7 @@ Migration `008_durable_jobs.mysql.sql` adds a persistent outbox tied one-to-one 
 - A provider `accepted` result commits the reservation and posts its ledger entry in the same transaction as job completion. `no_effect` releases the reservation and fails the job. `unknown` marks both reservation and job uncertain; funds remain reserved.
 - If the process dies after a provider may have accepted a request but before DB settlement, the attempt expires into `uncertain`; its durable attempt ID and stable idempotency key support later reconciliation without an automatic duplicate call. A late known result for that exact attempt can still settle once.
 - STOP advances the epoch, cancels queued and leased-but-unstarted work and releases its still-reserved funds, and marks `dispatching` work `cancel_requested` while retaining its reservation. STOP fences later attempts and returns without waiting for provider I/O. An already-authorized attempt may still complete externally; the UI reports it as open work until its result is stored or it becomes uncertain. STOP cannot recall a request already sent to a provider. Resume never requeues canceled work; a new reservation and job intent are required.
-- Job lifecycle events use a global SHA-256 chain and SQL triggers reject event updates/deletes. State rows are mutable projections; their audit event stream is the evidence source.
+- Job lifecycle events use a global SHA-256 chain over canonical JSON details; this avoids database JSON object-key reordering changing the verified hash. SQL triggers reject event updates/deletes. State rows are mutable projections; their audit event stream is the evidence source.
 
 ## Boundaries
 

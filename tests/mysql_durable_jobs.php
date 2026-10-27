@@ -108,7 +108,7 @@ $lateOutcome = $jobs->dispatch($lateLease['id'], $lateLease['lease_token'], stat
 $lateState = $state($lateLease['id']);
 $check('recovered_attempt_accepts_its_exact_late_result_without_retry', $lateOutcome['status'] === 'completed' && $lateState['status'] === 'completed' && (int) $lateState['updated_epoch'] === $now && $reservations->commit('job-reserve-0009', 'provider-ref-late-0009') === 'idempotent_committed');
 $audit = $jobs->verifyAudit();
-$check('durable_job_hash_chain_verifies', $audit['events'] === 34 && preg_match('/^[a-f0-9]{64}$/', $audit['last_hash']) === 1);
+$check('durable_job_hash_chain_verifies_after_mysql_json_normalizes_detail_keys', $audit['events'] === 34 && preg_match('/^[a-f0-9]{64}$/', $audit['last_hash']) === 1);
 $eventUpdateDenied = false;
 try { $db->exec("UPDATE kp_durable_job_events SET event_type='queued' WHERE id=1"); } catch (PDOException) { $eventUpdateDenied = true; }
 $check('durable_job_events_are_append_only', $eventUpdateDenied && $jobs->verifyAudit()['events'] === 34);
