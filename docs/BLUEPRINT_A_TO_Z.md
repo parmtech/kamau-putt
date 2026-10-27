@@ -1,15 +1,15 @@
 # Kamau Putt — A to Z implementation blueprint
-Date: 2026-10-25 (Australia/Sydney)
+Date: 2026-10-27 (Australia/Sydney)
 Status: DESIGN BASELINE with verified prototype progress on draft PR #1; staging and production are separate gates.
 Read with MASTER_PLAN.md, DECISIONS.md and PROJECT_TRACKER.md. Backend first; Android last. This expands existing requirements without granting live spending or changing owner decisions.
 
 ## Implementation evidence snapshot — 2026-10-27
-The design is written A to Z, while implementation, review, staging and production remain separate. Draft PR #1 is still open and unmerged. Its latest head, `be19a790e33014de46d4b441c853b570607f946c`, adds migration 009 and separates durable-job authorization, provider I/O and settlement into two phases. Provider I/O runs outside the finance DB transaction. STOP cancels unstarted jobs and flags already-authorized in-flight attempts while keeping their reservation held; STOP cannot recall an already-authorized provider request.
+The design is written A to Z, while implementation, review, staging and production remain separate. Draft PR #1 is still open and unmerged. Code commit `0ec81757c13381a0a601838cf9491dd47f2d27cc` adds migration 009 and separates durable-job authorization, provider I/O and settlement into two phases. The latest PR #1 head `8e298efcaf5fa2985d5961f468307d6d738299c0` records the passing verification evidence.
 
-- Fresh local PHP 8.5.12 + MariaDB 11.4.13: durable-job suite 27/27 and owner-control suite 15/15 passed, including STOP during unlocked callback, exception-to-uncertain, expired-attempt recovery and one-time late settlement by exact attempt ID.
-- Local pure suites passed: policy 11/11, financial math 10/10, provider routing 13/13. PHP lint across src/tests/bin/public and git whitespace checks passed.
-- Current GitHub PHP and disposable MySQL 8.4 checks are queued/running as runs 40423366115 and 40423366112. Earlier green MySQL run 40309790257 covered migration 008 and 20 queue cases only; it does not verify migration 009.
-- A read-only implementation review found no critical correctness issue. Operational boundaries: dispatch-start commit is the irrevocable authorization point, so a paused worker may invoke its callback after STOP is requested; the 30-second lease still begins at claim time, so a slow adapter may be marked uncertain before returning. A real adapter must enforce a strict transport deadline.
+- Fresh local PHP 8.5.12 + MariaDB 11.4.13: durable-job suite 27/27 and owner-control suite 15/15 passed. Pure suites: policy 11/11, financial math 10/10, provider routing 13/13. PHP lint and whitespace checks passed.
+- MySQL 8.4 run `40423702670` passed all seven disposable DB suites, including migration 009 and durable-job audit-chain verification after recursive canonical JSON hashing. PHP run `40423702753` passed.
+- Earlier MySQL run `40423366112` exposed that JSON key normalization could invalidate event hashes. The issue was fixed and the later full MySQL 8.4 run passed. Docs-only PR #1 head `8e298ef` has fresh checks in progress; the tested code itself is commit `0ec8175`.
+- A read-only implementation review found no critical correctness issue. Operational boundaries: dispatch-start commit is the irrevocable authorization point, so a paused worker may invoke its callback after STOP; the 30-second lease begins at claim time, so a slow adapter may be marked uncertain before returning. A real adapter must enforce a strict transport deadline.
 - No real provider call, live spending, deployment, staging, browser-integrated HQ, verified hosting, commercial compliance, backup restore or profitability is established. No supervised worker, reconciliation UI, persistent memory or Android/voice app is complete.
 
 See the current tracker for item-level status. Keep this blueprint as the A–Z design baseline; update this snapshot as PR #1 progresses.
