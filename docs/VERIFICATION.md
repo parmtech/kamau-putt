@@ -105,3 +105,8 @@ Each significant checkbox needs one of: linked automated CI result, reproducible
 - Pure suites: policy 11/11, financial math 10/10, provider route 13/13. PHP lint across `src/` and `tests/`, Composer JSON parsing, `node --check public/hq/hq.js` and `git diff --check` passed.
 - No real HTTP call, provider key, configured worker execution, credential-vault access, payload loading, external idempotency guarantee or production configuration was exercised. The cURL implementation is syntax-checked but offline tests use the fake transport; cURL/TLS behavior has not yet been exercised.
 - `tests/durable_job_worker.php`: **2/2 PASS** on PHP 8.5.12. It verifies the default-disabled worker and the explicit-enabled worker without an authorizer both return before any DB claim or transport call. No concrete authorizer exists yet; the configured worker route remains unverified against MySQL and is not supervised or enabled.
+
+## 2026-10-27 — Worker and adapter hardening CI
+- PR #1 head `05370b8811027903e999a356f351c58bae9885c`: PHP workflow run `40427834206` completed successfully; disposable MySQL 8.4 workflow run `40427834268` completed successfully across all seven matrix suites.
+- This verifies the committed source, including migration 010, provider adapter/worker syntax and existing database suites. It does not exercise a configured worker against MySQL, cURL/TLS traffic, provider-specific response semantics, live keys, deployment or production operation.
+

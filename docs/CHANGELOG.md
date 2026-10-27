@@ -101,3 +101,8 @@ All dates Australia/Sydney. Append a new dated entry for each substantive sessio
 - Local MariaDB 11.4.13 passed 29/29 durable-job cases, including a claim dispatched with one second left on its original lease. Owner control passed 15/15; pure policy 11/11, financial math 10/10 and provider routing 13/13. PHP lint and whitespace checks passed. GitHub CI for this latest change is pending.
 - The core now rechecks the absolute deadline after the authorization transaction and records `no_effect` without invoking the callback if the worker resumes too late. A real adapter must check again immediately before network send, because the process can pause after this core check. Local MariaDB rerun: durable jobs 31/31 and owner control 15/15. GitHub CI is pending.
 - CI follow-up: commit `d5cbdd2` passed PHP workflow run `40424583575` and all seven MySQL 8.4 suites in run `40424583409`, including the 31-case durable-job suite. This verifies the deadline guard in CI, not a live provider transport or staging environment.
+
+## 2026-10-27 — Worker and adapter CI evidence
+- Recorded successful PHP workflow `40427834206` and all seven disposable MySQL 8.4 suites in workflow `40427834268` for PR #1 head `05370b8811027903e999a356f351c58bae9885c`.
+- The one-shot worker stays disabled because no concrete reservation-bound route/cost authorizer exists; configured worker integration, cURL/TLS behavior, and provider-specific contracts remain unverified.
+
