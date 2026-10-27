@@ -53,7 +53,7 @@
 - [ ] **KP-043** Token/audio/image/video costs journaled and reconciled with hard spend reservations and fallbacks.
 
 ## 05 — Reliable autonomy infrastructure
-- [ ] **KP-050** Durable reservation-backed outbox with one-use leases, stable idempotency keys, atomic ledger settlement, STOP fencing, append-only audit and no automatic retry after ambiguity implemented. Local MariaDB 11.4.13 passed 31/31 job cases and 15/15 owner-control cases, including fresh attempt deadline, near-expiry claim and no callback after pre-invocation expiry. MySQL 8.4 run `40424583409` and PHP run `40424583575` passed. Scheduler, supervised workers, bounded real adapter, payload store and reconciliation UI remain.
+- [ ] **KP-050** Durable reservation-backed outbox with one-use leases, stable idempotency keys, atomic ledger settlement, STOP fencing, append-only audit and no automatic retry after ambiguity implemented. MySQL 8.4 run `40424583409` and PHP run `40424583575` passed the prior migration-009 version. Migration 010 + `PdoJobPayloadStore` encrypt bounded JSON with reference-bound keys, immutable rows, unique job binding, verified round trips and terminal-only purge; fresh local MariaDB passed the expanded 41/41 durable-job suite. CI for migration 010 is pending. Scheduler, supervised workers, bounded provider adapter, production key custody/rotation and reconciliation UI remain.
 - [ ] **KP-051** Tool authorization scopes, action plans, evidence, audit, sandbox/testing and rollback.
 - [ ] **KP-052** Owner web HQ chat, decisions, financial reporting, approvals and notifications.
 

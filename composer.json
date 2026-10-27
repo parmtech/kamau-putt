@@ -3,7 +3,8 @@
   "description": "Owner-controlled AI business operating system - minimal backend foundation",
   "type": "project",
   "require": {
-    "php": "^8.2"
+    "php": "^8.2",
+    "ext-sodium": "*"
   },
   "autoload": {
     "psr-4": {
