@@ -3,9 +3,9 @@
 All dates Australia/Sydney. Append a new dated entry for each substantive session. Keep code history in Git commits. **Do not delete or silently rewrite previously recorded decisions.**
 
 ## 2026-10-27 — Disabled-by-default provider HTTP boundary
-- Added a provider-neutral JSON adapter and cURL HTTPS transport behind an injectable interface. The adapter requires a configured exact-host allowlist, keeps redirects off, caps request/response size, enforces a bounded timeout below the attempt deadline, sends the stable idempotency key and normalizes only strict outcomes.
-- The adapter is disabled by default; it does not load credentials, decrypt job payloads, run a worker or make a provider call. Non-2xx and malformed/ambiguous responses fail closed. Provider-specific contract, vault/queue worker wiring, reconciliation and live integration remain open.
-- Offline fake-transport suite passed **13/13** on PHP 8.5.12. Full pure suites passed 11/11 policy, 10/10 financial math, 13/13 route policy and 13/13 adapter cases; PHP lint, Composer JSON, Node syntax and whitespace checks passed.
+- Added a provider-neutral JSON adapter and cURL HTTPS transport behind an injectable interface. The adapter requires an exact-host allowlist, HTTPS on port 443, rejects local/IP literal targets, keeps redirects off, caps request/response size, rechecks the absolute attempt deadline at the transport boundary, sends the stable idempotency key and normalizes strict outcomes.
+- The adapter is disabled by default; it does not load credentials, decrypt job payloads, run a worker or make a provider call. Non-2xx and malformed/ambiguous responses fail closed. Generic response parsers cannot declare `no_effect`; only a transport-confirmed pre-send deadline expiry returns that outcome. Provider-specific contract, vault/queue worker wiring, reconciliation and live integration remain open.
+- Offline fake-transport suite passed **17/17** on PHP 8.5.12. Full pure suites passed 11/11 policy, 10/10 financial math, 13/13 route policy and 17/17 adapter cases; PHP lint, Composer JSON, Node syntax and whitespace checks passed.
 
 ## 2026-10-27 — Encrypted durable-job payload foundation
 - Added migration 010 and `PdoJobPayloadStore`: bounded (64 KiB), non-empty JSON objects are encrypted with libsodium secretbox using reference-bound derived keys and immutable DB rows, separately from queue/audit metadata.

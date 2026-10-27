@@ -6,6 +6,7 @@ require_once __DIR__ . '/../src/Core/ProviderHttpTransport.php';
 require_once __DIR__ . '/../src/Core/JsonProviderAdapter.php';
 
 use KamauPutt\Core\JsonProviderAdapter;
+use KamauPutt\Core\ProviderDeadlineExceeded;
 use KamauPutt\Core\ProviderHttpTransport;
 
 final class FakeProviderTransport implements ProviderHttpTransport
@@ -13,8 +14,12 @@ final class FakeProviderTransport implements ProviderHttpTransport
     public array $calls = [];
     public array $response = ['status' => 200, 'body' => '{"id":"provider-job-123","ok":true}'];
     public bool $throwOnSend = false;
-    public function postJson(string $endpoint, array $headers, string $body, int $timeoutMs, int $maxResponseBytes): array
+    public mixed $beforeSend = null;
+    public function postJson(string $endpoint, array $headers, string $body, int $timeoutMs, int $maxResponseBytes, int $attemptDeadlineEpoch): array
     {
+        if (is_callable($this->beforeSend) && ($this->beforeSend)() >= $attemptDeadlineEpoch) {
+            throw new ProviderDeadlineExceeded('simulated pre-send expiry');
+        }
         $this->calls[] = compact('endpoint', 'headers', 'body', 'timeoutMs', 'maxResponseBytes');
         if ($this->throwOnSend) { throw new RuntimeException('simulated transport failure'); }
         return $this->response;
@@ -56,6 +61,13 @@ $preSendGuard = new JsonProviderAdapter('example.ai', 'https://api.example.ai/v1
 $beforeLateBuilder = count($transport->calls);
 $lateBuildOutcome = $preSendGuard->execute($attempt, $payload, 'example.ai', 'test-secret-123456');
 $test('deadline_expiry_during_request_build_has_no_network_effect', $lateBuildOutcome === ['outcome' => 'no_effect'] && count($transport->calls) === $beforeLateBuilder);
+$clockNow = $now;
+$transport->beforeSend = static function () use (&$clockNow, $now): int { $clockNow = $now + 5; return $clockNow; };
+$entryDelayAdapter = new JsonProviderAdapter('example.ai', 'https://api.example.ai/v1/run', $transport, $builder, $parser, true, 10_000, 1024, static function () use (&$clockNow): int { return $clockNow; }, ['api.example.ai']);
+$beforeTransportEntry = count($transport->calls);
+$lateTransportOutcome = $entryDelayAdapter->execute($attempt, $payload, 'example.ai', 'test-secret-123456');
+$test('transport_entry_deadline_check_prevents_send_after_pause', $lateTransportOutcome === ['outcome' => 'no_effect'] && count($transport->calls) === $beforeTransportEntry);
+$transport->beforeSend = null;
 
 $transport->response = ['status' => 503, 'body' => '{"error":"uncertain"}'];
 $test('non_success_http_status_is_unknown', $enabled->execute($attempt, $payload, 'example.ai', 'test-secret-123456') === ['outcome' => 'unknown']);
@@ -79,11 +91,25 @@ $test('non_https_endpoint_is_rejected', $ssrfRejected);
 try { new JsonProviderAdapter('example.ai', 'https://127.0.0.1/private', $transport, $builder, $parser, allowedHosts: ['api.example.ai']); $hostRejected = false; }
 catch (InvalidArgumentException) { $hostRejected = true; }
 $test('unlisted_endpoint_host_is_rejected', $hostRejected);
+$invalidPublicEndpoints = ['https://api.example.ai:8443/v1/run', 'https://127.0.0.1/private', 'https://[::1]/private', 'https://localhost/private', 'https://db.internal/private'];
+$privateAndCustomPortRejected = true;
+foreach ($invalidPublicEndpoints as $endpoint) {
+    try { new JsonProviderAdapter('example.ai', $endpoint, $transport, $builder, $parser, allowedHosts: ['api.example.ai', '127.0.0.1', '::1', 'localhost', 'db.internal']); $privateAndCustomPortRejected = false; }
+    catch (InvalidArgumentException) {}
+}
+$test('custom_ports_and_local_or_ip_endpoints_are_rejected', $privateAndCustomPortRejected);
+$normalizedHost = new JsonProviderAdapter('example.ai', 'https://api.example.ai/v1/run', $transport, $builder, $parser, allowedHosts: ['API.EXAMPLE.AI.']);
+$test('hostname_allowlist_normalizes_case_and_trailing_dot', !$normalizedHost->isEnabled());
+
+$transport->response = ['status' => 200, 'body' => '{"rejected":true}'];
+$noEffectParser = static fn(array $json): array => ['outcome' => 'no_effect'];
+$genericNoEffect = new JsonProviderAdapter('example.ai', 'https://api.example.ai/v1/run', $transport, $builder, $noEffectParser, true, 10_000, 1024, static fn(): int => $now, ['api.example.ai']);
+$test('generic_response_parser_cannot_release_funds_as_no_effect', $genericNoEffect->execute($attempt, $payload, 'example.ai', 'test-secret-123456') === ['outcome' => 'unknown']);
 
 $transport->throwOnSend = true;
 try { $enabled->execute($attempt, $payload, 'example.ai', 'test-secret-123456'); $transportFailurePropagates = false; }
 catch (RuntimeException) { $transportFailurePropagates = true; }
 $test('transport_exception_is_not_reported_as_known_no_effect', $transportFailurePropagates);
 
-printf("%d/%d tests passed\n", 13 - $failed, 13);
+printf("%d/%d tests passed\n", 17 - $failed, 17);
 exit($failed === 0 ? 0 : 1);

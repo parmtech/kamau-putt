@@ -28,11 +28,14 @@ final class JsonProviderAdapter
     ) {
         if (!preg_match('/^[a-z0-9][a-z0-9.-]{1,63}$/D', $providerSlug)) { throw new \InvalidArgumentException('Provider identifier is invalid'); }
         $parts = parse_url($endpoint);
-        if (!is_array($parts) || strtolower((string) ($parts['scheme'] ?? '')) !== 'https' || empty($parts['host'])
-            || isset($parts['user']) || isset($parts['pass']) || isset($parts['fragment'])) {
+        $host = is_array($parts) ? strtolower(rtrim((string) ($parts['host'] ?? ''), '.')) : '';
+        if (!is_array($parts) || strtolower((string) ($parts['scheme'] ?? '')) !== 'https' || $host === ''
+            || filter_var($host, FILTER_VALIDATE_IP) !== false || !str_contains($host, '.')
+            || preg_match('/\.(?:localhost|local|internal|test|invalid)$/D', $host) === 1
+            || (isset($parts['port']) && (int) $parts['port'] !== 443)
+            || isset($parts['user']) || isset($parts['pass']) || isset($parts['fragment']) || isset($parts['query'])) {
             throw new \InvalidArgumentException('Provider endpoint must be a fixed HTTPS URL');
         }
-        $host = strtolower(rtrim((string) $parts['host'], '.'));
         if ($allowedHosts === [] || !in_array($host, array_map(static fn(mixed $allowed): string => is_string($allowed) ? strtolower(rtrim($allowed, '.')) : '', $allowedHosts), true)) {
             throw new \InvalidArgumentException('Provider endpoint host is not on the configured allowlist');
         }
@@ -70,12 +73,14 @@ final class JsonProviderAdapter
         $remainingMs = (int) floor(($deadline - $this->nowFloat()) * 1000) - 25;
         if ($remainingMs < 1) { return ['outcome' => 'no_effect']; }
         $timeoutMs = min($this->maxTimeoutMs, $remainingMs);
-        $http = $this->transport->postJson($this->endpoint, [
-            'Accept' => 'application/json',
-            'Authorization' => 'Bearer ' . $apiKey,
-            'Content-Type' => 'application/json',
-            'Idempotency-Key' => $idempotencyKey,
-        ], $body, $timeoutMs, $this->maxResponseBytes);
+        try {
+            $http = $this->transport->postJson($this->endpoint, [
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . $apiKey,
+                'Content-Type' => 'application/json',
+                'Idempotency-Key' => $idempotencyKey,
+            ], $body, $timeoutMs, $this->maxResponseBytes, $deadline);
+        } catch (ProviderDeadlineExceeded) { return ['outcome' => 'no_effect']; }
         if (!is_array($http) || !is_int($http['status'] ?? null) || !is_string($http['body'] ?? null)
             || strlen($http['body']) > $this->maxResponseBytes) {
             throw new \RuntimeException('Provider transport returned invalid data');
@@ -96,7 +101,9 @@ final class JsonProviderAdapter
             }
             return ['outcome' => 'accepted', 'reference' => $reference];
         }
-        return ['outcome' => $result['outcome']];
+        // Generic parsers cannot establish provider-specific no-effect guarantees.
+        // Only the transport can report no_effect, and only before any send begins.
+        return ['outcome' => $result['outcome'] === 'no_effect' ? 'unknown' : $result['outcome']];
     }
 
     private function nowFloat(): float
