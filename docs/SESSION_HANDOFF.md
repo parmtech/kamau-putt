@@ -14,13 +14,13 @@
 
 ## Current implementation and evidence
 - PR #1 contains PHP/MySQL prototypes for reservations, double-entry posting, owner auth/STOP-resume, encrypted credential vault, route policy, Owner HQ, and durable reservation-backed dispatch. The migration-009 baseline passed PHP workflow `40424583575` and all seven MySQL 8.4 suites in `40424583409`.
-- Current uncommitted work in this checkout adds migration 010 and `PdoJobPayloadStore`: max-64-KiB JSON objects encrypted with reference-bound libsodium keys; immutable database rows; one payload reference per job; missing/reused references rejected; purge only after a known terminal result. Fresh isolated MariaDB 11.4.13 passed 41/41 durable-job assertions. Pure suites pass policy 11/11, arithmetic 10/10, routing 13/13; PHP lint across 25 files and whitespace checks pass. New MySQL 8.4 CI is pending.
+- Migration 010 and `PdoJobPayloadStore` are published on PR #1 head `ac622cbbc9c2201cda962c86e714ed2795430f48`: max-64-KiB JSON objects encrypted with reference-bound libsodium keys; immutable DB rows; one payload reference per job; missing/reused references rejected; purge only after a known terminal result. Fresh isolated MariaDB 11.4.13 passed 41/41 durable-job assertions. PHP workflow `40426074493` and all seven suites of MySQL 8.4 workflow `40426074511` passed on that head. The first upload truncated two source files; the corrected commit and green CI supersede the failing run `40425604353`.
 - No supervised worker/scheduler, bounded provider adapter, job reconciliation UI, hosting/staging verification, store, real payment/provider operation, or Android app exists. Never equate local or CI tests with deployment or production readiness.
 
 ## Next work
-1. Commit and publish the current code/docs/tests to PR #1 using the connected GitHub integration; observe PHP and MySQL 8.4 CI for migration 010. Refresh blueprint PR #2 and sync its evidence/handoff after PR #1 head is known.
-2. Add bounded provider transport with pre-send deadline enforcement, a transport timeout below the attempt deadline, strict response parsing, stable idempotency and unknown-result reconciliation. Keep live calls disabled.
-3. Build worker supervision and reconciliation/recovery controls; add production key custody/rotation and payload retention/deletion audit.
+1. Publish the verification/handoff update to PR #1 and refresh blueprint PR #2 from verified head `ac622cbbc9c2201cda962c86e714ed2795430f48`.
+2. Add a testable provider adapter and worker orchestration with pre-send deadline enforcement, bounded transport, strict response parsing and stable idempotency. Keep live calls disabled until provider/account-specific controls are verified.
+3. Build owner reconciliation/recovery controls for uncertain attempts; add supervised workers, production key custody/rotation and payload retention/deletion audit.
 4. Continue the tracker in order: actual hosting preflight; threat/privacy and Australian legal checklist; cash/liability accounting; staging security and recovery drills; evidence-led product selection, test checkout, controlled pilot. Then Android/Punjabi voice last.
 
 ## Runtime and safe test setup
