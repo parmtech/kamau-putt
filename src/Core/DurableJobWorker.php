@@ -10,8 +10,8 @@ use Throwable;
 final class DurableJobWorker
 {
     /**
-     * @param array<string,array{credential_id:int,adapter:JsonProviderAdapter,allowed_data_classes:list<string>}> $routes
-     * @param callable(array,array):bool|null $executionAuthorizer Trusted deterministic policy gate; required to run.
+     * @param array<string,array{credential_id:int,adapter:JsonProviderAdapter,model:string,allowed_data_classes:list<string>}> $routes
+     * @param callable(array,array,array):?ProviderExecutionDecision|null $executionAuthorizer Trusted deterministic policy gate; required to run.
      * @param callable():int|null $clock
      */
     public function __construct(
@@ -28,6 +28,7 @@ final class DurableJobWorker
             if (!is_string($actionType) || !preg_match('/^[a-z][a-z0-9_]{1,63}$/D', $actionType)
                 || !is_array($route) || !is_int($route['credential_id'] ?? null) || $route['credential_id'] < 1
                 || !(($route['adapter'] ?? null) instanceof JsonProviderAdapter)
+                || !is_string($route['model'] ?? null) || !preg_match('/^[A-Za-z0-9._:-]{1,96}$/D', $route['model'])
                 || !is_array($route['allowed_data_classes'] ?? null) || $route['allowed_data_classes'] === []) {
                 throw new \InvalidArgumentException('Worker route configuration is invalid');
             }
@@ -54,21 +55,30 @@ final class DurableJobWorker
             try { $payload = $this->payloads->load((string) $attempt['payload_ref']); }
             catch (Throwable) { return ['outcome' => 'no_effect']; }
 
-            // Deny sensitive/disallowed payloads before opening the provider credential.
-            $dataClass = $payload['data_class'] ?? null;
-            if (!is_string($dataClass) || !in_array($dataClass, $route['allowed_data_classes'], true)) {
+            // Classification and route limits come from trusted action policy, never payload claims.
+            try {
+                $credential = $this->vault->workerMetadata((int) $route['credential_id']);
+                $routeContext = $route;
+                $routeContext['credential_metadata'] = $credential;
+                $authorized = ($this->executionAuthorizer)($attempt, $payload, $routeContext);
+            }
+            catch (Throwable) { unset($payload); return ['outcome' => 'no_effect']; }
+            if (!($authorized instanceof ProviderExecutionDecision)
+                || $authorized->credentialId !== $route['credential_id']
+                || $authorized->provider !== $route['adapter']->providerSlug()
+                || $authorized->actionType !== $attempt['action_type']
+                || $authorized->model !== $route['model']
+                || !in_array($authorized->dataClass, $route['allowed_data_classes'], true)
+                || $authorized->reservationAmountCents !== ($attempt['reservation_amount_cents'] ?? null)) {
                 unset($payload);
                 return ['outcome' => 'no_effect'];
             }
-            try { $authorized = ($this->executionAuthorizer)($attempt, $payload); }
-            catch (Throwable) { unset($payload); return ['outcome' => 'no_effect']; }
-            if ($authorized !== true) { unset($payload); return ['outcome' => 'no_effect']; }
 
             $enteredAdapter = false;
             try {
-                return $this->vault->withActiveSecret((int) $route['credential_id'], function (string $provider, string $apiKey) use ($route, $attempt, $payload, &$enteredAdapter): array {
+                return $this->vault->withActiveSecret((int) $route['credential_id'], function (string $provider, string $apiKey) use ($route, $attempt, $payload, $authorized, &$enteredAdapter): array {
                     $enteredAdapter = true;
-                    return $route['adapter']->execute($attempt, $payload, $provider, $apiKey);
+                    return $route['adapter']->execute($attempt, $payload, $provider, $apiKey, $authorized);
                 });
             } catch (Throwable $error) {
                 // Vault lookup/decryption failed before any adapter call: known no external effect.

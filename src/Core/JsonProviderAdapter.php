@@ -13,7 +13,7 @@ final class JsonProviderAdapter
     private readonly \Closure $requestBuilder;
     private readonly \Closure $responseParser;
 
-    /** @param callable(array,array):array $requestBuilder @param callable(array):array $responseParser @param callable():int|float|null $clock */
+    /** @param callable(array,array,array):array $requestBuilder @param callable(array):array $responseParser @param callable():int|float|null $clock */
     public function __construct(
         private readonly string $providerSlug,
         private readonly string $endpoint,
@@ -47,9 +47,10 @@ final class JsonProviderAdapter
     }
 
     public function isEnabled(): bool { return $this->enabled; }
+    public function providerSlug(): string { return $this->providerSlug; }
 
     /** Return only a normalized outcome; never include request, response or key data. */
-    public function execute(array $attempt, array $payload, string $vaultProvider, string $apiKey): array
+    public function execute(array $attempt, array $payload, string $vaultProvider, string $apiKey, ProviderExecutionDecision $authorization): array
     {
         if (!$this->enabled) { throw new \RuntimeException('Provider adapter is disabled'); }
         if (!hash_equals($this->providerSlug, $vaultProvider)) { throw new \RuntimeException('Credential provider does not match adapter'); }
@@ -60,10 +61,22 @@ final class JsonProviderAdapter
             || !is_string($attempt['action_type'] ?? null) || $payload === [] || array_is_list($payload)) {
             throw new \InvalidArgumentException('Provider attempt context is invalid');
         }
+        if (!hash_equals($this->providerSlug, $authorization->provider)
+            || !hash_equals((string) $attempt['action_type'], $authorization->actionType)
+            || !is_int($attempt['reservation_amount_cents'] ?? null)
+            || $authorization->reservationAmountCents !== $attempt['reservation_amount_cents']) {
+            throw new \InvalidArgumentException('Provider authorization does not match the attempt');
+        }
         if ($this->nowFloat() >= $deadline) { return ['outcome' => 'no_effect']; }
 
-        $request = ($this->requestBuilder)($attempt, $payload);
+        $request = ($this->requestBuilder)($attempt, $payload, $authorization->toArray());
         if (!is_array($request) || $request === [] || array_is_list($request)) { throw new \RuntimeException('Provider request builder returned invalid data'); }
+        if (($request['model'] ?? null) !== $authorization->model
+            || ($request['max_output_tokens'] ?? null) !== $authorization->maxOutputTokens
+            || ($request['input'] ?? null) !== ($payload['input'] ?? null)
+            || array_keys($request) !== ['input', 'model', 'max_output_tokens']) {
+            throw new \RuntimeException('Provider request did not honor the authorized content, model and output limit');
+        }
         try { $body = json_encode($request, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE); }
         catch (\JsonException $error) { throw new \RuntimeException('Provider request could not be encoded', 0, $error); }
         if (strlen($body) > 65_536) { throw new \RuntimeException('Provider request exceeds its size limit'); }
@@ -72,6 +85,10 @@ final class JsonProviderAdapter
         // Account for sub-second time and leave a small margin for the transport call boundary.
         $remainingMs = (int) floor(($deadline - $this->nowFloat()) * 1000) - 25;
         if ($remainingMs < 1) { return ['outcome' => 'no_effect']; }
+        $sendEpoch = (int) floor($this->nowFloat());
+        if ($authorization->quoteEpoch > $sendEpoch || $authorization->quoteEpoch < $sendEpoch - 300) {
+            throw new \RuntimeException('Provider offer quote expired before send');
+        }
         $timeoutMs = min($this->maxTimeoutMs, $remainingMs);
         try {
             $http = $this->transport->postJson($this->endpoint, [

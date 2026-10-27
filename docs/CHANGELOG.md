@@ -110,3 +110,7 @@ All dates Australia/Sydney. Append a new dated entry for each substantive sessio
 - Fixed the durable dispatcher to pass the locked reservation amount through to its provider callback; the worker's execution-authorizer can now compare its decision with the actual reserved cents.
 - Added a MySQL durable-job assertion checking that the callback receives the exact amount selected from the locked reservation. PHP run `40428564989` passed; MySQL 8.4 run `40428565026` passed all seven suites. `mysql_durable_jobs` reported **42 durable job cases passed**, including `dispatch_callback_receives_locked_reservation_amount`, on commit `9744c7bea74eacc672cb1431ade9c6cd76247bc0`.
 
+
+## 2026-10-27 — Provider execution authorization foundation (local)
+- Added typed authorization decisions binding provider/model, versioned offer snapshot/provenance, trusted task/language/data class, bounded request/output, credential ID and cost ceilings to the locked reservation. The worker checks non-secret active credential metadata before opening the secret; the request builder must emit only the authorized input, model and output limit. The adapter rejects extra billable content and rechecks quote freshness before transport.
+- Local PHP 8.5.12: authorizer 19/19 and adapter 19/19 passed; worker guard tests 2/2 passed; targeted PHP syntax checks passed; `git diff --check` passed. This code is not yet CI verified or published. No actual current provider quote or live key is configured; the worker remains disabled. Configured MySQL worker integration is still required.

@@ -6,6 +6,7 @@ require_once __DIR__ . '/../src/Core/PdoDurableJobs.php';
 require_once __DIR__ . '/../src/Core/PdoJobPayloadStore.php';
 require_once __DIR__ . '/../src/Core/PdoCredentialVault.php';
 require_once __DIR__ . '/../src/Core/ProviderHttpTransport.php';
+require_once __DIR__ . '/../src/Core/ProviderExecutionDecision.php';
 require_once __DIR__ . '/../src/Core/JsonProviderAdapter.php';
 require_once __DIR__ . '/../src/Core/DurableJobWorker.php';
 
@@ -40,7 +41,9 @@ $vault = (new ReflectionClass(PdoCredentialVault::class))->newInstanceWithoutCon
 $transport = new NeverUsedWorkerTransport();
 $adapter = new JsonProviderAdapter(
     'example.ai', 'https://api.example.ai/v1/run', $transport,
-    static fn(array $attempt, array $payload): array => ['input' => $payload['input'] ?? ''],
+    static fn(array $attempt, array $payload, array $authorization): array => [
+        'input' => $payload['input'] ?? '', 'model' => $authorization['model'], 'max_output_tokens' => $authorization['max_output_tokens'],
+    ],
     static fn(array $response): array => ['outcome' => 'unknown'],
     allowedHosts: ['api.example.ai'],
 );
@@ -48,6 +51,7 @@ $adapter = new JsonProviderAdapter(
 $worker = new DurableJobWorker($jobs, $payloads, $vault, ['model_request' => [
     'credential_id' => 1,
     'adapter' => $adapter,
+    'model' => 'example-model-1',
     'allowed_data_classes' => ['public'],
 ]]);
 $result = $worker->runOnce();
@@ -56,7 +60,9 @@ echo ($pass ? 'PASS ' : 'FAIL ') . 'default_disabled_worker_does_not_claim_jobs_
 
 $enabledAdapter = new JsonProviderAdapter(
     'example.ai', 'https://api.example.ai/v1/run', $transport,
-    static fn(array $attempt, array $payload): array => ['input' => $payload['input'] ?? ''],
+    static fn(array $attempt, array $payload, array $authorization): array => [
+        'input' => $payload['input'] ?? '', 'model' => $authorization['model'], 'max_output_tokens' => $authorization['max_output_tokens'],
+    ],
     static fn(array $response): array => ['outcome' => 'unknown'],
     true,
     allowedHosts: ['api.example.ai'],
@@ -64,6 +70,7 @@ $enabledAdapter = new JsonProviderAdapter(
 $guardedWorker = new DurableJobWorker($jobs, $payloads, $vault, ['model_request' => [
     'credential_id' => 1,
     'adapter' => $enabledAdapter,
+    'model' => 'example-model-1',
     'allowed_data_classes' => ['public'],
 ]], true);
 try { $guardedResult = $guardedWorker->runOnce(); $policyGateRequired = $guardedResult === ['status' => 'disabled']; }

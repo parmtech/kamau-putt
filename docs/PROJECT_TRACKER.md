@@ -53,7 +53,7 @@
 - [ ] **KP-043** Token/audio/image/video costs journaled and reconciled with hard spend reservations and fallbacks.
 
 ## 05 — Reliable autonomy infrastructure
-- [ ] **KP-050** Durable reservation-backed outbox with one-use leases, stable idempotency keys, atomic ledger settlement, STOP fencing, append-only audit and no automatic retry after ambiguity implemented. Migration 010 + `PdoJobPayloadStore` encrypt bounded JSON with reference-bound keys, immutable rows, unique job binding and terminal-only purge; local MariaDB passed 41/41 cases. PHP run `40428564989` and all seven MySQL 8.4 suites in `40428565026` passed on head `9744c7bea74eacc672cb1431ade9c6cd76247bc0`; `mysql_durable_jobs` now passes 42 cases including the exact locked-reservation amount in callback context. The provider-neutral adapter remains tested only with fake transport. No concrete execution-authorizer binds trusted offers and action policy to cost, payload classification, model and active credential; the worker remains disabled. Configured worker integration, cURL/TLS behavior, provider contract, reconciliation, scheduler, key custody/rotation and UI remain.
+- [ ] **KP-050** Durable reservation-backed outbox with one-use leases, stable idempotency keys, atomic ledger settlement, STOP fencing, append-only audit and no automatic retry after ambiguity implemented. Migration 010 + `PdoJobPayloadStore` encrypt bounded JSON with reference-bound keys, immutable rows, unique job binding and terminal-only purge; local MariaDB passed 41/41 cases. PHP run `40428564989` and all seven MySQL 8.4 suites in `40428565026` passed on head `9744c7bea74eacc672cb1431ade9c6cd76247bc0`; `mysql_durable_jobs` now passes 42 cases including the exact locked-reservation amount in callback context. The provider-neutral adapter remains tested only with fake transport. A typed deterministic execution authorizer and versioned server-side offer snapshot are implemented locally, including action-specific input/data policies and provider/model/credential/cost binding; this work is not yet CI verified or published. No verified live provider quote is configured; the worker remains disabled. Configured worker integration, cURL/TLS behavior, provider contract, reconciliation, scheduler, key custody/rotation and UI remain.
 - [ ] **KP-051** Tool authorization scopes, action plans, evidence, audit, sandbox/testing and rollback.
 - [ ] **KP-052** Owner web HQ chat, decisions, financial reporting, approvals and notifications.
 
@@ -105,5 +105,3 @@ Read `AGENTS.md` + `docs/SESSION_HANDOFF.md` at the start. Work on the first pra
 ## 2026-10-26 current evidence
 - 11 policy + 10 arithmetic + 22 sequential DB + 33 process checks pass locally; prior sequential DB and pure PHP GitHub checks green at 9ef0c3b. See VERIFICATION.md for exact runtime and scope.
 - KP-012/KP-020 stay incomplete: reservation tests do not complete an accounting system, deployment or authentication.
-
-

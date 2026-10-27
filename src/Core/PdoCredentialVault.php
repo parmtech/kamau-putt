@@ -134,6 +134,16 @@ final class PdoCredentialVault
     }
 
     /** Trusted provider adapter only; live callers must also honor STOP/outbox fencing. */
+    public function workerMetadata(int $credentialId): array
+    {
+        if ($credentialId < 1) { throw new \InvalidArgumentException('Credential identifier is invalid'); }
+        $row = $this->one('SELECT provider_slug FROM kp_provider_credentials WHERE id=?', [$credentialId]);
+        if ($row === null) { return ['provider' => '', 'status' => 'unavailable']; }
+        $state = self::stateFromEvents($this->eventsFor($credentialId));
+        return ['provider' => (string) $row['provider_slug'], 'status' => (string) $state['status']];
+    }
+
+    /** Trusted provider adapter only; live callers must also honor STOP/outbox fencing. */
     public function withActiveSecret(int $credentialId, callable $operation): mixed
     {
         $row = $this->one('SELECT provider_slug,secret_nonce,secret_ciphertext FROM kp_provider_credentials WHERE id=?', [$credentialId]);

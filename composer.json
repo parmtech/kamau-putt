@@ -16,6 +16,7 @@
       "php tests/run.php",
       "php tests/financial_math.php",
       "php tests/provider_route_policy.php",
+      "php tests/provider_execution_authorizer.php",
       "php tests/provider_http_adapter.php",
       "php tests/durable_job_worker.php"
     ]

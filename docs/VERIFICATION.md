@@ -114,3 +114,7 @@ Each significant checkbox needs one of: linked automated CI result, reproducible
 - Review found the dispatcher read the locked reservation amount but did not include it in the callback argument passed to `DurableJobWorker`; therefore the authorizer could not enforce its cost against the reservation.
 - Added the callback field and a MySQL assertion for the exact reserved amount. PHP run `40428564989` passed; MySQL 8.4 run `40428565026` passed all seven suites. The `mysql_durable_jobs` job reported **42 durable job cases passed**, including `dispatch_callback_receives_locked_reservation_amount`, on commit `9744c7bea74eacc672cb1431ade9c6cd76247bc0`.
 
+
+## 2026-10-27 — Provider execution authorizer (local)
+- `tests/provider_execution_authorizer.php`: PASS, 19 cases. `tests/provider_http_adapter.php`: PASS, 19 cases, including builder-added billable content rejection and a quote expiring during request construction. `tests/durable_job_worker.php`: PASS, 2 guard cases.
+- Targeted PHP syntax checks: PASS. `git diff --check`: PASS. PHP runtime: portable workspace PHP 8.5.12 with sodium enabled. These are local results; no CI run exists yet for the dirty worktree. No provider HTTP call was made; all transports are fake and the authorizer fake transport throws if called.

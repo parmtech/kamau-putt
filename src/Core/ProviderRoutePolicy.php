@@ -52,6 +52,7 @@ final class ProviderRoutePolicy
                 'provider' => $offer['provider'], 'model' => $offer['model'],
                 'estimated_cost_cents' => $cost, 'quality_permille' => $offer['quality_permille'],
                 'latency_ms' => $offer['latency_ms'], 'quote_epoch' => $offer['quote_epoch'],
+                'quote_reference' => $offer['quote_reference'] ?? null, 'source_url' => $offer['source_url'] ?? null,
             ];
         }
         if ($eligible === []) { return ['selected' => null, 'reason' => 'no_eligible_offer', 'alternatives' => 0]; }
