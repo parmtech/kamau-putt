@@ -110,7 +110,7 @@ Each significant checkbox needs one of: linked automated CI result, reproducible
 - PR #1 head `05370b8811027903e999a356f351c58bae9885c`: PHP workflow run `40427834206` completed successfully; disposable MySQL 8.4 workflow run `40427834268` completed successfully across all seven matrix suites.
 - This verifies the committed source, including migration 010, provider adapter/worker syntax and existing database suites. It does not exercise a configured worker against MySQL, cURL/TLS traffic, provider-specific response semantics, live keys, deployment or production operation.
 
-## 2026-10-27 — Reservation amount callback fix (pending)
+## 2026-10-27 — Reservation amount callback fix
 - Review found the dispatcher read the locked reservation amount but did not include it in the callback argument passed to `DurableJobWorker`; therefore the authorizer could not enforce its cost against the reservation.
-- Added the callback field and a MySQL assertion for the exact reserved amount. No result is claimed until the updated PHP/MySQL CI finishes.
+- Added the callback field and a MySQL assertion for the exact reserved amount. PHP run `40428564989` passed; MySQL 8.4 run `40428565026` passed all seven suites. The `mysql_durable_jobs` job reported **42 durable job cases passed**, including `dispatch_callback_receives_locked_reservation_amount`, on commit `9744c7bea74eacc672cb1431ade9c6cd76247bc0`.
 

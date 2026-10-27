@@ -108,5 +108,5 @@ All dates Australia/Sydney. Append a new dated entry for each substantive sessio
 
 ## 2026-10-27 — Preserve reservation amount in worker authorization context
 - Fixed the durable dispatcher to pass the locked reservation amount through to its provider callback; the worker's execution-authorizer can now compare its decision with the actual reserved cents.
-- Added a MySQL durable-job assertion checking that the callback receives the exact amount selected from the locked reservation. GitHub CI verification is pending.
+- Added a MySQL durable-job assertion checking that the callback receives the exact amount selected from the locked reservation. PHP run `40428564989` passed; MySQL 8.4 run `40428565026` passed all seven suites. `mysql_durable_jobs` reported **42 durable job cases passed**, including `dispatch_callback_receives_locked_reservation_amount`, on commit `9744c7bea74eacc672cb1431ade9c6cd76247bc0`.
 
