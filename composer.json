@@ -12,7 +12,12 @@
     }
   },
   "scripts": {
-    "test": "php tests/run.php"
+    "test": [
+      "php tests/run.php",
+      "php tests/financial_math.php",
+      "php tests/provider_route_policy.php",
+      "php tests/provider_http_adapter.php"
+    ]
   },
   "license": "UNLICENSED"
 }
