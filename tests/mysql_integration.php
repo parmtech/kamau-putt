@@ -1,0 +1,123 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * DESTRUCTIVE STAGING-ONLY MySQL integration test.
+ * Requires a dedicated EMPTY disposable database. Never pass production DSN.
+ * Example:
+ * KP_TEST_ALLOW_DB_WRITE=I_UNDERSTAND_STAGING_ONLY \
+ * KP_TEST_MYSQL_DSN='mysql:host=127.0.0.1;dbname=kamau_test;charset=utf8mb4' \
+ * KP_TEST_MYSQL_USER=... KP_TEST_MYSQL_PASSWORD=... php tests/mysql_integration.php
+ */
+
+if (getenv('KP_TEST_ALLOW_DB_WRITE') !== 'I_UNDERSTAND_STAGING_ONLY') {
+    fwrite(STDERR, "SKIP: requires explicit disposable database confirmation\n");
+    exit(2);
+}
+$dsn = getenv('KP_TEST_MYSQL_DSN');
+if (!is_string($dsn) || !str_starts_with($dsn, 'mysql:') || !extension_loaded('pdo_mysql')) {
+    fwrite(STDERR, "SKIP: dedicated mysql DSN and pdo_mysql required\n");
+    exit(2);
+}
+require_once __DIR__ . '/../src/Core/SpendDecision.php';
+require_once __DIR__ . '/../src/Core/SpendGuard.php';
+require_once __DIR__ . '/../src/Core/FinancialMath.php';
+require_once __DIR__ . '/../src/Core/PdoSpendReservations.php';
+require_once __DIR__ . '/../src/Core/PdoDoubleEntryLedger.php';
+
+use KamauPutt\Core\PdoSpendReservations;
+
+$db = new PDO($dsn, getenv('KP_TEST_MYSQL_USER') ?: '', getenv('KP_TEST_MYSQL_PASSWORD') ?: '', [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_EMULATE_PREPARES => false,
+]);
+$db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+if ((int) $db->query('SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = DATABASE()')->fetchColumn() !== 0) {
+    throw new RuntimeException('Integration test requires an EMPTY disposable database');
+}
+$sql = file_get_contents(__DIR__ . '/../database/001_financial_control.mysql.sql');
+foreach (preg_split('/;\s*(?=\n|$)/', $sql) as $statement) {
+    if (trim($statement) !== '') {
+        $db->exec(trim($statement));
+    }
+}
+$ledgerSql = file_get_contents(__DIR__ . '/../database/002_double_entry_ledger.mysql.sql');
+foreach (preg_split('/;\s*(?=\n|$)/', $ledgerSql) as $statement) {
+    if (trim($statement) !== '') {
+        $db->exec(trim($statement));
+    }
+}
+$accounting = new KamauPutt\Core\PdoDoubleEntryLedger($db);
+$accounting->post('test-opening-0001', 'opening:test-fixture', 'test:fixture', [
+    ['account' => 'cash_settled', 'debit_cents' => 1000, 'credit_cents' => 0, 'memo' => 'Synthetic disposable fixture funding'],
+    ['account' => 'owner_capital', 'debit_cents' => 0, 'credit_cents' => 1000, 'memo' => 'Synthetic disposable fixture funding'],
+]);
+$db->exec("INSERT INTO kp_budget_envelopes(scope,approved_limit_cents,per_action_cap_cents) VALUES ('test',1000,1000)");
+$db->exec("UPDATE kp_financial_position SET settled_cash_cents=1000 WHERE id=1");
+$ledger = new PdoSpendReservations($db);
+$tests = [];
+
+$stopped = $ledger->reserve('test-case-0001', 'test', 'supplier_order', 400, 500, true);
+$tests['default_emergency_stop'] = !$stopped['allowed'] && $stopped['reason'] === 'owner_emergency_stop';
+
+$db->exec("UPDATE kp_finance_control SET operating_mode='growth',owner_emergency_stopped=0 WHERE id=1");
+$reserved = $ledger->reserve('test-case-0001', 'test', 'supplier_order', 400, 500, true);
+$tests['first_reserve'] = $reserved['allowed'] && $reserved['status'] === 'reserved';
+$replay = $ledger->reserve('test-case-0001', 'test', 'supplier_order', 400, 500, true);
+$tests['replay_not_authorized'] = !$replay['allowed'] && $replay['reason'] === 'existing_reservation_requires_reconciliation';
+$conflict = $ledger->reserve('test-case-0001', 'test', 'supplier_order', 300, 500, true);
+$tests['same_key_different_amount'] = !$conflict['allowed'] && $conflict['reason'] === 'idempotency_conflict';
+$over = $ledger->reserve('test-case-0002', 'test', 'supplier_order', 700, 800, true);
+$tests['budget_limit_includes_pending'] = !$over['allowed'] && $over['reason'] === 'approved_budget_exceeded';
+$tests['commit'] = $ledger->commit('test-case-0001', 'verified-test-provider-ref') === 'committed';
+$tests['commit_replay'] = $ledger->commit('test-case-0001', 'verified-test-provider-ref') === 'idempotent_committed';
+$another = $ledger->reserve('test-case-0003', 'test', 'supplier_order', 200, 300, true);
+$tests['reserve_after_commit'] = $another['allowed'];
+$tests['release'] = $ledger->release('test-case-0003') === 'released';
+$position = $db->query('SELECT settled_cash_cents, discretionary_reserved_cents FROM kp_financial_position WHERE id=1')->fetch();
+$tests['accounting_position'] = (int) $position['settled_cash_cents'] === 600 && (int) $position['discretionary_reserved_cents'] === 0;
+$tests['event_count'] = (int) $db->query('SELECT COUNT(*) FROM kp_financial_events')->fetchColumn() === 4;
+
+// Ambiguous provider outcomes must retain both cash and budget reservations.
+$uncertain = $ledger->reserve('test-case-0004', 'test', 'supplier_order', 300, 500, true);
+$tests['uncertain_reserve'] = $uncertain['allowed'];
+$tests['mark_uncertain'] = $ledger->markUncertain('test-case-0004') === 'uncertain';
+$tests['uncertain_replay'] = $ledger->markUncertain('test-case-0004') === 'idempotent_uncertain';
+$before = $db->query('SELECT settled_cash_cents, discretionary_reserved_cents FROM kp_financial_position WHERE id=1')->fetch();
+$tests['uncertain_holds_funds'] = (int) $before['settled_cash_cents'] === 600 && (int) $before['discretionary_reserved_cents'] === 300;
+try {
+    $ledger->release('test-case-0004');
+    $tests['uncertain_release_denied'] = false;
+} catch (RuntimeException $error) {
+    $tests['uncertain_release_denied'] = $error->getMessage() === 'Uncertain spend requires independently audited reconciliation';
+}
+$after = $db->query('SELECT settled_cash_cents, discretionary_reserved_cents FROM kp_financial_position WHERE id=1')->fetch();
+$tests['failed_transition_rolls_back'] = $before === $after;
+$tests['reconciled_uncertain_commit'] = $ledger->commit('test-case-0004', 'verified-uncertain-ref') === 'committed';
+try {
+    $ledger->commit('test-case-0004', 'conflicting-provider-ref');
+    $tests['conflicting_commit_denied'] = false;
+} catch (RuntimeException $error) {
+    $tests['conflicting_commit_denied'] = $error->getMessage() === 'Conflicting provider reference';
+}
+try {
+    $ledger->release('test-case-0004');
+    $tests['terminal_release_denied'] = false;
+} catch (RuntimeException $error) {
+    $tests['terminal_release_denied'] = $error->getMessage() === 'Terminal reservation cannot change';
+}
+$final = $db->query('SELECT settled_cash_cents, discretionary_reserved_cents FROM kp_financial_position WHERE id=1')->fetch();
+$tests['no_double_debit'] = (int) $final['settled_cash_cents'] === 300 && (int) $final['discretionary_reserved_cents'] === 0;
+$tests['only_successful_transitions_journaled'] = (int) $db->query('SELECT COUNT(*) FROM kp_financial_events')->fetchColumn() === 7;
+$tests['ledger_cash_matches_settled_position'] = $accounting->accountBalance('cash_settled') === 300;
+$tests['ledger_expense_matches_verified_commits'] = $accounting->accountBalance('operating_expense') === 700;
+$tests['ledger_balances_and_hash_chain_verify'] = $accounting->verify()['transactions'] === 3;
+
+foreach ($tests as $name => $pass) {
+    echo ($pass ? 'PASS ' : 'FAIL ') . $name . PHP_EOL;
+}
+$passed = count(array_filter($tests));
+echo "$passed/" . count($tests) . " integration cases passed\n";
+exit($passed === count($tests) ? 0 : 1);
+

@@ -1,0 +1,60 @@
+name: Disposable database foundation tests
+on:
+  push:
+    branches: ["feat/**"]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  mysql-integration:
+    name: ${{ matrix.suite }}
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [mysql_integration, mysql_accounting, mysql_concurrency, mysql_owner_auth, mysql_owner_control, mysql_credential_vault, mysql_durable_jobs, mysql_durable_job_worker]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: kamau_test
+          MYSQL_USER: kamau_test
+          MYSQL_PASSWORD: disposable-test-only
+          MYSQL_ROOT_PASSWORD: disposable-root-only
+          MYSQL_ROOT_HOST: "%"
+        ports:
+          - 3306/tcp
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install PHP CLI and MySQL driver
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y php-cli php-mysql
+          php -v
+          php -r 'exit(extension_loaded("pdo_mysql") ? 0 : 1);'
+      - name: Allow test-only immutable trigger creation
+        env:
+          KP_TEST_MYSQL_DSN: mysql:host=127.0.0.1;port=${{ job.services.mysql.ports['3306'] }};dbname=kamau_test;charset=utf8mb4
+        run: php -r '$db = new PDO(getenv("KP_TEST_MYSQL_DSN"), "root", "disposable-root-only"); $db->exec("SET GLOBAL log_bin_trust_function_creators = 1");'
+      - name: Syntax checks
+        run: find src tests bin public -name '*.php' -print0 | xargs -0 -n1 php -l
+      - name: Pure policy and arithmetic
+        run: |
+          php tests/run.php
+          php tests/financial_math.php
+          php tests/provider_route_policy.php
+      - name: Disposable MySQL integration
+        env:
+          KP_TEST_ALLOW_DB_WRITE: I_UNDERSTAND_STAGING_ONLY
+          KP_TEST_MYSQL_DSN: mysql:host=127.0.0.1;port=${{ job.services.mysql.ports['3306'] }};dbname=kamau_test;charset=utf8mb4
+          KP_TEST_MYSQL_USER: kamau_test
+          KP_TEST_MYSQL_PASSWORD: disposable-test-only
+        run: php tests/${{ matrix.suite }}.php
+

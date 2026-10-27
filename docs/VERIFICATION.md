@@ -1,5 +1,13 @@
 # Kamau Putt — Evidence & Test Log
 
+## 2026-10-24 — Finance prototype continuation (feature branch, NOT staging verified)
+- On local PHP 8.4.24, `php -l src/Core/FinancialMath.php` and `php -l src/Core/PdoSpendReservations.php` both returned no syntax errors.
+- Local `php tests/financial_math.php`: **10/10 passed** (settled-cash and reserves arithmetic, budget, AUD 500 startup seed constraint).
+- Added an opt-in MySQL test harness and a GitHub CI workflow to run original policy and new arithmetic tests. **GitHub Actions run #7 and subsequent run #17 for the feature branch reported FAILURE**; job steps/log could not be retrieved through the connector. Actual failure cause unverified. MySQL DB integration results not observed as passed.
+- Local environment has PDO but no `pdo_mysql`/`pdo_sqlite`; cannot claim a MySQL database or concurrency test.
+- Existing DB migration and reservation code are PROTOTYPES: no audited ledger, no authenticated owner stop/resume, no provider payment, no confirmed staging deployment, no real cash handling.
+- See `docs/FINANCIAL_RESERVATIONS.md` for exact state machine and safety limitations.
+
 ## 2026-10-24 — Local PHP Core proof (not deployed)
 - Environment: PHP CLI **8.4.24**, no Composer or external services needed.
 - Commands: `php -l src/Core/SpendDecision.php`; `php -l src/Core/SpendGuard.php`; `php -l tests/run.php`; `php tests/run.php`.
@@ -10,3 +18,109 @@
 
 ## Completion policy
 Each significant checkbox needs one of: linked automated CI result, reproducible local test evidence, verifiable staging report, or real production observation. Mark the level explicitly. Never infer production readiness solely from a passing unit test.
+
+## 2026-10-26 — Double-entry ledger and atomic reservation posting
+- Runtime: portable PHP 8.5.12 and MariaDB 11.4.13 on Windows; local test databases were disposable and external to the repository.
+- `php -l` over every PHP file in `src/` and `tests/`: all pass. `php tests/run.php`: 11/11. `php tests/financial_math.php`: 10/10.
+- `tests/mysql_integration.php`: 25/25; `tests/mysql_accounting.php`: 29/29; `tests/mysql_concurrency.php`: 33/33 passed on fresh local databases. Coverage includes balanced posting, stable idempotency, append-only triggers, hash verification, integer overflow rejection, atomic rollback, concurrent reservations and worker crash rollback.
+- The workflow matrix has three MySQL 8.4 suites. First ledger run passed PHP syntax and pure tests but all DB suites stopped on MySQL error 1419 while creating immutable triggers (test user lacks SUPER with binary logging enabled). Workflow now enables `log_bin_trust_function_creators` on its disposable server using its test-only root account. Follow-up run 40245143663 passed all three DB suites; PHP CI run 40245143656 also passed.
+- Limit: synthetic opening balances and internal postings only. No bank/provider reconciliation, customer liabilities, tax/refund journals, external dispatch, authenticated STOP/resume, backup restore, staging or live operations verified.
+
+## 2026-10-26 — STOP/dispatch gate prototype
+- `php -l` across all PHP in `src/` and `tests/`: pass. Policy 11/11 and financial math 10/10 pass on PHP 8.5.12.
+- New independent-process cases exercise STOP waiting for a provider callback already in its serialized gate, epoch advancement, denial after STOP returns, stable provider idempotency context and survival-mode denial.
+- MySQL 8.4 run 40245586343 passed `mysql_integration`, `mysql_accounting`, and `mysql_concurrency`; the latter reported 40 cases passed. PHP CI run 40245586377 also passed. An earlier run found a missing selected epoch field; that query was fixed before this passing run.
+- The callback is simulated only; no external provider operation is used. Since the callback runs under the finance-control transaction lock, bound network work and do not wire a real provider before replacing this prototype with an outbox/reconciliation design.
+
+## 2026-10-26 — Owner authentication core and HTTPS controller
+- `php -l` across PHP in `src/`, `tests/` and `bin/`: pass. Policy 11/11 and financial math 10/10 pass on PHP 8.5.12.
+- MySQL 8.4 run `40246429206` passed all four then-current DB suites; `mysql_owner_auth.php` reported 19/19 including the HTTP controller. PHP run `40246429054` passed. Coverage includes bootstrap, password/TOTP, replay, sessions, CSRF, expiry, throttling, origin checks, secure cookies and logout revocation.
+- The suite uses synthetic credentials and a test database. No owner credentials or TOTP secrets are committed.
+
+## 2026-10-26 — Authenticated STOP/resume
+- MySQL 8.4 run `40246815770` passed all five DB suites; owner control 12/12 and owner auth/controller 19/19. PHP run `40246815796` passed.
+- `PdoOwnerControl`, migration 005 and owner API routes provide status/STOP/resume challenge/confirmation. Resume requires a fresh MFA-created session, exact phrase, five-minute single-use challenge and unchanged financial snapshot/epoch. Safe Shutdown stays stopped; normal resume retains Survival mode.
+- Owner-control cases cover default STOP, authenticated STOP and epoch advance, idempotency, reviewed reservation/cash summary, invalid confirmation, resume, replay, changed financial state and Safe Shutdown refusal. No queue, cancellation or provider is connected.
+- First run `40246723730` exposed a test-fixture assumption that STOP advances the epoch when the schema is already stopped. The fixture now begins that transition from an active state; the corrected run above passed.
+
+## 2026-10-26 — Owner-control audit journal
+- MySQL 8.4 run `40247011094` passed all five DB suites; owner-control 15/15. PHP run `40247011117` passed.
+- Migration 006 adds hash-chained, append-only audit events for STOP, already-stopped requests, resume challenge issuance and confirmed resume. SQL triggers reject row updates/deletes; state mutation and audit insert share a transaction.
+- Tests cover the valid chain and reject update/delete attempts. The journal covers owner-control events only and has no independent trusted timestamp source.
+
+## 2026-10-25 — Disposable database validation implementation
+- Added isolated MySQL 8.4 service CI workflow with explicit PDO driver install and empty disposable database; no production credentials or external payment APIs.
+- Expanded integration harness with uncertain outcome retention, denied-release rollback, reconciled commit, conflicting provider reference, terminal transition and no-double-debit assertions (22 sequential database cases total).
+- Status: Implemented/Untested until the new CI run is observed passing. Local PHP/MySQL runtime unavailable in this session; no test pass claimed. Prior failed CI logs returned unavailable; root cause unknown.
+- Next: inspect new workflow result, fix concrete failures, then implement independent-process reservation and stop races. Authenticated stop/resume, full accounting and live deployment remain pending.
+
+## 2026-10-26 — Actual local PHP verification and CI diagnosis
+- Repository owner login changed to parmtech; repository id 1431801251 remains the same.
+- GitHub check-run 121109803308 at head f3f0b3b9073cf791794598ed307260e94b6d89be explicitly reports: job not started because recent account payments failed or spending limit needs increasing. This is an account execution blocker, not an observed failing PHP assertion. Check annotations obtained through Code Review diagnostics; job logs absent because execution did not start.
+- Downloaded official portable PHP 8.5.12 NTS x64; SHA256 verified against php.net: 2ab242af38d76bdf417cde5ec048b1bcd76a5a40f39a3d15d5f046f38571c477. Workspace-only runtime; no system PHP replacement.
+- Materialized repository feature-branch source snapshot through connected GitHub read tools; interrupted clone had no commit and is not the working source. Local working snapshot: source/ in task workspace.
+- Actual commands: php tests/run.php (11/11 PASS), php tests/financial_math.php (10/10 PASS), php -l on all seven source/test PHP files (all PASS). Runtime PHP 8.5.12 Windows x64. PDO MySQL extension loads successfully.
+- Database integration/concurrency has NOT run yet. Next: workspace-only disposable MariaDB and independent-process race tests. No live spending/deployment.
+
+## 2026-10-26 — Real database and independent-process validation
+- User changed repository visibility to PUBLIC; canonical repository is parmtech/kamau-putt (id 1431801251). Do not put personal conversations, account identifiers, customer records, secrets or backup files into public source.
+- GitHub PHP check run 40206169925 attempt 2 and MySQL run 40206169926 attempt 2 succeeded after visibility change at commit 9ef0c3b662ed4f50479237fcdefd245282275e4b. Earlier account-billing blockage did not establish a code failure.
+- Local official portable MariaDB 11.4.13 x64 ZIP checksum verified against publisher checksum: d62986d433eeebfde218560b276103831604a61e929e87f1a17f5aebd80257e2. Test server bound to localhost only and stopped after tests; no system service installed.
+- Actual PHP 8.5.12 + MariaDB 11.4.13 tests/mysql_integration.php: 22/22 PASS on initially empty disposable DB. Prior local pure suites: 11/11 policy and 10/10 arithmetic, all PHP lint PASS.
+- New tests/mysql_concurrency.php: 33/33 PASS locally. Uses independent proc_open PHP processes and DB connections, barriers with parent-held control lock, three rounds each of budget/shared cash/duplicate reservation/duplicate commit competition, committed stop vs waiting requests, stop persistence across connections, and forcibly terminated uncommitted worker rollback/lock release.
+- Tests validate reservation serialization and DB rollback only. The raw SQL stop fixture is not authenticated owner stop/resume. No external provider, true double-entry accounting, dispatch race protection, migration rollback/backup restore, hosting account or production deployment is verified.
+- CI now runs sequential and process suites in separate disposable MySQL 8.4 matrix jobs. New matrix result must be observed independently; local MariaDB pass is not substituted for MySQL CI.
+
+
+## 2026-10-26 — Owner HQ localization and static checks
+- Added Punjabi labels, state text, confirmation prompts and UI error messages; the backend-defined resume confirmation phrase remains exact and is rendered from the API response.
+- `node --check public/hq/hq.js`: PASS. `git diff --check`: PASS.
+- Not verified: browser behavior against a configured API/database, HTTP response headers on actual hosting, TLS, deployment, or live owner login/STOP/resume. No live services were contacted.
+
+## 2026-10-26 — Owner HQ review fixes
+- Read-only helper review found three issues, all addressed: ineffective meta-only framing/cache directives, stale resume review state after logout/session expiry, and insufficient contrast for small muted text.
+- Re-ran `node --check public/hq/hq.js`: PASS. `git diff --check`: PASS.
+- Anti-framing and `no-store` still require hosting to serve the configured HTTP headers. No browser/staging verification has been performed.
+- Added `node --check public/hq/hq.js` to the GitHub PHP foundation workflow. On commit `ca6d8ab`, PHP workflow `40311875586` and MySQL 8.4 workflow `40311875558` passed; all seven disposable DB suites succeeded and PHP workflow included the Owner HQ JavaScript syntax check.
+
+## 2026-10-27 — Two-phase durable provider dispatch (local verification)
+- Runtime: portable PHP 8.5.12 and MariaDB 11.4.13. Used two newly created empty databases on the task-local MariaDB server; no remote account, provider or payment service was contacted.
+- `tests/mysql_durable_jobs.php`: **31/31 PASS**, including the new migration 009, callback outside a DB transaction, concurrent authenticated STOP during callback, exact settlement after STOP, transport exception to uncertain, expired attempt recovery, exact late-result settlement, a fresh bounded attempt deadline after a near-expiry claim, no callback after pre-invocation expiry, no retry, and append-only audit checks.
+- `tests/mysql_owner_control.php`: **15/15 PASS** after applying migration 009.
+- `tests/run.php`: **11/11 PASS**; `tests/financial_math.php`: **10/10 PASS**; `tests/provider_route_policy.php`: **13/13 PASS**. PHP lint across `src/`, `tests/`, `bin/`, and `public/` passed; `git diff --check` passed.
+- Independent read-only agent review found no critical correctness issue in the prior implementation. Dispatch authorization is committed before callback invocation, so STOP cannot prevent an already-authorized attempt in that tiny process scheduling gap. Dispatch now resets expiry to a fresh 30-second attempt deadline, skips a callback if expired before invocation, and passes the absolute deadline to the callback. The adapter must check again immediately before network send and enforce a shorter timeout. Keep provider I/O disabled until this update passes MySQL 8.4 CI.
+- GitHub PHP run `40423366115` passed on commit `be19a79`. MySQL 8.4 run `40423366112` passed six of seven suites but exposed audit hash instability because MySQL normalizes JSON member order. Recursive canonical JSON hashing fixed it. On commit `0ec8175`, PHP run `40423702753` passed and MySQL 8.4 run `40423702670` passed all seven DB suites. Fresh local MariaDB 11.4.13 also passed 27/27 durable-job cases after the fix. Prior green run `40309790257` only covered migration 008 and 20 queue assertions; it does not verify migration 009.
+- The subsequent dispatch-time deadline and pre-callback expiry guard are in commit `d5cbdd2`. PHP run `40424583575` passed; MySQL 8.4 run `40424583409` passed all seven suites, including 31/31 durable-job cases. Fresh local MariaDB 11.4.13 passed 31/31 durable jobs and 15/15 owner-control cases.
+
+## 2026-10-27 — Encrypted durable-job payloads (local verification)
+- Runtime: portable PHP 8.5.12 with `sodium` enabled for CLI and a newly initialized, loopback-only MariaDB 11.4.13 instance with a fresh disposable database.
+- Applied migrations 001, 002, 004, 005, 006, 008, 009 and new migration 010. `php -d extension=sodium tests/mysql_durable_jobs.php`: **41/41 PASS**.
+- New assertions cover encrypted round-trip and plaintext absence from stored ciphertext, wrong-key authentication failure, ciphertext rebinding to another reference, immutable rows, JSON object/size bounds, enqueue refusal for missing/reused payload references, and purge only after a known terminal job. Existing STOP, deadline, no-retry, late settlement and append-only audit cases also passed.
+- Pure policy **11/11**, financial math **10/10**, provider route **13/13**; syntax lint on the touched PHP files and `git diff --check` passed. The MySQL 8.4 workflow for migration 010 has not run yet.
+- Limits: this is a local encrypted-storage test, not production key custody/rotation, worker integration, provider transport, reconciliation UX, staging, or live provider activity.
+- Corrected GitHub source-upload integrity after the first migration-010 run exposed a missing `PdoDurableJobs` class caused by a truncated file upload. Clean source was committed at `ac622cbbc9c2201cda962c86e714ed2795430f48`; PHP workflow `40426074493` passed and MySQL 8.4 workflow `40426074511` passed all seven suites, including the encrypted payload tests. The earlier failing run `40425604353` was on the prior, malformed commit and is superseded by these verified results.
+
+## 2026-10-27 — Provider HTTP boundary (offline verification)
+- PHP 8.5.12 fake-transport suite `tests/provider_http_adapter.php`: **17/17 PASS**. Covers disabled-by-default zero-call behavior, stable idempotency, timeout below deadline, expiry before/during request construction and at transport entry, non-2xx uncertainty, transport exceptions, malformed/oversized responses, external-reference validation, HTTPS/port/host restrictions, local/IP endpoint rejection, host normalization, and preventing generic parsers from releasing funds as `no_effect`.
+- Pure suites: policy 11/11, financial math 10/10, provider route 13/13. PHP lint across `src/` and `tests/`, Composer JSON parsing, `node --check public/hq/hq.js` and `git diff --check` passed.
+- No real HTTP call, provider key, configured worker execution, credential-vault access, payload loading, external idempotency guarantee or production configuration was exercised. The cURL implementation is syntax-checked but offline tests use the fake transport; cURL/TLS behavior has not yet been exercised.
+- `tests/durable_job_worker.php`: **2/2 PASS** on PHP 8.5.12. It verifies the default-disabled worker and the explicit-enabled worker without an authorizer both return before any DB claim or transport call. No concrete authorizer exists yet; the configured worker route remains unverified against MySQL and is not supervised or enabled.
+
+## 2026-10-27 — Worker and adapter hardening CI
+- PR #1 head `05370b8811027903e999a356f351c58bae9885c`: PHP workflow run `40427834206` completed successfully; disposable MySQL 8.4 workflow run `40427834268` completed successfully across all seven matrix suites.
+- This verifies the committed source, including migration 010, provider adapter/worker syntax and existing database suites. It does not exercise a configured worker against MySQL, cURL/TLS traffic, provider-specific response semantics, live keys, deployment or production operation.
+
+## 2026-10-27 — Reservation amount callback fix
+- Review found the dispatcher read the locked reservation amount but did not include it in the callback argument passed to `DurableJobWorker`; therefore the authorizer could not enforce its cost against the reservation.
+- Added the callback field and a MySQL assertion for the exact reserved amount. PHP run `40428564989` passed; MySQL 8.4 run `40428565026` passed all seven suites. The `mysql_durable_jobs` job reported **42 durable job cases passed**, including `dispatch_callback_receives_locked_reservation_amount`, on commit `9744c7bea74eacc672cb1431ade9c6cd76247bc0`.
+
+
+## 2026-10-27 — Provider execution authorizer (local)
+- `tests/provider_execution_authorizer.php`: PASS, 19 cases. `tests/provider_http_adapter.php`: PASS, 19 cases, including builder-added billable content rejection and a quote expiring during request construction. `tests/durable_job_worker.php`: PASS, 2 guard cases.
+- Targeted PHP syntax checks: PASS. `git diff --check`: PASS. PHP runtime: portable workspace PHP 8.5.12 with sodium enabled. These local results were subsequently published in commit 918ad24c4d47ece0647199bd0cf89d3b1412b199; PHP run 40429853666 and all seven MySQL 8.4 suites in run 40429853611 passed. No provider HTTP call was made; all transports are fake and the authorizer fake transport throws if called.
+
+## 2026-10-27 — Configured worker integration (local disposable database)
+- Created a fresh loopback-only MariaDB 11.4.13 instance and a new empty database; applied migrations 001, 002, 004–010. Used a synthetic owner, synthetic encrypted credential activated through the owner MFA/test lifecycle, reviewed-fixture offer metadata and fake HTTP transport only. No real provider, live account or external network request was used.
+- `tests/mysql_durable_job_worker.php`: **8/8 PASS**. Verified configured request completion and exact reservation settlement, exact locked reserved cents and active credential metadata passed to authorization, selected model/output cap/idempotency at transport, no DB transaction during fake provider I/O, over-reservation denial and revoked-credential denial before transport, and durable-job audit-chain verification.
+- `tests/provider_execution_authorizer.php`: **19/19 PASS**; `tests/provider_http_adapter.php`: **19/19 PASS**; `tests/durable_job_worker.php`: **2/2 PASS**. New integration test syntax check and `git diff --check` passed.
+- Added `mysql_durable_job_worker` to the MySQL 8.4 disposable CI matrix. CI for this uncommitted work has not run. Limits: fake transport does not exercise cURL/TLS, provider-specific semantics, quote retrieval, actual billing/reconciliation, process crashes or concurrent STOP races. Worker and adapter remain disabled by default.

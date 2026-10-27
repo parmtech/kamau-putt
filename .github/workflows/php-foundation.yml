@@ -1,0 +1,45 @@
+name: PHP financial foundation checks
+on:
+  push:
+    branches: [main, "feat/**"]
+  pull_request:
+    branches: [main]
+jobs:
+  php-core:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: PHP runtime
+        run: php -v
+      - name: Syntax validation
+        run: |
+          node --check public/hq/hq.js
+          php -l src/Core/SpendDecision.php
+          php -l src/Core/SpendGuard.php
+          php -l src/Core/FinancialMath.php
+          php -l src/Core/PdoSpendReservations.php
+          php -l src/Core/ProviderHttpTransport.php
+          php -l src/Core/CurlJsonTransport.php
+          php -l src/Core/TrustedProviderOfferCatalog.php
+          php -l src/Core/ProviderExecutionDecision.php
+          php -l src/Core/ProviderExecutionAuthorizer.php
+          php -l src/Core/PdoCredentialVault.php
+          php -l src/Core/JsonProviderAdapter.php
+          php -l src/Core/DurableJobWorker.php
+          php -l tests/run.php
+          php -l tests/financial_math.php
+          php -l tests/provider_execution_authorizer.php
+          php -l tests/provider_http_adapter.php
+          php -l tests/durable_job_worker.php
+          php -l tests/mysql_integration.php
+      - name: Run offline pure policy tests
+        run: |
+          php tests/run.php
+          php tests/financial_math.php
+          php tests/provider_route_policy.php
+          php tests/provider_execution_authorizer.php
+          php tests/provider_http_adapter.php
+          php tests/durable_job_worker.php
+# MySQL integration is intentionally excluded until a disposable test DB exists.

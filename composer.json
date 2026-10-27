@@ -3,7 +3,8 @@
   "description": "Owner-controlled AI business operating system - minimal backend foundation",
   "type": "project",
   "require": {
-    "php": "^8.2"
+    "php": "^8.2",
+    "ext-sodium": "*"
   },
   "autoload": {
     "psr-4": {
@@ -11,7 +12,14 @@
     }
   },
   "scripts": {
-    "test": "php tests/run.php"
+    "test": [
+      "php tests/run.php",
+      "php tests/financial_math.php",
+      "php tests/provider_route_policy.php",
+      "php tests/provider_execution_authorizer.php",
+      "php tests/provider_http_adapter.php",
+      "php tests/durable_job_worker.php"
+    ]
   },
   "license": "UNLICENSED"
 }

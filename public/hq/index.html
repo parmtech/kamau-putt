@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="pa">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'self'; object-src 'none';">
+  <title>ਕਮਾਊ ਪੁੱਤ · ਮਾਲਕ ਕੰਟਰੋਲ</title>
+  <link rel="stylesheet" href="/hq/hq.css">
+  <script src="/hq/hq.js" defer></script>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">ਕਮਾਊ ਪੁੱਤ · ਮਾਲਕ HQ</p>
+        <h1>ਕੰਟਰੋਲ ਰੂਮ</h1>
+      </div>
+      <span id="connection" class="status-pill" role="status">ਸੈਸ਼ਨ ਜਾਂਚ ਰਿਹਾ ਹੈ…</span>
+    </header>
+
+    <section id="notice" class="notice" role="status" aria-live="polite" hidden></section>
+
+    <section id="login-panel" class="panel login-panel" hidden>
+      <div class="panel-heading">
+        <div><p class="eyebrow">ਮਾਲਕ ਦਾ ਦਾਖ਼ਲਾ</p><h2>ਸਾਈਨ ਇਨ</h2></div>
+        <span class="lock-mark" aria-hidden="true">●</span>
+      </div>
+      <p class="muted">ਮਾਲਕ ਪਾਸਵਰਡ ਅਤੇ Authenticator code ਵਰਤੋ। ਇਹ ਸਫ਼ਾ ਇਹਨਾਂ ਨੂੰ ਸੰਭਾਲਦਾ ਨਹੀਂ।</p>
+      <form id="login-form" autocomplete="on">
+        <label>ਈਮੇਲ<input name="email" type="email" autocomplete="username" required maxlength="254"></label>
+        <label>ਪਾਸਵਰਡ<input name="password" type="password" autocomplete="current-password" required maxlength="256"></label>
+        <label>Authenticator code<input name="totp" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required></label>
+        <button class="button primary" type="submit">ਸੁਰੱਖਿਅਤ ਸਾਈਨ ਇਨ</button>
+      </form>
+    </section>
+
+    <div id="dashboard" hidden>
+      <section class="hero panel">
+        <div>
+          <p class="eyebrow">ਸਿਸਟਮ ਦੀ ਹਾਲਤ</p>
+          <h2 id="system-state">—</h2>
+          <p id="mode-line" class="muted">Waiting for status.</p>
+        </div>
+        <div class="hero-actions">
+          <button id="refresh-button" class="button quiet" type="button">ਮੁੜ ਵੇਖੋ</button>
+          <button id="stop-button" class="button danger" type="button">ਐਮਰਜੈਂਸੀ STOP</button>
+        </div>
+      </section>
+
+      <section class="metrics" aria-label="Financial snapshot">
+        <article class="metric panel"><span>ਪੱਕੀ ਪ੍ਰਾਪਤ ਰਕਮ</span><strong id="cash">—</strong></article>
+        <article class="metric panel"><span>ਗਾਹਕ / ਟੈਕਸ / refund ਰਕਮ</span><strong id="reserves" class="compact-value">—</strong></article>
+        <article class="metric panel"><span>ਕੰਮ ਲਈ ਰਾਖਵੀਂ ਰਕਮ</span><strong id="reserved">—</strong></article>
+        <article class="metric panel"><span>ਖੁੱਲ੍ਹੇ ਕੰਮ</span><strong id="open-work">—</strong></article>
+      </section>
+
+      <section class="panel">
+        <div class="section-heading"><div><p class="eyebrow">PROVIDER KEYS</p><h2>ਕੁੰਜੀਆਂ ਦੀ ਸੂਚੀ</h2></div><span class="muted">ਢੱਕਿਆ ਹੋਇਆ ਵੇਰਵਾ</span></div>
+        <div id="credentials" class="credential-list"><p class="muted">ਹਾਲੇ ਕੋਈ credential ਨਹੀਂ।</p></div>
+        <p class="fine-print">ਕੁੰਜੀਆਂ ਇੱਥੇ ਨਹੀਂ ਦਿਖਦੀਆਂ। ਭਰੋਸੇਯੋਗ provider adapter ਬਣਨ ਤੱਕ test ਅਤੇ activation ਬੰਦ ਹਨ।</p>
+      </section>
+
+      <section id="resume-panel" class="panel" hidden>
+        <div class="section-heading"><div><p class="eyebrow">ਮਾਲਕ ਦੀ ਜਾਂਚ</p><h2>ਸਿਸਟਮ ਮੁੜ ਚਲਾਓ</h2></div></div>
+        <form id="step-up-form">
+          <label>ਪਾਸਵਰਡ<input name="password" type="password" autocomplete="current-password" required maxlength="256"></label>
+          <label>ਨਵਾਂ Authenticator code<input name="totp" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required></label>
+          <button class="button primary" type="submit">ਮੌਜੂਦਾ ਖਤਰਾ ਵੇਖੋ</button>
+        </form>
+        <div id="resume-review" hidden>
+          <div id="review-summary" class="review-summary"></div>
+          <p class="muted">ਇਹ ਹਾਲਤ ਪੜ੍ਹੋ। ਮੁੜ ਚਲਾਉਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤਾ ਵਾਕ ਜਿਉਂ ਦਾ ਤਿਉਂ ਲਿਖੋ।</p>
+          <p id="confirmation-phrase" class="phrase"></p>
+          <form id="confirm-form">
+            <label>ਪੁਸ਼ਟੀ ਵਾਲਾ ਵਾਕ<input name="confirmation" type="text" autocomplete="off" required maxlength="64"></label>
+            <button class="button primary" type="submit">ਮੁੜ ਚਲਾਉਣ ਦੀ ਪੁਸ਼ਟੀ</button>
+          </form>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <span id="owner-email"></span>
+        <button id="logout-button" class="text-button" type="button">ਸਾਈਨ ਆਉਟ</button>
+      </footer>
+    </div>
+
+    <footer class="disclaimer">Prototype ਮਾਲਕ ਸਫ਼ਾ · live ਕਾਰੋਬਾਰ ਚਲਾਉਣ ਲਈ ਤਿਆਰ ਨਹੀਂ</footer>
+  </main>
+</body>
+</html>
