@@ -65,7 +65,12 @@ $replay = $jobs->enqueue('job-reserve-0001', 'job-key-00000001', $payloadRef1);
 $check('enqueue_is_idempotent_and_stores_opaque_reference', $queued['status'] === 'queued' && !$queued['idempotent'] && $replay['idempotent']);
 $lease = $jobs->claimNext();
 $check('worker_claim_issues_one_time_lease_and_stable_provider_key', is_array($lease) && strlen($lease['lease_token']) === 43 && str_starts_with($lease['provider_idempotency_key'], 'kp-'));
-$accepted = $jobs->dispatch($lease['id'], $lease['lease_token'], static fn(array $request): array => ['outcome' => 'accepted', 'reference' => 'provider-ref-accepted-0001']);
+$dispatchContext = [];
+$accepted = $jobs->dispatch($lease['id'], $lease['lease_token'], static function (array $request) use (&$dispatchContext): array {
+    $dispatchContext = $request;
+    return ['outcome' => 'accepted', 'reference' => 'provider-ref-accepted-0001'];
+});
+$check('dispatch_callback_receives_locked_reservation_amount', ($dispatchContext['reservation_amount_cents'] ?? null) === 100);
 $check('accepted_outcome_completes_job_and_posts_ledger_atomically', $accepted['status'] === 'completed' && $state($lease['id'])['status'] === 'completed' && $reservations->commit('job-reserve-0001', 'provider-ref-accepted-0001') === 'idempotent_committed');
 $check('twelfth_reservation_is_created_for_payload_reuse_denial', $makeReservation(12)['allowed']);
 $check('a_payload_reference_cannot_be_reused_for_another_job', $throws(static fn() => $jobs->enqueue('job-reserve-0012', 'job-key-00000012', $payloadRef1)) && $reservations->release('job-reserve-0012') === 'released');
@@ -166,3 +171,4 @@ $eventUpdateDenied = false;
 try { $db->exec("UPDATE kp_durable_job_events SET event_type='queued' WHERE id=1"); } catch (PDOException) { $eventUpdateDenied = true; }
 $check('durable_job_events_are_append_only', $eventUpdateDenied && $jobs->verifyAudit()['events'] === 42);
 echo $passed . " durable job cases passed\n";
+

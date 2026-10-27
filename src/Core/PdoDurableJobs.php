@@ -143,6 +143,7 @@ final class PdoDurableJobs
                     'provider_idempotency_key' => 'kp-' . hash('sha256', $attempt['job_key']),
                     'authorization_epoch' => $attempt['authorization_epoch'], 'attempt_id' => $attempt['attempt_id'],
                     'attempt_deadline_epoch' => $attempt['attempt_deadline_epoch'],
+                    'reservation_amount_cents' => $attempt['reservation_amount_cents'],
                 ]);
             } catch (Throwable) { $outcome = ['outcome' => 'unknown']; }
         }
@@ -315,3 +316,4 @@ final class PdoDurableJobs
     }
     private static function base64UrlEncode(string $bytes): string { return rtrim(strtr(base64_encode($bytes), '+/', '-_'), '='); }
 }
+

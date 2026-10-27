@@ -4,7 +4,7 @@ All dates Australia/Sydney. Append a new dated entry for each substantive sessio
 
 ## 2026-10-27 — Disabled-by-default provider HTTP boundary
 - Added a provider-neutral JSON adapter and cURL HTTPS transport behind an injectable interface. The adapter requires an exact-host allowlist, HTTPS on port 443, rejects local/IP literal targets, keeps redirects off, caps request/response size, rechecks the absolute attempt deadline at the transport boundary, sends the stable idempotency key and normalizes strict outcomes.
-- The adapter is disabled by default; it makes no provider call. Non-2xx and malformed/ambiguous responses fail closed. Generic response parsers cannot declare `no_effect`; only a transport-confirmed pre-send deadline expiry returns that outcome. Added `DurableJobWorker::runOnce()` with a required deterministic execution-authorizer; callback context includes reserved cents. It checks data class before opening the vault key, then loads one active credential and calls the adapter. Worker and adapter default to disabled, and the worker refuses to claim jobs without the authorizer.
+- The adapter is disabled by default; it makes no provider call. Non-2xx and malformed/ambiguous responses fail closed. Generic response parsers cannot declare `no_effect`; only a transport-confirmed pre-send deadline expiry returns that outcome. Added `DurableJobWorker::runOnce()` with a required deterministic execution-authorizer. Review later found that the durable dispatcher did not forward locked reserved cents into the callback; a fix and MySQL assertion are now pending CI. Worker and adapter default to disabled, and the worker refuses to claim jobs without the authorizer.
 - Offline fake-transport suite passed **17/17** and worker guard passed **2/2** on PHP 8.5.12. Full pure suites passed 11/11 policy, 10/10 financial math, 13/13 route policy, 17/17 adapter and 2/2 worker cases; PHP lint, Composer JSON, Node syntax and whitespace checks passed. A concrete authorizer binding route quotes to reserved cents and actual request cost is still required before enabling; active worker/database integration, provider contract, reconciliation and live integration remain open.
 
 ## 2026-10-27 — Encrypted durable-job payload foundation
@@ -105,4 +105,8 @@ All dates Australia/Sydney. Append a new dated entry for each substantive sessio
 ## 2026-10-27 — Worker and adapter CI evidence
 - Recorded successful PHP workflow `40427834206` and all seven disposable MySQL 8.4 suites in workflow `40427834268` for PR #1 head `05370b8811027903e999a356f351c58bae9885c`.
 - The one-shot worker stays disabled because no concrete reservation-bound route/cost authorizer exists; configured worker integration, cURL/TLS behavior, and provider-specific contracts remain unverified.
+
+## 2026-10-27 — Preserve reservation amount in worker authorization context
+- Fixed the durable dispatcher to pass the locked reservation amount through to its provider callback; the worker's execution-authorizer can now compare its decision with the actual reserved cents.
+- Added a MySQL durable-job assertion checking that the callback receives the exact amount selected from the locked reservation. GitHub CI verification is pending.
 
