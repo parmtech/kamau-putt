@@ -53,5 +53,23 @@ $worker = new DurableJobWorker($jobs, $payloads, $vault, ['model_request' => [
 $result = $worker->runOnce();
 $pass = $result === ['status' => 'disabled'] && $transport->calls === 0;
 echo ($pass ? 'PASS ' : 'FAIL ') . 'default_disabled_worker_does_not_claim_jobs_or_send_requests' . PHP_EOL;
-echo ($pass ? '1/1 tests passed' : '0/1 tests passed') . PHP_EOL;
-exit($pass ? 0 : 1);
+
+$enabledAdapter = new JsonProviderAdapter(
+    'example.ai', 'https://api.example.ai/v1/run', $transport,
+    static fn(array $attempt, array $payload): array => ['input' => $payload['input'] ?? ''],
+    static fn(array $response): array => ['outcome' => 'unknown'],
+    true,
+    allowedHosts: ['api.example.ai'],
+);
+$guardedWorker = new DurableJobWorker($jobs, $payloads, $vault, ['model_request' => [
+    'credential_id' => 1,
+    'adapter' => $enabledAdapter,
+    'allowed_data_classes' => ['public'],
+]], true);
+try { $guardedResult = $guardedWorker->runOnce(); $policyGateRequired = $guardedResult === ['status' => 'disabled']; }
+catch (Throwable) { $policyGateRequired = false; }
+$pass2 = $policyGateRequired && $transport->calls === 0;
+echo ($pass2 ? 'PASS ' : 'FAIL ') . 'enabled_worker_without_execution_authorizer_does_not_claim_jobs' . PHP_EOL;
+$totalPass = ($pass ? 1 : 0) + ($pass2 ? 1 : 0);
+echo $totalPass . "/2 tests passed" . PHP_EOL;
+exit($totalPass === 2 ? 0 : 1);

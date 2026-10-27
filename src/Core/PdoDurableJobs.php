@@ -111,7 +111,7 @@ final class PdoDurableJobs
                 $this->appendEvent($jobId, 'system', null, 'dispatch_rejected', ['reason' => 'dispatch_fenced_before_start'], $now);
                 return ['started' => false, 'reason' => 'dispatch_fenced'];
             }
-            $reservation = $this->one('SELECT idempotency_key,status,authorization_epoch FROM kp_spend_reservations WHERE id=? FOR UPDATE', [$job['reservation_id']]);
+            $reservation = $this->one('SELECT idempotency_key,status,authorization_epoch,amount_cents FROM kp_spend_reservations WHERE id=? FOR UPDATE', [$job['reservation_id']]);
             if ($reservation === null) { throw new \RuntimeException('Outbox reservation is missing'); }
             if ($reservation['status'] !== 'reserved' || (int) $reservation['authorization_epoch'] !== (int) $control['dispatch_epoch']) {
                 $next = $reservation['status'] === 'uncertain' ? 'uncertain' : 'canceled';
@@ -128,7 +128,7 @@ final class PdoDurableJobs
             $stmt->execute([$attemptId, $attemptDeadline, $now, $jobId]);
             if ($stmt->rowCount() !== 1) { throw new \RuntimeException('Durable job changed before dispatch start'); }
             $this->appendEvent($jobId, 'worker', null, 'dispatch_started', ['attempt_id' => $attemptId, 'deadline_epoch' => $attemptDeadline], $now);
-            return ['started' => true, 'attempt_id' => $attemptId, 'attempt_deadline_epoch' => $attemptDeadline, 'job_key' => (string) $job['job_key'], 'action_type' => (string) $job['action_type'], 'payload_ref' => (string) $job['payload_ref'], 'authorization_epoch' => (int) $job['authorization_epoch']];
+            return ['started' => true, 'attempt_id' => $attemptId, 'attempt_deadline_epoch' => $attemptDeadline, 'job_key' => (string) $job['job_key'], 'action_type' => (string) $job['action_type'], 'payload_ref' => (string) $job['payload_ref'], 'authorization_epoch' => (int) $job['authorization_epoch'], 'reservation_amount_cents' => (int) $reservation['amount_cents']];
         });
         if (!$attempt['started']) { return ['dispatched' => false, 'reason' => $attempt['reason']]; }
 

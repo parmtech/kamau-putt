@@ -11,6 +11,7 @@ final class DurableJobWorker
 {
     /**
      * @param array<string,array{credential_id:int,adapter:JsonProviderAdapter,allowed_data_classes:list<string>}> $routes
+     * @param callable(array,array):bool|null $executionAuthorizer Trusted deterministic policy gate; required to run.
      * @param callable():int|null $clock
      */
     public function __construct(
@@ -20,7 +21,9 @@ final class DurableJobWorker
         private readonly array $routes,
         private readonly bool $enabled = false,
         private readonly mixed $clock = null,
+        ?callable $executionAuthorizer = null,
     ) {
+        $this->executionAuthorizer = $executionAuthorizer === null ? null : $executionAuthorizer(...);
         foreach ($routes as $actionType => $route) {
             if (!is_string($actionType) || !preg_match('/^[a-z][a-z0-9_]{1,63}$/D', $actionType)
                 || !is_array($route) || !is_int($route['credential_id'] ?? null) || $route['credential_id'] < 1
@@ -36,10 +39,12 @@ final class DurableJobWorker
         }
     }
 
+    private readonly ?\Closure $executionAuthorizer;
+
     /** Claim and process no more than one job. Returns metadata only; never returns payload or secret. */
     public function runOnce(): array
     {
-        if (!$this->enabled || !$this->hasEnabledRoute()) { return ['status' => 'disabled']; }
+        if (!$this->enabled || !$this->hasEnabledRoute() || $this->executionAuthorizer === null) { return ['status' => 'disabled']; }
         $lease = $this->jobs->claimNext();
         if ($lease === null) { return ['status' => 'idle']; }
         $route = $this->routes[$lease['action_type']] ?? null;
@@ -49,13 +54,19 @@ final class DurableJobWorker
             try { $payload = $this->payloads->load((string) $attempt['payload_ref']); }
             catch (Throwable) { return ['outcome' => 'no_effect']; }
 
+            // Deny sensitive/disallowed payloads before opening the provider credential.
+            $dataClass = $payload['data_class'] ?? null;
+            if (!is_string($dataClass) || !in_array($dataClass, $route['allowed_data_classes'], true)) {
+                unset($payload);
+                return ['outcome' => 'no_effect'];
+            }
+            try { $authorized = ($this->executionAuthorizer)($attempt, $payload); }
+            catch (Throwable) { unset($payload); return ['outcome' => 'no_effect']; }
+            if ($authorized !== true) { unset($payload); return ['outcome' => 'no_effect']; }
+
             $enteredAdapter = false;
             try {
                 return $this->vault->withActiveSecret((int) $route['credential_id'], function (string $provider, string $apiKey) use ($route, $attempt, $payload, &$enteredAdapter): array {
-                    $dataClass = $payload['data_class'] ?? null;
-                    if (!is_string($dataClass) || !in_array($dataClass, $route['allowed_data_classes'], true)) {
-                        return ['outcome' => 'no_effect'];
-                    }
                     $enteredAdapter = true;
                     return $route['adapter']->execute($attempt, $payload, $provider, $apiKey);
                 });
