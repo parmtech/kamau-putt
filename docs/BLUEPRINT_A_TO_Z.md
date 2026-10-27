@@ -8,7 +8,8 @@ The design is written A to Z, while implementation, review, staging and producti
 
 - Fresh local PHP 8.5.12 + MariaDB 11.4.13: durable-job suite 27/27 and owner-control suite 15/15 passed. Pure suites: policy 11/11, financial math 10/10, provider routing 13/13. PHP lint and whitespace checks passed.
 - MySQL 8.4 run `40423702670` passed all seven disposable DB suites, including migration 009 and durable-job audit-chain verification after recursive canonical JSON hashing. PHP run `40423702753` passed.
-- Earlier MySQL run `40423366112` exposed that JSON key normalization could invalidate event hashes. The issue was fixed and the later full MySQL 8.4 run passed. Docs-only PR #1 head `8e298ef` has fresh checks in progress; the tested code itself is commit `0ec8175`.
+- The documentation-only latest PR #1 head `8e298ef` also passed all seven MySQL suites in `40423875042` and PHP in `40423874997`.
+- Earlier MySQL run `40423366112` exposed that JSON key normalization could invalidate event hashes. The issue was fixed and subsequent full MySQL 8.4 runs passed.
 - A read-only implementation review found no critical correctness issue. Operational boundaries: dispatch-start commit is the irrevocable authorization point, so a paused worker may invoke its callback after STOP; the 30-second lease begins at claim time, so a slow adapter may be marked uncertain before returning. A real adapter must enforce a strict transport deadline.
 - No real provider call, live spending, deployment, staging, browser-integrated HQ, verified hosting, commercial compliance, backup restore or profitability is established. No supervised worker, reconciliation UI, persistent memory or Android/voice app is complete.
 
