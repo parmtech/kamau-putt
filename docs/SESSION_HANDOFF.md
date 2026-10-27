@@ -1,35 +1,30 @@
 # Kamau Putt — Session Resume / AI Handoff
 
-**Last updated:** 2026-10-24, Australia/Sydney  
-**Repo:** `manbir6-ux/kamau-putt` (PRIVATE). Default branch `main`.  
-**User instruction:** Maintain complete development evidence in GitHub so *any later session* can continue without restarting.
+**Last updated:** 2026-10-27, Australia/Sydney
+**Canonical repo:** `parmtech/kamau-putt` (public; verified via connected GitHub account). The requested alias `manbir6-ux/kamau-putt` was not visible in that connector. Default branch: `main`.
+**Active branch:** `feat/kp-financial-reservations-foundation`; PR #1. Blueprint remains draft PR #2 (`docs/a-to-z-blueprint`). Preserve both drafts and keep work backend-first, Android last.
 
-## Current verified state
-1. Planning docs exist: `README.md`, `docs/MASTER_PLAN.md`, `docs/FEATURES.md`, `docs/DECISIONS.md`, `docs/ROADMAP.md`.
-2. Ordered task board: `docs/PROJECT_TRACKER.md`; completion conventions are mandatory.
-3. Minimal PHP-only code: `src/Core/SpendGuard.php`, `src/Core/SpendDecision.php`, `tests/run.php` and `composer.json`.
-4. **11/11** pure spending-preflight unit scenarios passed locally in PHP **8.4.24**; syntax/lint passed. They do NOT prove overspend-safe real transactions, live payments or emergency controls.
-5. No actual deployment, payment API, provider integrations, secrets, customer orders, Android build, or live autonomous business.
+## Owner decisions to preserve
+- “Kamau Putt” is the private AI operator identity; customer-facing brands may differ and must disclose legal identity honestly.
+- Initial seed preferred AUD 200–300, with **AUD 500 cumulative external-seed maximum**, not a monthly allowance. Earned funds may only be reinvested within approved envelopes and reserves.
+- Routine operations may be autonomous only inside explicitly authorized budgets/scopes and after safety gates. Strategic, banking, regulated, major funding and hardware decisions stay with Dad.
+- Only Dad may resume after STOP, after reviewing the risk/cost summary and explicit confirmation. Shutdown preserves refunds, fulfilment, legal duties and accounting.
+- AI-provider routing must respect each provider's terms; extra keys/accounts do not authorize quota circumvention. No live spending, payment, supplier commitment or customer operation is enabled.
+- Android/Punjabi voice is the last major delivery, after backend, web control, commerce and live pilot have been proven.
 
-## Critical owner decisions
-- **Backend/core first, Android app LAST.** Existing older documents may contain an earlier Android-first order; this later decision supersedes it.
-- One-time seed **AUD 200–300 preferred, AUD 500 max external seed**, not a monthly allowance. Safe earned-profit reinvestment later.
-- Owner emergency stop; **only Dad** can resume after reviewing short risks/cost report.
-- Persistent brain, memory/journal/backups, daily voice availability, owner-configurable multiple AI API keys, policy-compliant model routing.
-- No customer-facing identity assumption: public brands may have distinct names.
+## Current implementation and evidence
+- PR #1 contains PHP/MySQL prototypes for reservations, double-entry posting, owner auth/STOP-resume, encrypted credential vault, route policy, Owner HQ, and durable reservation-backed dispatch. The migration-009 baseline passed PHP workflow `40424583575` and all seven MySQL 8.4 suites in `40424583409`.
+- Current uncommitted work in this checkout adds migration 010 and `PdoJobPayloadStore`: max-64-KiB JSON objects encrypted with reference-bound libsodium keys; immutable database rows; one payload reference per job; missing/reused references rejected; purge only after a known terminal result. Fresh isolated MariaDB 11.4.13 passed 41/41 durable-job assertions. Pure suites pass policy 11/11, arithmetic 10/10, routing 13/13; PHP lint across 25 files and whitespace checks pass. New MySQL 8.4 CI is pending.
+- No supervised worker/scheduler, bounded provider adapter, job reconciliation UI, hosting/staging verification, store, real payment/provider operation, or Android app exists. Never equate local or CI tests with deployment or production readiness.
 
-## Exact next actions
-1. **KP-003:** Verify actual Namecheap hosting PHP/MySQL/cron/worker/deploy constraints before choosing background scheduler or framework. Ask for access only if it is actually required, and do not upload secrets.
-2. **KP-005/KP-012:** Propose and implement a schema/migration + **atomic reserve/commit/release** budget protocol with transaction isolation, idempotency keys, customer liabilities, no credit against unsettled funds. Test concurrency/duplicate/timeout cases using an available DB/test harness.
-3. **KP-013/KP-023/024:** Implement durable auth/owner-stop controls with independent staging verification before enabling any live spending.
+## Next work
+1. Commit and publish the current code/docs/tests to PR #1 using the connected GitHub integration; observe PHP and MySQL 8.4 CI for migration 010. Refresh blueprint PR #2 and sync its evidence/handoff after PR #1 head is known.
+2. Add bounded provider transport with pre-send deadline enforcement, a transport timeout below the attempt deadline, strict response parsing, stable idempotency and unknown-result reconciliation. Keep live calls disabled.
+3. Build worker supervision and reconciliation/recovery controls; add production key custody/rotation and payload retention/deletion audit.
+4. Continue the tracker in order: actual hosting preflight; threat/privacy and Australian legal checklist; cash/liability accounting; staging security and recovery drills; evidence-led product selection, test checkout, controlled pilot. Then Android/Punjabi voice last.
 
-## Known limitations / open blockers
-- No verified live hosting environment, database, cron behavior, Stripe integration, Android background-calling stack or vetted live suppliers.
-- PHP foundation is **provisional**, chosen for lightweight shared-hosting compatibility; changing framework requires a documented decision.
-- No trusted autonomous spending is safe until transactional reservations, journal, owner stop and E2E tests exist.
-
-## How to finish any future session
-- Read `AGENTS.md`, tracker, this handoff, decisions and relevant code.
-- Verify current main branch HEAD; make focused changes + tests, capture outcomes.
-- Update tracker, changelog, handoff and verification **in same commit as code whenever possible**.
-- Clearly separate tested code from simulations, deploys and live operations.
+## Runtime and safe test setup
+- Local portable runtime is in workspace `.tools/`: PHP 8.5.12 and MariaDB 11.4.13. PHP's CLI configuration does not auto-load sodium; run local crypto DB checks with `php -d extension=sodium ...`.
+- Use a newly created empty disposable database for each DB suite. The fresh test MariaDB instance was loopback-only at port 33317 and was shut down after verification. Do not point tests at a real or hosted database.
+- Keep `.tools/`, database files, owner/customer data, authentication values and API secrets out of GitHub.
+- Every meaningful change updates tracker, changelog, handoff and verification in the same commit when possible. Keep status distinctions explicit: implemented, locally tested, CI verified, staging verified, production verified.
