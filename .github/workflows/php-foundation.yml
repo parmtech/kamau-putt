@@ -23,9 +23,11 @@ jobs:
           php -l src/Core/ProviderHttpTransport.php
           php -l src/Core/CurlJsonTransport.php
           php -l src/Core/JsonProviderAdapter.php
+          php -l src/Core/DurableJobWorker.php
           php -l tests/run.php
           php -l tests/financial_math.php
           php -l tests/provider_http_adapter.php
+          php -l tests/durable_job_worker.php
           php -l tests/mysql_integration.php
       - name: Run offline pure policy tests
         run: |
@@ -33,4 +35,5 @@ jobs:
           php tests/financial_math.php
           php tests/provider_route_policy.php
           php tests/provider_http_adapter.php
+          php tests/durable_job_worker.php
 # MySQL integration is intentionally excluded until a disposable test DB exists.
