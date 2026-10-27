@@ -107,9 +107,19 @@ $lateLease = $jobs->claimNext();
 $lateOutcome = $jobs->dispatch($lateLease['id'], $lateLease['lease_token'], static function () use (&$now, $jobs): array { $now += 31; $jobs->claimNext(); return ['outcome' => 'accepted', 'reference' => 'provider-ref-late-0009']; });
 $lateState = $state($lateLease['id']);
 $check('recovered_attempt_accepts_its_exact_late_result_without_retry', $lateOutcome['status'] === 'completed' && $lateState['status'] === 'completed' && (int) $lateState['updated_epoch'] === $now && $reservations->commit('job-reserve-0009', 'provider-ref-late-0009') === 'idempotent_committed');
+$check('tenth_reservation_is_created_for_fresh_attempt_deadline', $makeReservation(10)['allowed']);
+$jobs->enqueue('job-reserve-0010', 'job-key-00000010', 'payload-ref:00000010');
+$nearExpiryLease = $jobs->claimNext();
+$now += \KamauPutt\Core\PdoDurableJobs::LEASE_SECONDS - 1;
+$receivedAttemptDeadline = 0;
+$nearExpiryDispatch = $jobs->dispatch($nearExpiryLease['id'], $nearExpiryLease['lease_token'], static function (array $request) use (&$now, &$receivedAttemptDeadline): array {
+    $receivedAttemptDeadline = (int) $request['attempt_deadline_epoch'];
+    return ['outcome' => 'accepted', 'reference' => 'provider-ref-deadline-0010'];
+});
+$check('dispatch_starts_a_fresh_bounded_attempt_deadline_after_near_expiry_claim', $nearExpiryDispatch['status'] === 'completed' && $receivedAttemptDeadline === $now + \KamauPutt\Core\PdoDurableJobs::LEASE_SECONDS && $receivedAttemptDeadline > $nearExpiryLease['lease_expires_epoch'] && $reservations->commit('job-reserve-0010', 'provider-ref-deadline-0010') === 'idempotent_committed');
 $audit = $jobs->verifyAudit();
-$check('durable_job_hash_chain_verifies_after_mysql_json_normalizes_detail_keys', $audit['events'] === 34 && preg_match('/^[a-f0-9]{64}$/', $audit['last_hash']) === 1);
+$check('durable_job_hash_chain_verifies_after_mysql_json_normalizes_detail_keys', $audit['events'] === 38 && preg_match('/^[a-f0-9]{64}$/', $audit['last_hash']) === 1);
 $eventUpdateDenied = false;
 try { $db->exec("UPDATE kp_durable_job_events SET event_type='queued' WHERE id=1"); } catch (PDOException) { $eventUpdateDenied = true; }
-$check('durable_job_events_are_append_only', $eventUpdateDenied && $jobs->verifyAudit()['events'] === 34);
+$check('durable_job_events_are_append_only', $eventUpdateDenied && $jobs->verifyAudit()['events'] === 38);
 echo $passed . " durable job cases passed\n";

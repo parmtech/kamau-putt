@@ -19,7 +19,7 @@ require_once __DIR__ . '/PdoSpendReservations.php';
  */
 final class PdoDurableJobs
 {
-    private const LEASE_SECONDS = 30;
+    public const LEASE_SECONDS = 30;
     private const GENESIS = '0000000000000000000000000000000000000000000000000000000000000000';
 
     /** @param callable():int|null $clock Testable Unix clock. */
@@ -116,11 +116,14 @@ final class PdoDurableJobs
                 return ['started' => false, 'reason' => 'reservation_not_dispatchable'];
             }
             $attemptId = self::uuidV4();
-            $stmt = $this->db->prepare("UPDATE kp_durable_jobs SET status='dispatching',dispatch_attempt_id=?,updated_epoch=? WHERE id=? AND status='leased'");
-            $stmt->execute([$attemptId, $now, $jobId]);
+            // The claim lease may have been mostly consumed before this worker started.
+            // Begin a fresh bounded attempt deadline at the authorization boundary.
+            $attemptDeadline = $now + self::LEASE_SECONDS;
+            $stmt = $this->db->prepare("UPDATE kp_durable_jobs SET status='dispatching',dispatch_attempt_id=?,lease_expires_epoch=?,updated_epoch=? WHERE id=? AND status='leased'");
+            $stmt->execute([$attemptId, $attemptDeadline, $now, $jobId]);
             if ($stmt->rowCount() !== 1) { throw new \RuntimeException('Durable job changed before dispatch start'); }
-            $this->appendEvent($jobId, 'worker', null, 'dispatch_started', ['attempt_id' => $attemptId], $now);
-            return ['started' => true, 'attempt_id' => $attemptId, 'job_key' => (string) $job['job_key'], 'action_type' => (string) $job['action_type'], 'payload_ref' => (string) $job['payload_ref'], 'authorization_epoch' => (int) $job['authorization_epoch']];
+            $this->appendEvent($jobId, 'worker', null, 'dispatch_started', ['attempt_id' => $attemptId, 'deadline_epoch' => $attemptDeadline], $now);
+            return ['started' => true, 'attempt_id' => $attemptId, 'attempt_deadline_epoch' => $attemptDeadline, 'job_key' => (string) $job['job_key'], 'action_type' => (string) $job['action_type'], 'payload_ref' => (string) $job['payload_ref'], 'authorization_epoch' => (int) $job['authorization_epoch']];
         });
         if (!$attempt['started']) { return ['dispatched' => false, 'reason' => $attempt['reason']]; }
 
@@ -130,6 +133,7 @@ final class PdoDurableJobs
                 'action_type' => $attempt['action_type'], 'payload_ref' => $attempt['payload_ref'],
                 'provider_idempotency_key' => 'kp-' . hash('sha256', $attempt['job_key']),
                 'authorization_epoch' => $attempt['authorization_epoch'], 'attempt_id' => $attempt['attempt_id'],
+                'attempt_deadline_epoch' => $attempt['attempt_deadline_epoch'],
             ]);
         } catch (Throwable) { $outcome = ['outcome' => 'unknown']; }
         if (!is_array($outcome) || !in_array($outcome['outcome'] ?? null, ['accepted', 'no_effect', 'unknown'], true)) { $outcome = ['outcome' => 'unknown']; }
