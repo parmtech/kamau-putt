@@ -94,9 +94,8 @@ $quoteBoundaryBuilder = static function (array $attempt, array $payload, array $
 };
 $quoteBoundaryAdapter = new JsonProviderAdapter('example.ai', 'https://api.example.ai/v1/run', $transport, $quoteBoundaryBuilder, $parser, true, 10_000, 1024, static function () use (&$quoteBoundaryClock): int { return $quoteBoundaryClock; }, ['api.example.ai']);
 $beforeStaleQuote = count($transport->calls);
-try { $quoteBoundaryAdapter->execute(array_replace($attempt, ['attempt_deadline_epoch' => $now + 1000]), $payload, 'example.ai', 'test-secret-123456', $authorization); $staleQuoteRejected = false; }
-catch (RuntimeException) { $staleQuoteRejected = true; }
-$test('quote_that_expires_during_request_build_is_rejected_before_transport', $staleQuoteRejected && count($transport->calls) === $beforeStaleQuote);
+$staleQuoteOutcome = $quoteBoundaryAdapter->execute(array_replace($attempt, ['attempt_deadline_epoch' => $now + 1000]), $payload, 'example.ai', 'test-secret-123456', $authorization);
+$test('quote_that_expires_during_request_build_is_no_effect_before_transport', $staleQuoteOutcome === ['outcome' => 'no_effect'] && count($transport->calls) === $beforeStaleQuote);
 
 $beforeExpired = count($transport->calls);
 $expired = $enabled->execute(array_replace($attempt, ['attempt_deadline_epoch' => $now]), $payload, 'example.ai', 'test-secret-123456', $authorization);

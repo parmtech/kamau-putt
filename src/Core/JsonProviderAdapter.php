@@ -87,7 +87,7 @@ final class JsonProviderAdapter
         if ($remainingMs < 1) { return ['outcome' => 'no_effect']; }
         $sendEpoch = (int) floor($this->nowFloat());
         if ($authorization->quoteEpoch > $sendEpoch || $authorization->quoteEpoch < $sendEpoch - 300) {
-            throw new \RuntimeException('Provider offer quote expired before send');
+            return ['outcome' => 'no_effect'];
         }
         $timeoutMs = min($this->maxTimeoutMs, $remainingMs);
         try {
