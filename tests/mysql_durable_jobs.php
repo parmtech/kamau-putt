@@ -1,1 +1,168 @@
-YªçŠx-®éÜj×¢ëiºÚ+Š§j[h‘éÜ¢éíç½8N‹Z–‹­¦ëeŠw¬ÔðýÁ¡À4(4)‘•±…É”¡ÍÑÉ¥Ñ}ÑåÁ•ÌôÄ¤ì4(4)É•ÅÕ¥É•}½¹”}}%I}|€¸€œ¼¸¸½ÍÉŒ½½É”½A‘½=Ý¹•ÉÕÑ ¹Á¡Àœì4)É•ÅÕ¥É•}½¹”}}%I}|€¸€œ¼¸¸½ÍÉŒ½½É”½A‘½=Ý¹•É½¹ÑÉ½°¹Á¡Àœì4)É•ÅÕ¥É•}½¹”}}%I}|€¸€œ¼¸¸½ÍÉŒ½½É”½A‘½MÁ•¹‘I•Í•ÉÙ…Ñ¥½¹Ì¹Á¡Àœì4)É•ÅÕ¥É•}½¹”}}%I}|€¸€œ¼¸¸½ÍÉŒ½½É”½A‘½ÕÉ…‰±•)½‰Ì¹Á¡Àœì4)É•ÅÕ¥É•}½¹”}}%I}|€¸€œ¼¸¸½ÍÉŒ½½É”½A‘½)½‰A…å±½…‘MÑ½É”¹Á¡Àœì4(4)¥˜€¡A!A}MA$€„ôô€±¤œñð•Ñ•¹Ø -A}QMQ}11=]}	}]I%Qœ¤€„ôô€%}U9IMQ9}MQ%9}=91dœ¤ì™ÝÉ¥Ñ”¡MQIH°€‰M-%@è•áÁ±¥¥Ð‘¥ÍÁ½Í…‰±”‘…Ñ…‰…Í”½¹™¥Éµ…Ñ¥½¸É•ÅÕ¥É•‘q¸ˆ¤ì•á¥Ð È¤ìô4(‘‘Í¸€ô•Ñ•¹Ø -A}QMQ}5eME1}M8œ¤ì4)¥˜€ …¥Í}ÍÑÉ¥¹œ ‘‘Í¸¤ñð€…ÍÑÉ}ÍÑ…ÉÑÍ}Ý¥Ñ  ‘‘Í¸°€µåÍÅ°èœ¤ñð€…•áÑ•¹Í¥½¹}±½…‘• Á‘½}µåÍÅ°œ¤¤ì™ÝÉ¥Ñ”¡MQIH°€‰M-%@è½¹™¥ÕÉ•5åME0A<‘É¥Ù•ÈÉ•ÅÕ¥É•‘q¸ˆ¤ì•á¥Ð È¤ìô4(‘‘ˆ€ô¹•ÜA< ‘‘Í¸°•Ñ•¹Ø -A}QMQ}5eME1}UMHœ¤€üè€œœ°•Ñ•¹Ø -A}QMQ}5eME1}AMM]=Iœ¤€üè€œœ°mA<èéQQI}II5=€ôøA<èéII5=}aAQ%=8°A<èéQQI}5U1Q}AIAIL€ôø™…±Í”°A<èéQQI}U1Q}Q!}5=€ôøA<èéQ!}MM=t¤ì4)¥˜€ ¡¥¹Ð¤€‘‘ˆ´ùÅÕ•Éä M1P=U9P ¨¤I=4¥¹™½Éµ…Ñ¥½¹}Í¡•µ„¹Ñ…‰±•Ì]!IÑ…‰±•}Í¡•µ„õQ	M ¤œ¤´ù™•Ñ¡½±Õµ¸ ¤€„ôô€À¤ìÑ¡É½Ü¹•ÜIÕ¹Ñ¥µ•á•ÁÑ¥½¸ ÕÉ…‰±”µ©½‰ÌÑ•ÍÐÉ•ÅÕ¥É•Ì…¸5AQd‘¥ÍÁ½Í…‰±”‘…Ñ…‰…Í”œ¤ìô4)™½É•… €¡lœÀÀÅ}™¥¹…¹¥…±}½¹ÑÉ½°¹µåÍÅ°¹ÍÅ°œ°œÀÀÉ}‘½Õ‰±•}•¹ÑÉå}±•‘•È¹µåÍÅ°¹ÍÅ°œ°œÀÀÑ}½Ý¹•É}…ÕÑ ¹µåÍÅ°¹ÍÅ°œ°œÀÀÕ}½Ý¹•É}½¹ÑÉ½°¹µåÍÅ°¹ÍÅ°œ°œÀÀÙ}½Ý¹•É}½¹ÑÉ½±}…Õ‘¥Ð¹µåÍÅ°¹ÍÅ°œ°œÀÀá}‘ÕÉ…‰±•}©½‰Ì¹µåÍÅ°¹ÍÅ°œ°œÀÀå}‘ÕÉ…‰±•}©½‰}‘¥ÍÁ…Ñ¡}…ÑÑ•µÁÐ¹µåÍÅ°¹ÍÅ°œ°œÀÄÁ}•¹ÉåÁÑ•‘}©½‰}Á…å±½…‘Ì¹µåÍÅ°¹ÍÅ°t…Ì€‘µ¥É…Ñ¥½¸¤ì4(€€€€‘ÍÅ°€ô™¥±•}•Ñ}½¹Ñ•¹ÑÌ¡}}%I}|€¸€œ¼¸¸½‘…Ñ…‰…Í”¼œ€¸€‘µ¥É…Ñ¥½¸¤ì4(€€€™½É•… €¡ÁÉ•}ÍÁ±¥Ð œ¼íqÌ¨ üõq¹ð¤¼œ°€‘ÍÅ°¤…Ì€‘ÍÑ…Ñ•µ•¹Ð¤ì¥˜€¡ÑÉ¥´ ‘ÍÑ…Ñ•µ•¹Ð¤€„ôô€œœ¤ì€‘‘ˆ´ù•á•Œ¡ÑÉ¥´ ‘ÍÑ…Ñ•µ•¹Ð¤¤ìôô4)ô4(‘¹½Ü€ô€Å|àÀÁ|ÀÀÁ|ÀÀÀì4(‘±½­…±±Ì€ô€Àì4(‘…‘Ù…¹•±½­=¹…±°€ô¹Õ±°ì4(‘…‘Ù…¹•±½­M•½¹‘Ì€ô€Àì4(‘±½¬€ôÍÑ…Ñ¥Œ™Õ¹Ñ¥½¸€ ¤ÕÍ”€ ˜‘¹½Ü°€˜‘±½­…±±Ì°€˜‘…‘Ù…¹•±½­=¹…±°°€˜‘…‘Ù…¹•±½­M•½¹‘Ì¤è¥¹Ðì4(€€€€‘±½­…±±Ì¬¬ì4(€€€¥˜€ ‘…‘Ù…¹•±½­=¹…±°€ôôô€‘±½­…±±Ì¤ì€‘¹½Ü€¬ô€‘…‘Ù…¹•±½­M•½¹‘Ìì€‘…‘Ù…¹•±½­=¹…±°€ô¹Õ±°ìô4(€€€É•ÑÕÉ¸€‘¹½Üì4)ôì4(‘…ÕÑ €ô¹•Ü-…µ…ÕAÕÑÑq½É•qA‘½=Ý¹•ÉÕÑ  ‘‘ˆ°É…¹‘½µ}‰åÑ•Ì ÌÈ¤°É…¹‘½µ}‰åÑ•Ì ÌÈ¤°€‘±½¬¤ì4(‘…ÕÑ ´ù‰½½ÑÍÑÉ…Á=Ý¹•È ‘…‘•á…µÁ±”¹Ñ•ÍÐœ°€Ñ•ÍÐµ½¹±äµ½Ý¹•ÈµÁ…ÍÍÝ½É´ÄÈÌœ°-…µ…ÕAÕÑÑq½É•qA‘½=Ý¹•ÉÕÑ èé•¹•É…Ñ•Q½ÑÁM•É•Ð ¤¤ì4(‘‘ˆ´ù•á•Œ ‰UAQ­Á}™¥¹…¹•}½¹ÑÉ½°MP½Á•É…Ñ¥¹}µ½‘”ôÉ½ÝÑ œ±½Ý¹•É}•µ•É•¹å}ÍÑ½ÁÁ•ôÀ±‘¥ÍÁ…Ñ¡}•Á½ ôÄ]!I¥ôÄˆ¤ì4(‘‘ˆ´ù•á•Œ ‰%9MIP%9Q<­Á}‰Õ‘•Ñ}•¹Ù•±½Á•Ì¡Í½Á”±…ÁÁÉ½Ù•‘}±¥µ¥Ñ}•¹ÑÌ±Á•É}…Ñ¥½¹}…Á}•¹ÑÌ¤Y1UL …¥}…Á¤œ°ÔÀÀÀ°ÄÀÀÀ¤ˆ¤ì4(‘‘ˆ´ù•á•Œ UAQ­Á}™¥¹…¹¥…±}Á½Í¥Ñ¥½¸MPÍ•ÑÑ±•‘}…Í¡}•¹ÑÌôÄÀÀÀÀ]!I¥ôÄœ¤ì4(‘É•Í•ÉÙ…Ñ¥½¹Ì€ô¹•Ü-…µ…ÕAÕÑÑq½É•qA‘½MÁ•¹‘I•Í•ÉÙ…Ñ¥½¹Ì ‘‘ˆ¤ì4(‘©½‰Ì€ô¹•Ü-…µ…ÕAÕÑÑq½É•qA‘½ÕÉ…‰±•)½‰Ì ‘‘ˆ°€‘±½¬¤ì4(‘Á…å±½…‘Ì€ô¹•Ü-…µ…ÕAÕÑÑq½É•qA‘½)½‰A…å±½…‘MÑ½É” ‘‘ˆ°É…¹‘½µ}‰åÑ•Ì ÌÈ¤°€‘±½¬¤ì4(‘½¹ÑÉ½°€ô¹•Ü-…µ…ÕAÕÑÑq½É•qA‘½=Ý¹•É½¹ÑÉ½° ‘‘ˆ°€‘±½¬¤ì4(‘Á…ÍÍ•€ô€Àì4(‘¡•¬€ôÍÑ…Ñ¥Œ™Õ¹Ñ¥½¸€¡ÍÑÉ¥¹œ€‘±…‰•°°‰½½°€‘½¬¤ÕÍ”€ ˜‘Á…ÍÍ•¤èÙ½¥ì•¡¼€ ‘½¬€ü€AML€œ€è€%0€œ¤€¸€‘±…‰•°€¸A!A}=0ì¥˜€ „‘½¬¤ìÑ¡É½Ü¹•ÜIÕ¹Ñ¥µ•á•ÁÑ¥½¸ …¥±•‘ÕÉ…‰±”µ©½ˆ¥¹Ù…É¥…¹Ðè€œ€¸€‘±…‰•°¤ìô€‘Á…ÍÍ•¬¬ìôì4(‘Ñ¡É½ÝÌ€ôÍÑ…Ñ¥Œ™Õ¹Ñ¥½¸€¡…±±…‰±”€‘½Á•É…Ñ¥½¸¤è‰½½°ìÑÉäì€‘½Á•É…Ñ¥½¸ ¤ìÉ•ÑÕÉ¸™…±Í”ìô…Ñ €¡Q¡É½Ý…‰±”¤ìÉ•ÑÕÉ¸ÑÉÕ”ìôôì4(‘µ…­•I•Í•ÉÙ…Ñ¥½¸€ôÍÑ…Ñ¥Œ™Õ¹Ñ¥½¸€¡¥¹Ð€‘¸¤ÕÍ”€ ‘É•Í•ÉÙ…Ñ¥½¹Ì¤è…ÉÉ…äìÉ•ÑÕÉ¸€‘É•Í•ÉÙ…Ñ¥½¹Ì´ùÉ•Í•ÉÙ”¡ÍÁÉ¥¹Ñ˜ ©½ˆµÉ•Í•ÉÙ”´”ÀÑœ°€‘¸¤°€…¥}…Á¤œ°€…¥}…±°œ°€ÄÀÀ°€ÄÀÀÀ°ÑÉÕ”¤ìôì4(‘µ…­•A…å±½…€ôÍÑ…Ñ¥Œ™¸¡¥¹Ð€‘¸¤èÍÑÉ¥¹œ€ôø€‘Á…å±½…‘Ì´ùÍÑ½É”¡l…Ñ¥½¸œ€ôø€Íå¹Ñ¡•Ñ¥ŒµÑ•ÍÐœ°€Í•ÅÕ•¹”œ€ôø€‘¹t¤ì4(‘ÍÑ…Ñ”€ôÍÑ…Ñ¥Œ™Õ¹Ñ¥½¸€¡ÍÑÉ¥¹œ€‘©½‰%¤ÕÍ”€ ‘‘ˆ¤è…ÉÉ…äì€‘ÍÑµÐô‘‘ˆ´ùÁÉ•Á…É” M1PÍÑ…ÑÕÌ±…ÑÑ•µÁÑ}½Õ¹Ð±ÕÁ‘…Ñ•‘}•Á½ ±‘¥ÍÁ…Ñ¡}…ÑÑ•µÁÑ}¥I=4­Á}‘ÕÉ…‰±•}©½‰Ì]!I¥ôüœ¤ì‘ÍÑµÐ´ù•á•ÕÑ”¡l‘©½‰%‘t¤íÉ•ÑÕÉ¸€‘ÍÑµÐ´ù™•Ñ ¡A<èéQ!}MM=¤ìôì4(4(‘Í•É•ÑA…å±½…‘I•˜€ô€‘Á…å±½…‘Ì´ùÍÑ½É”¡lÁÉ½µÁÐœ€ôø€Íå¹Ñ¡•Ñ¥ŒµÁÉ¥Ù…Ñ”µÁ…å±½…œ°€½ÁÑ¥½¹Ìœ€ôøl±…¹Õ…”œ€ôø€Á„ut¤ì4(‘ÍÑ½É•‘A…å±½…€ô€‘‘ˆ´ùÁÉ•Á…É” M1PÁ…å±½…‘}¹½¹”±Á…å±½…‘}¥Á¡•ÉÑ•áÐI=4­Á}©½‰}Á…å±½…‘Ì]!IÁ…å±½…‘}É•˜ôüœ¤ì4(‘ÍÑ½É•‘A…å±½…´ù•á•ÕÑ”¡l‘Í•É•ÑA…å±½…‘I•™t¤ì4(‘ÍÑ½É•‘A…å±½…‘I½Ü€ô€‘ÍÑ½É•‘A…å±½…´ù™•Ñ ¡A<èéQ!}MM=¤ì4(‘¡•¬ Á…å±½…‘Í}É½Õ¹‘}ÑÉ¥Á}•¹ÉåÁÑ•‘}…¹‘}¥Á¡•ÉÑ•áÑ}¡¥‘•Í}Á±…¥¹Ñ•áÐœ°€‘Á…å±½…‘Ì´ù±½… ‘Í•É•ÑA…å±½…‘I•˜¤€ôôôlÁÉ½µÁÐœ€ôø€Íå¹Ñ¡•Ñ¥ŒµÁÉ¥Ù…Ñ”µÁ…å±½…œ°€½ÁÑ¥½¹Ìœ€ôøl±…¹Õ…”œ€ôø€Á„ut€˜˜€…ÍÑÉ}½¹Ñ…¥¹Ì ¡ÍÑÉ¥¹œ¤€‘ÍÑ½É•‘A…å±½…‘I½ÝlÁ…å±½…‘}¥Á¡•ÉÑ•áÐt°€Íå¹Ñ¡•Ñ¥ŒµÁÉ¥Ù…Ñ”µÁ…å±½…œ¤¤ì4(‘ÝÉ½¹-•åMÑ½É”€ô¹•Ü-…µ…ÕAÕÑÑq½É•qA‘½)½‰A…å±½…‘MÑ½É” ‘‘ˆ°É…¹‘½µ}‰åÑ•Ì ÌÈ¤°€‘±½¬¤ì4(‘¡•¬ Á…å±½…‘}…ÕÑ¡•¹Ñ¥…Ñ¥½¹}™…¥±ÕÉ•}™…¥±Í}±½Í•œ°€‘Ñ¡É½ÝÌ¡ÍÑ…Ñ¥Œ™¸ ¤€ôø€‘ÝÉ½¹-•åMÑ½É”´ù±½… ‘Í•É•ÑA…å±½…‘I•˜¤¤¤ì4(‘É•‰½Õ¹‘I•˜€ô€œÀÀÀÀÀÀÀÀ´ÀÀÀÀ´ÐÀÀÀ´àÀÀÀ´ÀÀÀÀÀÀÀÀÀÄÀÄœì4(‘É•‰½Õ¹€ô€‘‘ˆ´ùÁÉ•Á…É” %9MIP%9Q<­Á}©½‰}Á…å±½…‘Ì¡Á…å±½…‘}É•˜±Á…å±½…‘}¹½¹”±Á…å±½…‘}¥Á¡•ÉÑ•áÐ±É•…Ñ•‘}•Á½ ¤M1P€ü±Á…å±½…‘}¹½¹”±Á…å±½…‘}¥Á¡•ÉÑ•áÐ±É•…Ñ•‘}•Á½ I=4­Á}©½‰}Á…å±½…‘Ì]!IÁ…å±½…‘}É•˜ôüœ¤ì4(‘É•‰½Õ¹´ù•á•ÕÑ”¡l‘É•‰½Õ¹‘I•˜°€‘Í•É•ÑA…å±½…‘I•™t¤ì4(‘¡•¬ Á…å±½…‘}¥Á¡•ÉÑ•áÑ}…¹¹½Ñ}‰•}É•‰½Õ¹‘}Ñ½}…¹½Ñ¡•É}É•™•É•¹”œ°€‘Ñ¡É½ÝÌ¡ÍÑ…Ñ¥Œ™¸ ¤€ôø€‘Á…å±½…‘Ì´ù±½… ‘É•‰½Õ¹‘I•˜¤¤¤ì4(‘¡•¬ •¹ÉåÁÑ•‘}Á…å±½…‘}É½ÝÍ}…É•}¥µµÕÑ…‰±”œ°€‘Ñ¡É½ÝÌ¡ÍÑ…Ñ¥Œ™¸ ¤€ôø€‘‘ˆ´ù•á•Œ ‰UAQ­Á}©½‰}Á…å±½…‘ÌMPÉ•…Ñ•‘}•Á½ õÉ•…Ñ•‘}•Á½ ¬Ä]!IÁ…å±½…‘}É•˜ôœˆ€¸€‘Í•É•ÑA…å±½…‘I•˜€¸€ˆœˆ¤¤¤ì4(‘¡•¬ Á…å±½…‘}É•©•ÑÍ}¹½¹}½‰©•Ñ}…¹‘}½Ù•ÉÍ¥é•‘}¥¹ÁÕÑÌœ°€‘Ñ¡É½ÝÌ¡ÍÑ…Ñ¥Œ™¸ ¤€ôø€‘Á…å±½…‘Ì´ùÍÑ½É”¡l¹½Ðµ…¸µ½‰©•Ðt¤¤€˜˜€‘Ñ¡É½ÝÌ¡ÍÑ…Ñ¥Œ™¸ ¤€ôø€‘Á…å±½…‘Ì´ùÍÑ½É”¡l‰½‘äœ€ôøÍÑÉ}É•Á•…Ð àœ°-…µ…ÕAÕÑÑq½É•qA‘½)½‰A…å±½…‘MÑ½É”èé5a}Ae1=}	eQL¥t¤¤¤ì4(‘¡•¬ Á…å±½…‘}…¹¹½Ñ}‰•}ÁÕÉ•‘}‰•™½É•}…}©½‰}•á¥ÍÑÌœ°€‘Ñ¡É½ÝÌ¡ÍÑ…Ñ¥Œ™¸ ¤€ôø€‘Á…å±½…‘Ì´ùÁÕÉ•Q•Éµ¥¹…° ‘Í•É•ÑA…å±½…‘I•˜¤¤¤ì4(‘¡•¬ ‘ÕÉ…‰±•}•¹ÅÕ•Õ•}É•ÅÕ¥É•Í}…¹}•á¥ÍÑ¥¹}•¹ÉåÁÑ•‘}Á…å±½…œ°€‘µ…­•I•Í•ÉÙ…Ñ¥½¸ ää¥l…±±½Ý•t€˜˜€‘Ñ¡É½ÝÌ¡ÍÑ…Ñ¥Œ™¸ ¤€ôø€‘©½‰Ì´ù•¹ÅÕ•Õ” ©½ˆµÉ•Í•ÉÙ”´ÀÀääœ°€©½ˆµ­•ä´ÀÀÀÀÀÀääœ°€œÀÀÀÀÀÀÀÀ´ÀÀÀÀ´ÐÀÀÀ´àÀÀÀ´ÀÀÀÀÀÀÀÀÀÀääœ¤¤€˜˜€‘É•Í•ÉÙ…Ñ¥½¹Ì´ùÉ•±•…Í” ©½ˆµÉ•Í•ÉÙ”´ÀÀääœ¤€ôôô€É•±•…Í•œ¤ì4(4(‘¡•¬ É•Í•ÉÙ…Ñ¥½¹}…±±½ÝÍ}‘ÕÉ…‰±•}©½‰}¥¹Ñ•¹Ðœ°€‘µ…­•I•Í•ÉÙ…Ñ¥½¸ Ä¥l…±±½Ý•t¤ì4(‘Á…å±½…‘I•˜Ä€ô€‘µ…­•A…å±½… Ä¤ì4(‘ÅÕ•Õ•€ô€‘©½‰Ì´ù•¹ÅÕ•Õ” ©½ˆµÉ•Í•ÉÙ”´ÀÀÀÄœ°€©½ˆµ­•ä´ÀÀÀÀÀÀÀÄœ°€‘Á…å±½…‘I•˜Ä¤ì4(‘É•Á±…ä€ô€‘©½‰Ì´ù•¹ÅÕ•Õ” ©½ˆµÉ•Í•ÉÙ”´ÀÀÀÄœ°€©½ˆµ­•ä´ÀÀÀÀÀÀÀÄœ°€‘Á…å±½…‘I•˜Ä¤ì4(‘¡•¬ •¹ÅÕ•Õ•}¥Í}¥‘•µÁ½Ñ•¹Ñ}…¹‘}ÍÑ½É•Í}½Á…ÅÕ•}É•™•É•¹”œ°€‘ÅÕ•Õ•‘lÍÑ…ÑÕÌt€ôôô€ÅÕ•Õ•œ€˜˜€„‘ÅÕ•Õ•‘l¥‘•µÁ½Ñ•¹Ðt€˜˜€‘É•Á±…ål¥‘•µÁ½Ñ•¹Ðt¤ì4(‘±•…Í”€ô€‘©½‰Ì´ù±…¥µ9•áÐ ¤ì4(‘¡•¬ Ý½É­•É}±…¥µ}¥ÍÍÕ•Í}½¹•}Ñ¥µ•}±•…Í•}…¹‘}ÍÑ…‰±•}ÁÉ½Ù¥‘•É}­•äœ°¥Í}…ÉÉ…ä ‘±•…Í”¤€˜˜ÍÑÉ±•¸ ‘±•…Í•l±•…Í•}Ñ½­•¸t¤€ôôô€ÐÌ€˜˜ÍÑÉ}ÍÑ…ÉÑÍ}Ý¥Ñ  ‘±•…Í•lÁÉ½Ù¥‘•É}¥‘•µÁ½Ñ•¹å}­•ät°€­À´œ¤¤ì4(‘…•ÁÑ•€ô€‘©½‰Ì´ù‘¥ÍÁ…Ñ  ‘±•…Í•l¥t°€‘±•…Í•l±•…Í•}Ñ½­•¸t°ÍÑ…Ñ¥Œ™¸¡…ÉÉ…ä€‘É•ÅÕ•ÍÐ¤è…ÉÉ…ä€ôøl½ÕÑ½µ”œ€ôø€…•ÁÑ•œ°€É•™•É•¹”œ€ôø€ÁÉ½Ù¥‘•ÈµÉ•˜µ…•ÁÑ•´ÀÀÀÄt¤ì4(‘¡•¬ …•ÁÑ•‘}½ÕÑ½µ•}½µÁ±•Ñ•Í}©½‰}…¹‘}Á½ÍÑÍ}±•‘•É}…Ñ½µ¥…±±äœ°€‘…•ÁÑ•‘lÍÑ…ÑÕÌt€ôôô€½µÁ±•Ñ•œ€˜˜€‘ÍÑ…Ñ” ‘±•…Í•l¥t¥lÍÑ…ÑÕÌt€ôôô€½µÁ±•Ñ•œ€˜˜€‘É•Í•ÉÙ…Ñ¥½¹Ì´ù½µµ¥Ð ©½ˆµÉ•Í•ÉÙ”´ÀÀÀÄœ°€ÁÉ½Ù¥‘•ÈµÉ•˜µ…•ÁÑ•´ÀÀÀÄœ¤€ôôô€¥‘•µÁ½Ñ•¹Ñ}½µµ¥ÑÑ•œ¤ì4(‘¡•¬ ÑÝ•±™Ñ¡}É•Í•ÉÙ…Ñ¥½¹}¥Í}É•…Ñ•‘}™½É}Á…å±½…‘}É•ÕÍ•}‘•¹¥…°œ°€‘µ…­•I•Í•ÉÙ…Ñ¥½¸ ÄÈ¥l…±±½Ý•t¤ì4(‘¡•¬ …}Á…å±½…‘}É•™•É•¹•}…¹¹½Ñ}‰•}É•ÕÍ•‘}™½É}…¹½Ñ¡•É}©½ˆœ°€‘Ñ¡É½ÝÌ¡ÍÑ…Ñ¥Œ™¸ ¤€ôø€‘©½‰Ì´ù•¹ÅÕ•Õ” ©½ˆµÉ•Í•ÉÙ”´ÀÀÄÈœ°€©½ˆµ­•ä´ÀÀÀÀÀÀÄÈœ°€‘Á…å±½…‘I•˜Ä¤¤€˜˜€‘É•Í•ÉÙ…Ñ¥½¹Ì´ùÉ•±•…Í” ©½ˆµÉ•Í•ÉÙ”´ÀÀÄÈœ¤€ôôô€É•±•…Í•œ¤ì4(‘Á…å±½…‘Ì´ùÁÕÉ•Q•Éµ¥¹…° ‘Á…å±½…‘I•˜Ä¤ì4(‘¡•¬ Ñ•Éµ¥¹…±}©½‰}Á…å±½…‘}…¹}‰•}ÁÕÉ•‘}…¹‘}¥Í}¹½}±½¹•É}É•…‘…‰±”œ°€‘Ñ¡É½ÝÌ¡ÍÑ…Ñ¥Œ™¸ ¤€ôø€‘Á…å±½…‘Ì´ù±½… ‘Á…å±½…‘I•˜Ä¤¤¤ì4(‘¡•¬ ±•…Í•}…¹¹½Ñ}‰•}É•Á±…å•‘}…›½8¶‰žËkºwµçq•…Í•l±•…Í•}Ñ½­•¸t°ÍÑ…Ñ¥Œ™Õ¹Ñ¥½¸€ ¤ÕÍ”€ ˜‘ÁÉ½Ù¥‘•É…±±•¤è…ÉÉ…äì€‘ÁÉ½Ù¥‘•É…±±•€ôÑÉÕ”ìÉ•ÑÕÉ¸l½ÕÑ½µ”œ€ôø€…•ÁÑ•œ°€É•™•É•¹”œ€ôø€¹•Ù•Èµ…±°´ÀÀÀÐtìô¥lÉ•…Í½¸t€ôôô€±•…Í•}Õ¹…Ù…¥±…‰±”œ€˜˜€„‘ÁÉ½Ù¥‘•É…±±•€˜˜€‘É•Í•ÉÙ…Ñ¥½¹Ì´ùÉ•±•…Í” ©½ˆµÉ•Í•ÉÙ”´ÀÀÀÐœ¤€ôôô€¥‘•µÁ½Ñ•¹Ñ}É•±•…Í•œ¤ì4(‘¹½Ü€¬ô€ÌÄì4(‘¡•¬ …¹•±•‘}Õ¹ÍÑ…ÉÑ•‘}±•…Í•}ÍÑ…åÍ}Ñ•Éµ¥¹…°œ°€‘©½‰Ì´ù±…¥µ9•áÐ ¤€ôôô¹Õ±°€˜˜€‘ÍÑ…Ñ” ‘…¹•±1•…Í•l¥t¥lÍÑ…ÑÕÌt€ôôô€…¹•±•œ¤ì4(4(‘‘ˆ´ù•á•Œ UAQ­Á}™¥¹…¹•}½¹ÑÉ½°MP½Ý¹•É}•µ•É•¹å}ÍÑ½ÁÁ•ôÀ±‘¥ÍÁ…Ñ¡}•Á½ õ‘¥ÍÁ…Ñ¡}•Á½ ¬Ä]!I¥ôÄœ¤ì4(‘¡•¬ ™¥™Ñ¡}É•Í•ÉÙ…Ñ¥½¹}¥Í}É•…Ñ•‘}™½É}Ù•É¥™¥•‘}¹½}•™™•Ñ}Á…Ñ œ°€‘µ…­•I•Í•ÉÙ…Ñ¥½¸ Ô¥l…±±½Ý•t¤ì4(‘©½‰Ì´ù•¹ÅÕ•Õ” ©½ˆµÉ•Í•ÉÙ”´ÀÀÀÔœ°€©½ˆµ­•ä´ÀÀÀÀÀÀÀÔœ°€‘µ…­•A…å±½… Ô¤¤ì4(‘¹½™™•Ñ1•…Í”€ô€‘©½‰Ì´ù±…¥µ9•áÐ ¤ì4(‘¹½™™•Ð€ô€‘©½‰Ì´ù‘¥ÍÁ…Ñ  ‘¹½™™•Ñ1•…Í•l¥t°€‘¹½™™•Ñ1•…Í•l±•…Í•}Ñ½­•¸t°ÍÑ…Ñ¥Œ™¸ ¤è…ÉÉ…ä€ôøl½ÕÑ½µ”œ€ôø€¹½}•™™•Ðt¤ì4(‘¡•¬ Ù•É¥™¥•‘}¹½}•™™•Ñ}É•±•…Í•Í}‰Õ‘•Ñ}…¹‘}±½Í•Í}©½ˆœ°€‘¹½™™•ÑlÍÑ…ÑÕÌt€ôôô€™…¥±•‘}¹½}•™™•Ðœ€˜˜€‘ÍÑ…Ñ” ‘¹½™™•Ñ1•…Í•l¥t¥lÍÑ…ÑÕÌt€ôôô€™…¥±•œ€˜˜€‘É•Í•ÉÙ…Ñ¥½¹Ì´ùÉ•±•…Í” ©½ˆµÉ•Í•ÉÙ”´ÀÀÀÔœ¤€ôôô€¥‘•µÁ½Ñ•¹Ñ}É•±•…Í•œ¤ì4(‘¡•¬ Í¥áÑ¡}É•Í•ÉÙ…Ñ¥½¹}¥Í}É•…Ñ•‘}™½É}ÍÑ…±•}É•Í•ÉÙ…Ñ¥½¹}Õ…Éœ°€‘µ…­•I•Í•ÉÙ…Ñ¥½¸ Ø¥l…±±½Ý•t¤ì4(‘©½‰Ì´ù•¹ÅÕ•Õ” ©½ˆµÉ•Í•ÉÙ”´ÀÀÀØœ°€©½ˆµ­•ä´ÀÀÀÀÀÀÀØœ°€‘µ…­•A…å±½… Ø¤¤ì4(‘ÍÑ…±•1•…Í”€ô€‘©½‰Ì´ù±…¥µ9•áÐ ¤ì4(‘É•Í•ÉÙ…Ñ¥½¹Ì´ùµ…É­U¹•ÉÑ…¥¸ ©½ˆµÉ•Í•ÉÙ”´ÀÀÀØœ¤ì4(‘ÁÉ½Ù¥‘•É…±±•€ô™…±Í”ì4(‘ÍÑ…±•¥ÍÁ…Ñ €ô€‘©½‰Ì´ù‘¥ÍÁ…Ñ  ‘ÍÑ…±•1•…Í•l¥t°€‘ÍÑ…±•1•…Í•l±•…Í•}Ñ½­•¸t°ÍÑ…Ñ¥Œ™Õ¹Ñ¥½¸€ ¤ÕÍ”€ ˜‘ÁÉ½Ù¥‘•É…±±•¤è…ÉÉ…äì€‘ÁÉ½Ù¥‘•É…±±•€ôÑÉÕ”ìÉ•ÑÕÉ¸l½ÕÑ½µ”œ€ôø€…•ÁÑ•œ°€É•™•É•¹”œ€ôø€µÕÍÐµ¹½ÐµÉÕ¸´ÀÀÀØtìô¤ì4(‘¡•¬ ‘¥ÍÁ…Ñ¡}É•¡•­Í}É•Í•ÉÙ…Ñ¥½¹}‰•™½É•}…±±¥¹}ÁÉ½Ù¥‘•Èœ°€„‘ÁÉ½Ù¥‘•É…±±•€˜˜€‘ÍÑ…±•¥ÍÁ…Ñ¡lÉ•…Í½¸t€ôôô€É•Í•ÉÙ…Ñ¥½¹}¹½Ñ}‘¥ÍÁ…Ñ¡…‰±”œ€˜˜€‘ÍÑ…Ñ” ‘ÍÑ…±•1•…Í•l¥t¥lÍÑ…ÑÕÌt€ôôô€Õ¹•ÉÑ…¥¸œ¤ì4(4(‘¡•¬ Í•Ù•¹Ñ¡}É•Í•ÉÙ…Ñ¥½¹}¥Í}É•…Ñ•‘}™½É}ÍÑ½Á}‘ÕÉ¥¹}ÁÉ½Ù¥‘•É}¥¼œ°€‘µ…­•I•Í•ÉÙ…Ñ¥½¸ Ü¥l…±±½Ý•t¤ì4(‘©½‰Ì´ù•¹ÅÕ•Õ” ©½ˆµÉ•Í•ÉÙ”´ÀÀÀÜœ°€©½ˆµ­•ä´ÀÀÀÀÀÀÀÜœ°€‘µ…­•A…å±½… Ü¤¤ì4(‘ÍÑ½Á1•…Í”€ô€‘©½‰Ì´ù±…¥µ9•áÐ ¤ì4(‘ÍÑ½Á=‰Í•ÉÙ•Éˆ€ô¹•ÜA< ‘‘Í¸°•Ñ•¹Ø -A}QMQ}5eME1}UMHœ¤€üè€œœ°•Ñ•¹Ø -A}QMQ}5eME1}AMM]=Iœ¤€üè€œœ°mA<èéQQI}II5=€ôøA<èéII5=}aAQ%=8°A<èéQQI}5U1Q}AIAIL€ôø™…±Í”°A<èéQQI}U1Q}Q!}5=€ôøA<èéQ!}MM=t¤ì4(‘ÍÑ½Á=‰Í•ÉÙ•É½¹ÑÉ½°€ô¹•Ü-…µ…ÕAÕÑÑq½É•qA‘½=Ý¹•É½¹ÑÉ½° ‘ÍÑ½Á=‰Í•ÉÙ•Éˆ°€‘±½¬¤ì4(‘…±±‰…­=ÕÑÍ¥‘•QÉ…¹Í…Ñ¥½¸€ô™…±Í”ì4(‘ÍÑ½ÁMÕµµ…Éä€ômtì4(‘ÍÑ½ÁÕÉ¥¹¥ÍÁ…Ñ €ô€‘©½‰Ì´ù‘¥ÍÁ…Ñ  ‘ÍÑ½Á1•…Í•l¥t°€‘ÍÑ½Á1•…Í•l±•…Í•}Ñ½­•¸t°ÍÑ…Ñ¥Œ™Õ¹Ñ¥½¸€¡…ÉÉ…ä€‘É•ÅÕ•ÍÐ¤ÕÍ”€ ‘‘ˆ°€‘ÍÑ½Á=‰Í•ÉÙ•É½¹ÑÉ½°°€˜‘…±±‰…­=ÕÑÍ¥‘•QÉ…¹Í…Ñ¥½¸°€˜‘ÍÑ½ÁMÕµµ…Éä¤è…ÉÉ…äì4(€€€€‘…±±‰…­=ÕÑÍ¥‘•QÉ…¹Í…Ñ¥½¸€ô€„‘‘ˆ´ù¥¹QÉ…¹Í…Ñ¥½¸ ¤€˜˜¥Í}ÍÑÉ¥¹œ ‘É•ÅÕ•ÍÑl…ÑÑ•µÁÑ}¥t€üü¹Õ±°¤ì4(€€€€‘ÍÑ½ÁMÕµµ…Éä€ô€‘ÍÑ½Á=‰Í•ÉÙ•É½¹ÑÉ½°´ù•µ•É•¹åMÑ½À ¤ì4(€€€É•ÑÕÉ¸l½ÕÑ½µ”œ€ôø€…•ÁÑ•œ°€É•™•É•¹”œ€ôø€ÁÉ½Ù¥‘•ÈµÉ•˜µ…™Ñ•ÈµÍÑ½À´ÀÀÀÜtì4)ô¤ì4(‘¡•¬ ÁÉ½Ù¥‘•É}…±±‰…­}ÉÕ¹Í}½ÕÑÍ¥‘•}ÑÉ…¹Í…Ñ¥½¹}…¹‘}MQ=A}É•Á½ÉÑÍ}¥¹™±¥¡Ñ}…ÑÑ•µÁÐœ°€‘…±±‰…­=ÕÑÍ¥‘•QÉ…¹Í…Ñ¥½¸€˜˜€‘ÍÑ½ÁMÕµµ…Éål•µ•É•¹å}ÍÑ½ÁÁ•t€˜˜€‘ÍÑ½ÁMÕµµ…Éål©½‰}ÅÕ•Õ•}…Ñ¥½¹Ìt€øô€Ì€˜˜€‘ÍÑ…Ñ” ‘ÍÑ½Á1•…Í•l¥t¥lÍÑ…ÑÕÌt€ôôô€½µÁ±•Ñ•œ¤ì4(‘¡•¬ …•ÁÑ•‘}¥¹™±¥¡Ñ}…ÑÑ•µÁÑ}Í•ÑÑ±•Í}½¹•}…™Ñ•É}MQ=@œ°€‘ÍÑ½ÁÕÉ¥¹¥ÍÁ…Ñ¡lÍÑ…ÑÕÌt€ôôô€½µÁ±•Ñ•œ€˜˜€‘É•Í•ÉÙ…Ñ¥½¹Ì´ù½µµ¥Ð ©½ˆµÉ•Í•ÉÙ”´ÀÀÀÜœ°€ÁÉ½Ù¥‘•ÈµÉ•˜µ…™Ñ•ÈµÍÑ½À´ÀÀÀÜœ¤€ôôô€¥‘•µÁ½Ñ•¹Ñ}½µµ¥ÑÑ•œ¤ì4(4(‘‘ˆ´ù•á•Œ UAQ­Á}™¥¹…¹•}½¹ÑÉ½°MP½Ý¹•É}•µ•É•¹å}ÍÑ½ÁÁ•ôÀ±‘¥ÍÁ…Ñ¡}•Á½ õ‘¥ÍÁ…Ñ¡}•Á½ ¬Ä]!I¥ôÄœ¤ì4(‘¡•¬ •¥¡Ñ¡}É•Í•ÉÙ…Ñ¥½¹}¥Í}É•…Ñ•‘}™½É}…‘…ÁÑ•É}•á•ÁÑ¥½¸œ°€‘µ…­•I•Í•ÉÙ…Ñ¥½¸ à¥l…±±½Ý•t¤ì4(‘©½‰Ì´ù•¹ÅÕ•Õ” ©½ˆµÉ•Í•ÉÙ”´ÀÀÀàœ°€©½ˆµ­•ä´ÀÀÀÀÀÀÀàœ°€‘µ…­•A…å±½… à¤¤ì4(‘Ñ¡É½Ý1•…Í”€ô€‘©½‰Ì´ù±…¥µ9•áÐ ¤ì4(‘Ñ¡É½Ý¸€ô€‘©½‰Ì´ù‘¥ÍÁ…Ñ  ‘Ñ¡É½Ý1•…Í•l¥t°€‘Ñ¡É½Ý1•…Í•l±•…Í•}Ñ½­•¸t°ÍÑ…Ñ¥Œ™Õ¹Ñ¥½¸€ ¤è…ÉÉ…äìÑ¡É½Ü¹•ÜIÕ¹Ñ¥µ•á•ÁÑ¥½¸ ÑÉ…¹ÍÁ½ÉÐ½ÕÑ½µ”¹½Ð½‰Í•ÉÙ•œ¤ìô¤ì4(‘¡•¬ ÑÉ…¹ÍÁ½ÉÑ}•á•ÁÑ¥½¹}‰•½µ•Í}Õ¹•ÉÑ…¥¹}…¹‘}¡½±‘Í}É•Í•ÉÙ…Ñ¥½¸œ°€‘Ñ¡É½Ý¹lÍÑ…ÑÕÌt€ôôô€Õ¹•ÉÑ…¥¸œ€˜˜€‘ÍÑ…Ñ” ‘Ñ¡É½Ý1•…Í•l¥t¥lÍÑ…ÑÕÌt€ôôô€Õ¹•ÉÑ…¥¸œ€˜˜€‘É•Í•ÉÙ…Ñ¥½¹Ì´ùµ…É­U¹•ÉÑ…¥¸ ©½ˆµÉ•Í•ÉÙ”´ÀÀÀàœ¤€ôôô€¥‘•µÁ½Ñ•¹Ñ}Õ¹•ÉÑ…¥¸œ¤ì4(4(‘¡•¬ ¹¥¹Ñ¡}É•Í•ÉÙ…Ñ¥½¹}¥Í}É•…Ñ•‘}™½É}±…Ñ•}­¹½Ý¹}½ÕÑ½µ”œ°€‘µ…­•I•Í•ÉÙ…Ñ¥½¸ ä¥l…±±½Ý•t¤ì4(‘©½‰Ì´ù•¹ÅÕ•Õ” ©½ˆµÉ•Í•ÉÙ”´ÀÀÀäœ°€©½ˆµ­•ä´ÀÀÀÀÀÀÀäœ°€‘µ…­•A…å±½… ä¤¤ì4(‘±…Ñ•1•…Í”€ô€‘©½‰Ì´ù±…¥µ9•áÐ ¤ì4(‘±…Ñ•=ÕÑ½µ”€ô€‘©½‰Ì´ù‘¥ÍÁ…Ñ  ‘±…Ñ•1•…Í•l¥t°€‘±…Ñ•1•…Í•l±•…Í•}Ñ½­•¸t°ÍÑ…Ñ¥Œ™Õ¹Ñ¥½¸€ ¤ÕÍ”€ ˜‘¹½Ü°€‘©½‰Ì¤è…ÉÉ…äì€‘¹½Ü€¬ô€ÌÄì€‘©½‰Ì´ù±…¥µ9•áÐ ¤ìÉ•ÑÕÉ¸l½ÕÑ½µ”œ€ôø€…•ÁÑ•œ°€É•™•É•¹”œ€ôø€ÁÉ½Ù¥‘•ÈµÉ•˜µ±…Ñ”´ÀÀÀätìô¤ì4(‘±…Ñ•MÑ…Ñ”€ô€‘ÍÑ…Ñ” ‘±…Ñ•1•…Í•l¥t¤ì4(‘¡•¬ É•½Ù•É•‘}…ÑÑ•µÁÑ}…•ÁÑÍ}¥ÑÍ}•á…Ñ}±…Ñ•}É•ÍÕ±Ñ}Ý¥Ñ¡½ÕÑ}É•ÑÉäœ°€‘±…Ñ•=ÕÑ½µ•lÍÑ…ÑÕÌt€ôôô€½µÁ±•Ñ•œ€˜˜€‘±…Ñ•MÑ…Ñ•lÍÑ…ÑÕÌt€ôôô€½µÁ±•Ñ•œ€˜˜€¡¥¹Ð¤€‘±…Ñ•MÑ…Ñ•lÕÁ‘…Ñ•‘}•Á½ t€ôôô€‘¹½Ü€˜˜€‘É•Í•ÉÙ…Ñ¥½¹Ì´ù½µµ¥Ð ©½ˆµÉ•Í•ÉÙ”´ÀÀÀäœ°€ÁÉ½Ù¥‘•ÈµÉ•˜µ±…Ñ”´ÀÀÀäœ¤€ôôô€¥‘•µÁ½Ñ•¹Ñ}½µµ¥ÑÑ•œ¤ì4(‘¡•¬ Ñ•¹Ñ¡}É•Í•ÉÙ…Ñ¥½¹}¥Í}É•…Ñ•‘}™½É}™É•Í¡}…ÑÑ•µÁÑ}‘•…‘±¥¹”œ°€‘µ…­•I•Í•ÉÙ…Ñ¥½¸ ÄÀ¥l…±±½Ý•t¤ì4(‘©½‰Ì´ù•¹ÅÕ•Õ” ©½ˆµÉ•Í•ÉÙ”´ÀÀÄÀœ°€©½ˆµ­•ä´ÀÀÀÀÀÀÄÀœ°€‘µ…­•A…å±½… ÄÀ¤¤ì4(‘¹•…ÉáÁ¥Éå1•…Í”€ô€‘©½‰Ì´ù±…¥µ9•áÐ ¤ì4(‘¹½Ü€¬ôq-…µ…ÕAÕÑÑq½É•qA‘½ÕÉ…‰±•)½‰Ìèé1M}M=9L€´€Äì4(‘É••¥Ù•‘ÑÑ•µÁÑ•…‘±¥¹”€ô€Àì4(‘¹•…ÉáÁ¥Éå¥ÍÁ…Ñ €ô€‘©½‰Ì´ù‘¥ÍÁ…Ñ  ‘¹•…ÉáÁ¥Éå1•…Í•l¥t°€‘¹•…ÉáÁ¥Éå1•…Í•l±•…Í•}Ñ½­•¸t°ÍÑ…Ñ¥Œ™Õ¹Ñ¥½¸€¡…ÉÉ…ä€‘É•ÅÕ•ÍÐ¤ÕÍ”€ ˜‘¹½Ü°€˜‘É••¥Ù•‘ÑÑ•µÁÑ•…‘±¥¹”¤è…ÉÉ…äì4(€€€€‘É••¥Ù•‘ÑÑ•µÁÑ•…‘±¥¹”€ô€¡¥¹Ð¤€‘É•ÅÕ•ÍÑl…ÑÑ•µÁÑ}‘•…‘±¥¹•}•Á½ tì4(€€€É•ÑÕÉ¸l½ÕÑ½µ”œ€ôø€…•ÁÑ•œ°€É•™•É•¹”œ€ôø€ÁÉ½Ù¥‘•ÈµÉ•˜µ‘•…‘±¥¹”´ÀÀÄÀtì4)ô¤ì4(‘¡•¬ ‘¥ÍÁ…Ñ¡}ÍÑ…ÉÑÍ}…}™É•Í¡}‰½Õ¹‘•‘}…ÑÑ•µÁÑ}‘•…‘±¥¹•}…™Ñ•É}¹•…É}•áÁ¥Éå}±…¥´œ°€‘¹•…ÉáÁ¥Éå¥ÍÁ…Ñ¡lÍÑ…ÑÕÌt€ôôô€½µÁ±•Ñ•œ€˜˜€‘É••¥Ù•‘ÑÑ•µÁÑ•…‘±¥¹”€ôôô€‘¹½Ü€¬q-…µ…ÕAÕÑÑq½É•qA‘½ÕÉ…‰±•)½‰Ìèé1M}M=9L€˜˜€‘É••¥Ù•‘ÑÑ•µÁÑ•…‘±¥¹”€ø€‘¹•…ÉáÁ¥Éå1•…Í•l±•…Í•}•áÁ¥É•Í}•Á½ t€˜˜€‘É•Í•ÉÙ…Ñ¥½¹Ì´ù½µµ¥Ð ©½ˆµÉ•Í•ÉÙ”´ÀÀÄÀœ°€ÁÉ½Ù¥‘•ÈµÉ•˜µ‘•…‘±¥¹”´ÀÀÄÀœ¤€ôôô€¥‘•µÁ½Ñ•¹Ñ}½µµ¥ÑÑ•œ¤ì4(‘¡•¬ •±•Ù•¹Ñ¡}É•Í•ÉÙ…Ñ¥½¹}¥Í}É•…Ñ•‘}™½É}•áÁ¥É•‘}‰•™½É•}…±±‰…­}…Í”œ°€‘µ…­•I•Í•ÉÙ…Ñ¥½¸ ÄÄ¥l…±±½Ý•t¤ì4(‘©½‰Ì´ù•¹ÅÕ•Õ” ©½ˆµÉ•Í•ÉÙ”´ÀÀÄÄœ°€©½ˆµ­•ä´ÀÀÀÀÀÀÄÄœ°€‘µ…­•A…å±½… ÄÄ¤¤ì4(‘•áÁ¥É•‘	•™½É•…±±‰…­1•…Í”€ô€‘©½‰Ì´ù±…¥µ9•áÐ ¤ì4(‘…‘Ù…¹•±½­=¹…±°€ô€‘±½­…±±Ì€¬€Èì€¼¼‘¥ÍÁ…Ñ ÍÑ…ÉÐ°Ñ¡•¸Ñ¡”ÁÉ”µ…±±‰…¬‘•…‘±¥¹”¡•¬4(‘…‘Ù…¹•±½­M•½¹‘Ì€ôq-…µ…ÕAÕÑÑq½É•qA‘½ÕÉ…‰±•)½‰Ìèé1M}M=9Lì4(‘•áÁ¥É•‘…±±‰…­…±±•€ô™…±Í”ì4(‘•áÁ¥É•‘	•™½É•…±±‰…¬€ô€‘©½‰Ì´ù‘¥ÍÁ…Ñ  ‘•áÁ¥É•‘	•™½É•…±±‰…­1•…Í•l¥t°€‘•áÁ¥É•‘	•™½É•…±±‰…­1•…Í•l±•…Í•}Ñ½­•¸t°ÍÑ…Ñ¥Œ™Õ¹Ñ¥½¸€ ¤ÕÍ”€ ˜‘•áÁ¥É•‘…±±‰…­…±±•¤è…ÉÉ…äì4(€€€€‘•áÁ¥É•‘…±±‰…­…±±•€ôÑÉÕ”ì4(€€€É•ÑÕÉ¸l½ÕÑ½µ”œ€ôø€…•ÁÑ•œ°€É•™•É•¹”œ€ôø€µÕÍÐµ¹½ÐµÍ•¹´ÀÀÄÄtì4)ô¤ì4(‘¡•¬ •áÁ¥É•‘}…ÑÑ•µÁÑ}‘•…‘±¥¹•}ÁÉ•Ù•¹ÑÍ}…±±‰…­}¥¹Ù½…Ñ¥½¹}…¹‘}É•±•…Í•Í}É•Í•ÉÙ…Ñ¥½¸œ°€‘•áÁ¥É•‘	•™½É•…±±‰…­lÍÑ…ÑÕÌt€ôôô€™…¥±•‘}¹½}•™™•Ðœ€˜˜€„‘•áÁ¥É•‘…±±‰…­…±±•€˜˜€‘ÍÑ…Ñ” ‘•áÁ¥É•‘	•™½É•…±±‰…­1•…Í•l¥t¥lÍÑ…ÑÕÌt€ôôô€™…¥±•œ€˜˜€‘É•Í•ÉÙ…Ñ¥½¹Ì´ùÉ•±•…Í” ©½ˆµÉ•Í•ÉÙ”´ÀÀÄÄœ¤€ôôô€¥‘•µÁ½Ñ•¹Ñ}É•±•…Í•œ¤ì4(‘…Õ‘¥Ð€ô€‘©½‰Ì´ùÙ•É¥™åÕ‘¥Ð ¤ì4(‘¡•¬ ‘ÕÉ…‰±•}©½‰}¡…Í¡}¡…¥¹}Ù•É¥™¥•Í}…™Ñ•É}µåÍÅ±}©Í½¹}¹½Éµ…±¥é•Í}‘•Ñ…¥±}­•åÌœ°€‘…Õ‘¥Ñl•Ù•¹ÑÌt€ôôô€ÐÈ€˜˜ÁÉ•}µ…Ñ  œ½ym„µ˜À´åuìØÑô¼œ°€‘…Õ‘¥Ñl±…ÍÑ}¡…Í t¤€ôôô€Ä¤ì4(‘•Ù•¹ÑUÁ‘…Ñ••¹¥•€ô™…±Í”ì4)ÑÉäì€‘‘ˆ´ù•á•Œ ‰UAQ­Á}‘ÕÉ…‰±•}©½‰}•Ù•¹ÑÌMP•Ù•¹Ñ}ÑåÁ”ôÅÕ•Õ•œ]!I¥ôÄˆ¤ìô…Ñ €¡A=á•ÁÑ¥½¸¤ì€‘•Ù•¹ÑUÁ‘…Ñ••¹¥•€ôÑÉÕ”ìô4(‘¡•¬ ‘ÕÉ…‰±•}©½‰}•Ù•¹ÑÍ}…É•}…ÁÁ•¹‘}½¹±äœ°€‘•Ù•¹ÑUÁ‘…Ñ••¹¥•€˜˜€‘©½‰Ì´ùÙ•É¥™åÕ‘¥Ð ¥l•Ù•¹ÑÌt€ôôô€ÐÈ¤ì4)•¡¼€‘Á…ÍÍ•€¸€ˆ‘ÕÉ…‰±”©½ˆ…Í•ÌÁ…ÍÍ•‘q¸ˆì4(
+<?php
+
+declare(strict_types=1);
+
+require_once __DIR__ . '/../src/Core/PdoOwnerAuth.php';
+require_once __DIR__ . '/../src/Core/PdoOwnerControl.php';
+require_once __DIR__ . '/../src/Core/PdoSpendReservations.php';
+require_once __DIR__ . '/../src/Core/PdoDurableJobs.php';
+require_once __DIR__ . '/../src/Core/PdoJobPayloadStore.php';
+
+if (PHP_SAPI !== 'cli' || getenv('KP_TEST_ALLOW_DB_WRITE') !== 'I_UNDERSTAND_STAGING_ONLY') { fwrite(STDERR, "SKIP: explicit disposable database confirmation required\n"); exit(2); }
+$dsn = getenv('KP_TEST_MYSQL_DSN');
+if (!is_string($dsn) || !str_starts_with($dsn, 'mysql:') || !extension_loaded('pdo_mysql')) { fwrite(STDERR, "SKIP: configured MySQL PDO driver required\n"); exit(2); }
+$db = new PDO($dsn, getenv('KP_TEST_MYSQL_USER') ?: '', getenv('KP_TEST_MYSQL_PASSWORD') ?: '', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_EMULATE_PREPARES => false, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC]);
+if ((int) $db->query('SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=DATABASE()')->fetchColumn() !== 0) { throw new RuntimeException('Durable-jobs test requires an EMPTY disposable database'); }
+foreach (['001_financial_control.mysql.sql','002_double_entry_ledger.mysql.sql','004_owner_auth.mysql.sql','005_owner_control.mysql.sql','006_owner_control_audit.mysql.sql','008_durable_jobs.mysql.sql','009_durable_job_dispatch_attempt.mysql.sql','010_encrypted_job_payloads.mysql.sql'] as $migration) {
+    $sql = file_get_contents(__DIR__ . '/../database/' . $migration);
+    foreach (preg_split('/;\s*(?=\n|$)/', $sql) as $statement) { if (trim($statement) !== '') { $db->exec(trim($statement)); } }
+}
+$now = 1_800_000_000;
+$clockCalls = 0;
+$advanceClockOnCall = null;
+$advanceClockSeconds = 0;
+$clock = static function () use (&$now, &$clockCalls, &$advanceClockOnCall, &$advanceClockSeconds): int {
+    $clockCalls++;
+    if ($advanceClockOnCall === $clockCalls) { $now += $advanceClockSeconds; $advanceClockOnCall = null; }
+    return $now;
+};
+$auth = new KamauPutt\Core\PdoOwnerAuth($db, random_bytes(32), random_bytes(32), $clock);
+$auth->bootstrapOwner('dad@example.test', 'test-only-owner-password-123', KamauPutt\Core\PdoOwnerAuth::generateTotpSecret());
+$db->exec("UPDATE kp_finance_control SET operating_mode='growth',owner_emergency_stopped=0,dispatch_epoch=1 WHERE id=1");
+$db->exec("INSERT INTO kp_budget_envelopes(scope,approved_limit_cents,per_action_cap_cents) VALUES('ai_api',5000,1000)");
+$db->exec('UPDATE kp_financial_position SET settled_cash_cents=10000 WHERE id=1');
+$reservations = new KamauPutt\Core\PdoSpendReservations($db);
+$jobs = new KamauPutt\Core\PdoDurableJobs($db, $clock);
+$payloads = new KamauPutt\Core\PdoJobPayloadStore($db, random_bytes(32), $clock);
+$control = new KamauPutt\Core\PdoOwnerControl($db, $clock);
+$passed = 0;
+$check = static function (string $label, bool $ok) use (&$passed): void { echo ($ok ? 'PASS ' : 'FAIL ') . $label . PHP_EOL; if (!$ok) { throw new RuntimeException('Failed durable-job invariant: ' . $label); } $passed++; };
+$throws = static function (callable $operation): bool { try { $operation(); return false; } catch (Throwable) { return true; } };
+$makeReservation = static function (int $n) use ($reservations): array { return $reservations->reserve(sprintf('job-reserve-%04d', $n), 'ai_api', 'ai_call', 100, 1000, true); };
+$makePayload = static fn(int $n): string => $payloads->store(['action' => 'synthetic-test', 'sequence' => $n]);
+$state = static function (string $jobId) use ($db): array { $stmt=$db->prepare('SELECT status,attempt_count,updated_epoch,dispatch_attempt_id FROM kp_durable_jobs WHERE id=?');$stmt->execute([$jobId]);return $stmt->fetch(PDO::FETCH_ASSOC); };
+
+$secretPayloadRef = $payloads->store(['prompt' => 'synthetic-private-payload', 'options' => ['language' => 'pa']]);
+$storedPayload = $db->prepare('SELECT payload_nonce,payload_ciphertext FROM kp_job_payloads WHERE payload_ref=?');
+$storedPayload->execute([$secretPayloadRef]);
+$storedPayloadRow = $storedPayload->fetch(PDO::FETCH_ASSOC);
+$check('payloads_round_trip_encrypted_and_ciphertext_hides_plaintext', $payloads->load($secretPayloadRef) === ['prompt' => 'synthetic-private-payload', 'options' => ['language' => 'pa']] && !str_contains((string) $storedPayloadRow['payload_ciphertext'], 'synthetic-private-payload'));
+$wrongKeyStore = new KamauPutt\Core\PdoJobPayloadStore($db, random_bytes(32), $clock);
+$check('payload_authentication_failure_fails_closed', $throws(static fn() => $wrongKeyStore->load($secretPayloadRef)));
+$reboundRef = '00000000-0000-4000-8000-000000000101';
+$rebound = $db->prepare('INSERT INTO kp_job_payloads(payload_ref,payload_nonce,payload_ciphertext,created_epoch) SELECT ?,payload_nonce,payload_ciphertext,created_epoch FROM kp_job_payloads WHERE payload_ref=?');
+$rebound->execute([$reboundRef, $secretPayloadRef]);
+$check('payload_ciphertext_cannot_be_rebound_to_another_reference', $throws(static fn() => $payloads->load($reboundRef)));
+$check('encrypted_payload_rows_are_immutable', $throws(static fn() => $db->exec("UPDATE kp_job_payloads SET created_epoch=created_epoch+1 WHERE payload_ref='" . $secretPayloadRef . "'")));
+$check('payload_rejects_non_object_and_oversized_inputs', $throws(static fn() => $payloads->store(['not-an-object'])) && $throws(static fn() => $payloads->store(['body' => str_repeat('x', KamauPutt\Core\PdoJobPayloadStore::MAX_PAYLOAD_BYTES)])));
+$check('payload_cannot_be_purged_before_a_job_exists', $throws(static fn() => $payloads->purgeTerminal($secretPayloadRef)));
+$check('durable_enqueue_requires_an_existing_encrypted_payload', $makeReservation(99)['allowed'] && $throws(static fn() => $jobs->enqueue('job-reserve-0099', 'job-key-00000099', '00000000-0000-4000-8000-000000000099')) && $reservations->release('job-reserve-0099') === 'released');
+
+$check('reservation_allows_durable_job_intent', $makeReservation(1)['allowed']);
+$payloadRef1 = $makePayload(1);
+$queued = $jobs->enqueue('job-reserve-0001', 'job-key-00000001', $payloadRef1);
+$replay = $jobs->enqueue('job-reserve-0001', 'job-key-00000001', $payloadRef1);
+$check('enqueue_is_idempotent_and_stores_opaque_reference', $queued['status'] === 'queued' && !$queued['idempotent'] && $replay['idempotent']);
+$lease = $jobs->claimNext();
+$check('worker_claim_issues_one_time_lease_and_stable_provider_key', is_array($lease) && strlen($lease['lease_token']) === 43 && str_starts_with($lease['provider_idempotency_key'], 'kp-'));
+$accepted = $jobs->dispatch($lease['id'], $lease['lease_token'], static fn(array $request): array => ['outcome' => 'accepted', 'reference' => 'provider-ref-accepted-0001']);
+$check('accepted_outcome_completes_job_and_posts_ledger_atomically', $accepted['status'] === 'completed' && $state($lease['id'])['status'] === 'completed' && $reservations->commit('job-reserve-0001', 'provider-ref-accepted-0001') === 'idempotent_committed');
+$check('twelfth_reservation_is_created_for_payload_reuse_denial', $makeReservation(12)['allowed']);
+$check('a_payload_reference_cannot_be_reused_for_another_job', $throws(static fn() => $jobs->enqueue('job-reserve-0012', 'job-key-00000012', $payloadRef1)) && $reservations->release('job-reserve-0012') === 'released');
+$payloads->purgeTerminal($payloadRef1);
+$check('terminal_job_payload_can_be_purged_and_is_no_longer_readable', $throws(static fn() => $payloads->load($payloadRef1)));
+$check('lease_cannot_be_replayed_after_completion', $jobs->dispatch($lease['id'], $lease['lease_token'], static fn(): array => ['outcome' => 'accepted', 'reference' => 'provider-ref-replay-0001'])['reason'] === 'lease_unavailable');
+
+$check('second_reservation_is_created', $makeReservation(2)['allowed']);
+$jobs->enqueue('job-reserve-0002', 'job-key-00000002', $makePayload(2));
+$unknownLease = $jobs->claimNext();
+$unknown = $jobs->dispatch($unknownLease['id'], $unknownLease['lease_token'], static fn(): array => ['outcome' => 'unknown']);
+$check('unknown_provider_result_keeps_reservation_uncertain', $unknown['status'] === 'uncertain' && $reservations->markUncertain('job-reserve-0002') === 'idempotent_uncertain');
+$check('uncertain_work_is_not_automatically_retried', $jobs->claimNext() === null && $state($unknownLease['id'])['attempt_count'] === 1);
+
+$check('third_reservation_is_created', $makeReservation(3)['allowed']);
+$jobs->enqueue('job-reserve-0003', 'job-key-00000003', $makePayload(3));
+$control->emergencyStop();
+$check('owner_stop_cancels_queued_jobs_and_releases_reserved_funds', $state($queued['id'])['status'] === 'completed' && $state((string) $db->query("SELECT id FROM kp_durable_jobs WHERE job_key='job-key-00000003'")->fetchColumn())['status'] === 'canceled' && $reservations->release('job-reserve-0003') === 'idempotent_released');
+$summary = $control->summary();
+$check('stop_summary_counts_only_open_or_uncertain_work', $summary['emergency_stopped'] && $summary['job_queue_actions'] === 1);
+
+$db->exec('UPDATE kp_finance_control SET owner_emergency_stopped=0,dispatch_epoch=dispatch_epoch+1 WHERE id=1'); // isolated test fixture: owner-approved resume is covered separately
+$check('fourth_reservation_is_created_after_test_resume', $makeReservation(4)['allowed']);
+$jobs->enqueue('job-reserve-0004', 'job-key-00000004', $makePayload(4));
+$cancelLease = $jobs->claimNext();
+$control->emergencyStop();
+$providerCalled = false;
+$check('stop_cancels_unstarted_lease_and_releases_its_reservation', $state($cancelLease['id'])['status'] === 'canceled' && $jobs->dispatch($cancelLease['id'], $cancelLease['lease_token'], static function () use (&$providerCalled): array { $providerCalled = true; return ['outcome' => 'accepted', 'reference' => 'never-call-0004']; })['reason'] === 'lease_unavailable' && !$providerCalled && $reservations->release('job-reserve-0004') === 'idempotent_released');
+$now += 31;
+$check('canceled_unstarted_lease_stays_terminal', $jobs->claimNext() === null && $state($cancelLease['id'])['status'] === 'canceled');
+
+$db->exec('UPDATE kp_finance_control SET owner_emergency_stopped=0,dispatch_epoch=dispatch_epoch+1 WHERE id=1');
+$check('fifth_reservation_is_created_for_verified_no_effect_path', $makeReservation(5)['allowed']);
+$jobs->enqueue('job-reserve-0005', 'job-key-00000005', $makePayload(5));
+$noEffectLease = $jobs->claimNext();
+$noEffect = $jobs->dispatch($noEffectLease['id'], $noEffectLease['lease_token'], static fn(): array => ['outcome' => 'no_effect']);
+$check('verified_no_effect_releases_budget_and_closes_job', $noEffect['status'] === 'failed_no_effect' && $state($noEffectLease['id'])['status'] === 'failed' && $reservations->release('job-reserve-0005') === 'idempotent_released');
+$check('sixth_reservation_is_created_for_stale_reservation_guard', $makeReservation(6)['allowed']);
+$jobs->enqueue('job-reserve-0006', 'job-key-00000006', $makePayload(6));
+$staleLease = $jobs->claimNext();
+$reservations->markUncertain('job-reserve-0006');
+$providerCalled = false;
+$staleDispatch = $jobs->dispatch($staleLease['id'], $staleLease['lease_token'], static function () use (&$providerCalled): array { $providerCalled = true; return ['outcome' => 'accepted', 'reference' => 'must-not-run-0006']; });
+$check('dispatch_rechecks_reservation_before_calling_provider', !$providerCalled && $staleDispatch['reason'] === 'reservation_not_dispatchable' && $state($staleLease['id'])['status'] === 'uncertain');
+
+$check('seventh_reservation_is_created_for_stop_during_provider_io', $makeReservation(7)['allowed']);
+$jobs->enqueue('job-reserve-0007', 'job-key-00000007', $makePayload(7));
+$stopLease = $jobs->claimNext();
+$stopObserverDb = new PDO($dsn, getenv('KP_TEST_MYSQL_USER') ?: '', getenv('KP_TEST_MYSQL_PASSWORD') ?: '', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_EMULATE_PREPARES => false, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC]);
+$stopObserverControl = new KamauPutt\Core\PdoOwnerControl($stopObserverDb, $clock);
+$callbackOutsideTransaction = false;
+$stopSummary = [];
+$stopDuringDispatch = $jobs->dispatch($stopLease['id'], $stopLease['lease_token'], static function (array $request) use ($db, $stopObserverControl, &$callbackOutsideTransaction, &$stopSummary): array {
+    $callbackOutsideTransaction = !$db->inTransaction() && is_string($request['attempt_id'] ?? null);
+    $stopSummary = $stopObserverControl->emergencyStop();
+    return ['outcome' => 'accepted', 'reference' => 'provider-ref-after-stop-0007'];
+});
+$check('provider_callback_runs_outside_transaction_and_STOP_reports_inflight_attempt', $callbackOutsideTransaction && $stopSummary['emergency_stopped'] && $stopSummary['job_queue_actions'] >= 3 && $state($stopLease['id'])['status'] === 'completed');
+$check('accepted_inflight_attempt_settles_once_after_STOP', $stopDuringDispatch['status'] === 'completed' && $reservations->commit('job-reserve-0007', 'provider-ref-after-stop-0007') === 'idempotent_committed');
+
+$db->exec('UPDATE kp_finance_control SET owner_emergency_stopped=0,dispatch_epoch=dispatch_epoch+1 WHERE id=1');
+$check('eighth_reservation_is_created_for_adapter_exception', $makeReservation(8)['allowed']);
+$jobs->enqueue('job-reserve-0008', 'job-key-00000008', $makePayload(8));
+$throwLease = $jobs->claimNext();
+$thrown = $jobs->dispatch($throwLease['id'], $throwLease['lease_token'], static function (): array { throw new RuntimeException('transport outcome not observed'); });
+$check('transport_exception_becomes_uncertain_and_holds_reservation', $thrown['status'] === 'uncertain' && $state($throwLease['id'])['status'] === 'uncertain' && $reservations->markUncertain('job-reserve-0008') === 'idempotent_uncertain');
+
+$check('ninth_reservation_is_created_for_late_known_outcome', $makeReservation(9)['allowed']);
+$jobs->enqueue('job-reserve-0009', 'job-key-00000009', $makePayload(9));
+$lateLease = $jobs->claimNext();
+$lateOutcome = $jobs->dispatch($lateLease['id'], $lateLease['lease_token'], static function () use (&$now, $jobs): array { $now += 31; $jobs->claimNext(); return ['outcome' => 'accepted', 'reference' => 'provider-ref-late-0009']; });
+$lateState = $state($lateLease['id']);
+$check('recovered_attempt_accepts_its_exact_late_result_without_retry', $lateOutcome['status'] === 'completed' && $lateState['status'] === 'completed' && (int) $lateState['updated_epoch'] === $now && $reservations->commit('job-reserve-0009', 'provider-ref-late-0009') === 'idempotent_committed');
+$check('tenth_reservation_is_created_for_fresh_attempt_deadline', $makeReservation(10)['allowed']);
+$jobs->enqueue('job-reserve-0010', 'job-key-00000010', $makePayload(10));
+$nearExpiryLease = $jobs->claimNext();
+$now += \KamauPutt\Core\PdoDurableJobs::LEASE_SECONDS - 1;
+$receivedAttemptDeadline = 0;
+$nearExpiryDispatch = $jobs->dispatch($nearExpiryLease['id'], $nearExpiryLease['lease_token'], static function (array $request) use (&$now, &$receivedAttemptDeadline): array {
+    $receivedAttemptDeadline = (int) $request['attempt_deadline_epoch'];
+    return ['outcome' => 'accepted', 'reference' => 'provider-ref-deadline-0010'];
+});
+$check('dispatch_starts_a_fresh_bounded_attempt_deadline_after_near_expiry_claim', $nearExpiryDispatch['status'] === 'completed' && $receivedAttemptDeadline === $now + \KamauPutt\Core\PdoDurableJobs::LEASE_SECONDS && $receivedAttemptDeadline > $nearExpiryLease['lease_expires_epoch'] && $reservations->commit('job-reserve-0010', 'provider-ref-deadline-0010') === 'idempotent_committed');
+$check('eleventh_reservation_is_created_for_expired_before_callback_case', $makeReservation(11)['allowed']);
+$jobs->enqueue('job-reserve-0011', 'job-key-00000011', $makePayload(11));
+$expiredBeforeCallbackLease = $jobs->claimNext();
+$advanceClockOnCall = $clockCalls + 2; // dispatch start, then the pre-callback deadline check
+$advanceClockSeconds = \KamauPutt\Core\PdoDurableJobs::LEASE_SECONDS;
+$expiredCallbackCalled = false;
+$expiredBeforeCallback = $jobs->dispatch($expiredBeforeCallbackLease['id'], $expiredBeforeCallbackLease['lease_token'], static function () use (&$expiredCallbackCalled): array {
+    $expiredCallbackCalled = true;
+    return ['outcome' => 'accepted', 'reference' => 'must-not-send-0011'];
+});
+$check('expired_attempt_deadline_prevents_callback_invocation_and_releases_reservation', $expiredBeforeCallback['status'] === 'failed_no_effect' && !$expiredCallbackCalled && $state($expiredBeforeCallbackLease['id'])['status'] === 'failed' && $reservations->release('job-reserve-0011') === 'idempotent_released');
+$audit = $jobs->verifyAudit();
+$check('durable_job_hash_chain_verifies_after_mysql_json_normalizes_detail_keys', $audit['events'] === 42 && preg_match('/^[a-f0-9]{64}$/', $audit['last_hash']) === 1);
+$eventUpdateDenied = false;
+try { $db->exec("UPDATE kp_durable_job_events SET event_type='queued' WHERE id=1"); } catch (PDOException) { $eventUpdateDenied = true; }
+$check('durable_job_events_are_append_only', $eventUpdateDenied && $jobs->verifyAudit()['events'] === 42);
+echo $passed . " durable job cases passed\n";
