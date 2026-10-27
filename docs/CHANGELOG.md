@@ -5,7 +5,7 @@ All dates Australia/Sydney. Append a new dated entry for each substantive sessio
 ## 2026-10-27 — Encrypted durable-job payload foundation
 - Added migration 010 and `PdoJobPayloadStore`: bounded (64 KiB), non-empty JSON objects are encrypted with libsodium secretbox using reference-bound derived keys and immutable DB rows, separately from queue/audit metadata.
 - Durable enqueue now requires a previously stored opaque payload reference. Payload purge is limited to jobs with known terminal outcomes; uncertain work remains retained.
-- Added database scenarios for ciphertext confidentiality, round-trip recovery, wrong-key and reference-swapping fail-closed behavior, immutability, input bounds, single-job payload binding, enqueue reference validation and terminal-only purge. Fresh disposable MariaDB 11.4.13 passed 41/41 durable-job cases; MySQL 8.4 CI is pending.
+- Added database scenarios for ciphertext confidentiality, round-trip recovery, wrong-key and reference-swapping fail-closed behavior, immutability, input bounds, single-job payload binding, enqueue reference validation and terminal-only purge. Fresh disposable MariaDB 11.4.13 passed 41/41 durable-job cases. After correcting a truncated GitHub source upload, clean head `ac622cbbc9c2201cda962c86e714ed2795430f48` passed PHP workflow `40426074493` and all seven MySQL 8.4 suites in workflow `40426074511`.
 - This does not yet add worker scheduling, provider transport, production key management, or reconciliation UX.
 
 ## 2026-10-26 — Double-entry ledger prototype
