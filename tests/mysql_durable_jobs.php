@@ -17,7 +17,14 @@ foreach (['001_financial_control.mysql.sql','002_double_entry_ledger.mysql.sql',
     foreach (preg_split('/;\s*(?=\n|$)/', $sql) as $statement) { if (trim($statement) !== '') { $db->exec(trim($statement)); } }
 }
 $now = 1_800_000_000;
-$clock = static function () use (&$now): int { return $now; };
+$clockCalls = 0;
+$advanceClockOnCall = null;
+$advanceClockSeconds = 0;
+$clock = static function () use (&$now, &$clockCalls, &$advanceClockOnCall, &$advanceClockSeconds): int {
+    $clockCalls++;
+    if ($advanceClockOnCall === $clockCalls) { $now += $advanceClockSeconds; $advanceClockOnCall = null; }
+    return $now;
+};
 $auth = new KamauPutt\Core\PdoOwnerAuth($db, random_bytes(32), random_bytes(32), $clock);
 $auth->bootstrapOwner('dad@example.test', 'test-only-owner-password-123', KamauPutt\Core\PdoOwnerAuth::generateTotpSecret());
 $db->exec("UPDATE kp_finance_control SET operating_mode='growth',owner_emergency_stopped=0,dispatch_epoch=1 WHERE id=1");
@@ -117,9 +124,20 @@ $nearExpiryDispatch = $jobs->dispatch($nearExpiryLease['id'], $nearExpiryLease['
     return ['outcome' => 'accepted', 'reference' => 'provider-ref-deadline-0010'];
 });
 $check('dispatch_starts_a_fresh_bounded_attempt_deadline_after_near_expiry_claim', $nearExpiryDispatch['status'] === 'completed' && $receivedAttemptDeadline === $now + \KamauPutt\Core\PdoDurableJobs::LEASE_SECONDS && $receivedAttemptDeadline > $nearExpiryLease['lease_expires_epoch'] && $reservations->commit('job-reserve-0010', 'provider-ref-deadline-0010') === 'idempotent_committed');
+$check('eleventh_reservation_is_created_for_expired_before_callback_case', $makeReservation(11)['allowed']);
+$jobs->enqueue('job-reserve-0011', 'job-key-00000011', 'payload-ref:00000011');
+$expiredBeforeCallbackLease = $jobs->claimNext();
+$advanceClockOnCall = $clockCalls + 2; // dispatch start, then the pre-callback deadline check
+$advanceClockSeconds = \KamauPutt\Core\PdoDurableJobs::LEASE_SECONDS;
+$expiredCallbackCalled = false;
+$expiredBeforeCallback = $jobs->dispatch($expiredBeforeCallbackLease['id'], $expiredBeforeCallbackLease['lease_token'], static function () use (&$expiredCallbackCalled): array {
+    $expiredCallbackCalled = true;
+    return ['outcome' => 'accepted', 'reference' => 'must-not-send-0011'];
+});
+$check('expired_attempt_deadline_prevents_callback_invocation_and_releases_reservation', $expiredBeforeCallback['status'] === 'failed_no_effect' && !$expiredCallbackCalled && $state($expiredBeforeCallbackLease['id'])['status'] === 'failed' && $reservations->release('job-reserve-0011') === 'idempotent_released');
 $audit = $jobs->verifyAudit();
-$check('durable_job_hash_chain_verifies_after_mysql_json_normalizes_detail_keys', $audit['events'] === 38 && preg_match('/^[a-f0-9]{64}$/', $audit['last_hash']) === 1);
+$check('durable_job_hash_chain_verifies_after_mysql_json_normalizes_detail_keys', $audit['events'] === 42 && preg_match('/^[a-f0-9]{64}$/', $audit['last_hash']) === 1);
 $eventUpdateDenied = false;
 try { $db->exec("UPDATE kp_durable_job_events SET event_type='queued' WHERE id=1"); } catch (PDOException) { $eventUpdateDenied = true; }
-$check('durable_job_events_are_append_only', $eventUpdateDenied && $jobs->verifyAudit()['events'] === 38);
+$check('durable_job_events_are_append_only', $eventUpdateDenied && $jobs->verifyAudit()['events'] === 42);
 echo $passed . " durable job cases passed\n";

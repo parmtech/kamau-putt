@@ -127,15 +127,20 @@ final class PdoDurableJobs
         });
         if (!$attempt['started']) { return ['dispatched' => false, 'reason' => $attempt['reason']]; }
 
-        // Any real adapter must enforce a strict transport deadline. This callback holds no DB locks.
-        try {
-            $outcome = $providerCall([
-                'action_type' => $attempt['action_type'], 'payload_ref' => $attempt['payload_ref'],
-                'provider_idempotency_key' => 'kp-' . hash('sha256', $attempt['job_key']),
-                'authorization_epoch' => $attempt['authorization_epoch'], 'attempt_id' => $attempt['attempt_id'],
-                'attempt_deadline_epoch' => $attempt['attempt_deadline_epoch'],
-            ]);
-        } catch (Throwable) { $outcome = ['outcome' => 'unknown']; }
+        // Recheck after the commit in case this worker was paused at the authorization boundary.
+        // A real adapter must also check immediately before network send and enforce a shorter timeout.
+        if ($this->now() >= (int) $attempt['attempt_deadline_epoch']) {
+            $outcome = ['outcome' => 'no_effect'];
+        } else {
+            try {
+                $outcome = $providerCall([
+                    'action_type' => $attempt['action_type'], 'payload_ref' => $attempt['payload_ref'],
+                    'provider_idempotency_key' => 'kp-' . hash('sha256', $attempt['job_key']),
+                    'authorization_epoch' => $attempt['authorization_epoch'], 'attempt_id' => $attempt['attempt_id'],
+                    'attempt_deadline_epoch' => $attempt['attempt_deadline_epoch'],
+                ]);
+            } catch (Throwable) { $outcome = ['outcome' => 'unknown']; }
+        }
         if (!is_array($outcome) || !in_array($outcome['outcome'] ?? null, ['accepted', 'no_effect', 'unknown'], true)) { $outcome = ['outcome' => 'unknown']; }
         if (($outcome['outcome'] ?? null) === 'accepted' && (!is_string($outcome['reference'] ?? null) || $outcome['reference'] === '' || strlen($outcome['reference']) > 255)) { $outcome = ['outcome' => 'unknown']; }
         return $this->settleDispatch($jobId, (string) $attempt['attempt_id'], $outcome);
